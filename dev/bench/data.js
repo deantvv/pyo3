@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1628931848298,
+  "lastUpdate": 1628932309914,
   "repoUrl": "https://github.com/deantvv/pyo3",
   "entries": {
     "pytest-bench": [
@@ -244,6 +244,170 @@ window.BENCHMARK_DATA = {
             "unit": "iter/sec",
             "range": "stddev: 1.2723215382914264e-7",
             "extra": "mean: 134.54937422857975 nsec\nrounds: 68028"
+          }
+        ]
+      }
+    ],
+    "pyo3-bench": [
+      {
+        "commit": {
+          "author": {
+            "email": "1939362+davidhewitt@users.noreply.github.com",
+            "name": "David Hewitt",
+            "username": "davidhewitt"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "584de688c3bb52c47d4a7a25aaef389556645319",
+          "message": "Merge pull request #1779 from indygreg/setter-handle-del\n\nmacros: raise AttributeError on property deletion requests",
+          "timestamp": "2021-08-14T08:57:33+01:00",
+          "tree_id": "58f18cc1c30c4144fd631fc6a008204b1301ecb5",
+          "url": "https://github.com/deantvv/pyo3/commit/584de688c3bb52c47d4a7a25aaef389556645319"
+        },
+        "date": 1628932295334,
+        "tool": "cargo",
+        "benches": [
+          {
+            "name": "call_0",
+            "value": 96440,
+            "range": "± 5943",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "call_method_0",
+            "value": 257412,
+            "range": "± 18045",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "iter_dict",
+            "value": 2890382,
+            "range": "± 168738",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "dict_new",
+            "value": 5681922,
+            "range": "± 418487",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "dict_get_item",
+            "value": 3519856,
+            "range": "± 224553",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "extract_hashmap",
+            "value": 8521905,
+            "range": "± 813886",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "extract_btreemap",
+            "value": 14008068,
+            "range": "± 1128138",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "extract_hashbrown_map",
+            "value": 6978166,
+            "range": "± 699681",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "clean_gilpool_new",
+            "value": 21,
+            "range": "± 0",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "clean_acquire_gil",
+            "value": 116,
+            "range": "± 5",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "dirty_acquire_gil",
+            "value": 115,
+            "range": "± 7",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "iter_list",
+            "value": 1662162,
+            "range": "± 83899",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "list_new",
+            "value": 1679341,
+            "range": "± 102331",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "list_get_item",
+            "value": 799588,
+            "range": "± 64950",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "first_time_init",
+            "value": 4992,
+            "range": "± 21721",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "drop_many_objects",
+            "value": 3911,
+            "range": "± 247",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "iter_set",
+            "value": 1833755,
+            "range": "± 203459",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "extract_hashset",
+            "value": 7407833,
+            "range": "± 562602",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "extract_btreeset",
+            "value": 11246823,
+            "range": "± 917158",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "extract_hashbrown_set",
+            "value": 5028275,
+            "range": "± 317900",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "iter_tuple",
+            "value": 957741,
+            "range": "± 88325",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "tuple_new",
+            "value": 1722052,
+            "range": "± 134143",
+            "unit": "ns/iter"
+          },
+          {
+            "name": "tuple_get_item",
+            "value": 519380,
+            "range": "± 52181",
+            "unit": "ns/iter"
           }
         ]
       }
