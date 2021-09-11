@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src&#x2F;exceptions.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>exceptions.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../pyo3/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src&#x2F;exceptions.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>exceptions.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../pyo3/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -499,8 +499,7 @@
 <span id="499">499</span>
 <span id="500">500</span>
 <span id="501">501</span>
-</pre><pre class="rust">
-<span class="comment">// Copyright (c) 2017-present PyO3 Project and Contributors</span>
+</pre><pre class="rust"><code><span class="comment">// Copyright (c) 2017-present PyO3 Project and Contributors</span>
 
 <span class="doccomment">//! Exception types defined by Python.</span>
 
@@ -513,7 +512,7 @@
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">impl_exception_boilerplate</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>: <span class="ident">ident</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="kw">impl</span> <span class="ident">std::convert::From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::PyErr</span> {
+        <span class="kw">impl</span> <span class="ident">::std::convert::From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::PyErr</span> {
             <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">err</span>: <span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::PyErr</span> {
                 <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::PyErr::from_instance</span>(<span class="ident">err</span>)
             }
@@ -523,21 +522,21 @@
             <span class="doccomment">/// Creates a new [PyErr](crate::PyErr) of this type.</span>
             <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_err</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span>(<span class="ident">args</span>: <span class="ident">A</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::PyErr</span>
             <span class="kw">where</span>
-                <span class="ident">A</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::PyErrArguments</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+                <span class="ident">A</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::PyErrArguments</span> <span class="op">+</span> <span class="ident">::std::marker::Send</span> <span class="op">+</span> <span class="ident">::std::marker::Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
             {
                 <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::PyErr::new</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>, <span class="ident">A</span><span class="op">&gt;</span>(<span class="ident">args</span>)
             }
         }
 
-        <span class="kw">impl</span> <span class="ident">std::error::Error</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span> {
-            <span class="kw">fn</span> <span class="ident">source</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>(<span class="kw">dyn</span> <span class="ident">std::error::Error</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>)<span class="op">&gt;</span> {
+        <span class="kw">impl</span> <span class="ident">::std::error::Error</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span> {
+            <span class="kw">fn</span> <span class="ident">source</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">::std::option::Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>(<span class="kw">dyn</span> <span class="ident">::std::error::Error</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>)<span class="op">&gt;</span> {
                 <span class="kw">unsafe</span> {
-                    <span class="kw">use</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::{<span class="macro-nonterminal">AsPyPointer</span>, <span class="ident">PyNativeType</span>};
+                    <span class="kw">use</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::AsPyPointer</span>;
                     <span class="kw">let</span> <span class="ident">cause</span>: <span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::exceptions::PyBaseException</span> <span class="op">=</span> <span class="self">self</span>
                         .<span class="ident">py</span>()
                         .<span class="ident">from_owned_ptr_or_opt</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::ffi::PyException_GetCause</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>()))<span class="question-mark">?</span>;
 
-                    <span class="prelude-val">Some</span>(<span class="ident">cause</span>)
+                    <span class="ident">::std::option::Option::Some</span>(<span class="ident">cause</span>)
                 }
             }
         }
@@ -581,7 +580,7 @@
         <span class="macro-nonterminal">$</span><span class="macro">crate::pyobject_native_type_core!</span>(
             <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>,
             <span class="kw-2">*</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">name::type_object_raw</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::Python::assume_gil_acquired</span>()),
-            #<span class="ident">module</span><span class="op">=</span><span class="prelude-val">Some</span>(<span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">module</span>))
+            #<span class="ident">module</span><span class="op">=</span><span class="ident">::std::option::Option::Some</span>(<span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">module</span>))
         );
 
         <span class="kw">impl</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span> {
@@ -666,7 +665,7 @@
         <span class="macro-nonterminal">$</span><span class="macro">crate::pyobject_native_type_core!</span>(
             <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>,
             <span class="kw-2">*</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">name::type_object_raw</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::Python::assume_gil_acquired</span>()),
-            #<span class="ident">module</span><span class="op">=</span><span class="prelude-val">Some</span>(<span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">module</span>))
+            #<span class="ident">module</span><span class="op">=</span><span class="ident">::std::option::Option::Some</span>(<span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">module</span>))
         );
 
         <span class="kw">impl</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span> {
@@ -683,8 +682,8 @@
                             <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::PyErr::new_type</span>(
                                 <span class="ident">py</span>,
                                 <span class="macro">concat!</span>(<span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">module</span>), <span class="string">&quot;.&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>)),
-                                <span class="prelude-val">Some</span>(<span class="ident">py</span>.<span class="ident">get_type</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">base</span><span class="op">&gt;</span>()),
-                                <span class="prelude-val">None</span>,
+                                <span class="ident">::std::option::Option::Some</span>(<span class="ident">py</span>.<span class="ident">get_type</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">base</span><span class="op">&gt;</span>()),
+                                <span class="ident">::std::option::Option::None</span>,
                             )
                             .<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::ffi::PyObject</span>,
                         )
@@ -701,10 +700,10 @@
         <span class="kw">pub</span> <span class="kw">struct</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::PyAny</span>);
 
         <span class="macro-nonterminal">$</span><span class="macro">crate::impl_exception_boilerplate!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>);
-        <span class="macro-nonterminal">$</span><span class="macro">crate::pyobject_native_type!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">layout</span>, <span class="kw-2">*</span>(<span class="ident">ffi</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">exc_name</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyTypeObject</span>));
+        <span class="macro-nonterminal">$</span><span class="macro">crate::pyobject_native_type!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">layout</span>, <span class="kw-2">*</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::ffi</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">exc_name</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::ffi::PyTypeObject</span>));
     );
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">exc_name</span>:<span class="ident">ident</span>) <span class="op">=</span><span class="op">&gt;</span> (
-        <span class="macro">impl_native_exception!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">exc_name</span>, <span class="ident">ffi::PyBaseExceptionObject</span>);
+        <span class="macro">impl_native_exception!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">exc_name</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::ffi::PyBaseExceptionObject</span>);
     )
 );
 
@@ -1001,7 +1000,7 @@
         });
     }
 }
-</pre></div>
+</code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="pyo3" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
     <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script>
 </body></html>
