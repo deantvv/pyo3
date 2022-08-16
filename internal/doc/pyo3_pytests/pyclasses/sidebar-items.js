@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":[["pyclasses",""]],"mod":[["pyclasses",""]],"struct":[["EmptyClass",""],["PyClassIter","This is for demonstrating how to return a value from next"]]};

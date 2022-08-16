@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["PanicException","The exception raised when Rust code called from Python panics."]]};

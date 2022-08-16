@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":[["clear",""],["traverse",""]],"struct":[["PyTraverseError",""],["PyVisit","Object visitor for GC."]],"trait":[["PyGCClearProtocol",""],["PyGCProtocol","GC support"],["PyGCTraverseProtocol",""]]};

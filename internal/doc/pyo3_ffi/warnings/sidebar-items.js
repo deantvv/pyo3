@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":[["PyErr_ResourceWarning",""],["PyErr_WarnEx",""],["PyErr_WarnExplicit",""],["PyErr_WarnFormat",""]]};

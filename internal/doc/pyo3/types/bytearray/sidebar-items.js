@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["PyByteArray","Represents a Python `bytearray`."]]};

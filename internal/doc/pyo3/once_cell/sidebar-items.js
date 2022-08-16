@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["GILOnceCell","A write-once cell similar to `once_cell::OnceCell`."],["Interned","Implementation detail for `intern!` macro."]]};

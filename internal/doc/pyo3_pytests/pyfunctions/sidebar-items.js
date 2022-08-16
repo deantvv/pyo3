@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":[["args_kwargs",""],["none",""],["pyfunctions",""],["simple",""],["simple_args",""],["simple_args_kwargs",""],["simple_kwargs",""]],"mod":[["args_kwargs",""],["none",""],["pyfunctions",""],["simple",""],["simple_args",""],["simple_args_kwargs",""],["simple_kwargs",""]]};

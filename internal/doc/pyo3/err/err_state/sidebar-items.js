@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":[["PyErrState",""]],"fn":[["boxed_args",""]],"struct":[["PyErrStateNormalized",""]],"trait":[["PyErrArguments","Helper conversion trait that allows to use custom arguments for lazy exception construction."]]};

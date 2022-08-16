@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":[["extract_sequence",""],["get_sequence_abc",""],["sequence_len",""],["sequence_slice",""]],"static":[["SEQUENCE_ABC",""]],"struct":[["PySequence","Represents a reference to a Python object supporting the sequence protocol."]]};

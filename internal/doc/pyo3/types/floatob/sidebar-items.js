@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["PyFloat","Represents a Python `float` object."]]};

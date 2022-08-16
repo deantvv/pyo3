@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"trait":[["PyAsyncProtocolItems",""],["PyBufferProtocolItems",""],["PyDescrProtocolItems",""],["PyGCProtocolItems",""],["PyIterProtocolItems",""],["PyMappingProtocolItems",""],["PyNumberProtocolItems",""],["PyObjectProtocolItems",""],["PySequenceProtocolItems",""]]};

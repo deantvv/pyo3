@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["PyType","Represents a reference to a Python `type object`."]]};

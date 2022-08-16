@@ -1,0 +1,80 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="A conversion from eyre’s [`Report`] type to [`PyErr`]."><meta name="keywords" content="rust, rustlang, rust-lang, eyre"><title>pyo3::eyre - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../main.js"></script><script defer src="../../scrape-examples.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../pyo3/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../pyo3/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"><a href="#">Module eyre</a></h2><div class="sidebar-elems"></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../pyo3/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="main-heading"><h1 class="fqn"><span class="in-band">Module <a href="../index.html">pyo3</a>::<wbr><a class="mod" href="#">eyre</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><a class="srclink" href="../../src/pyo3/conversions/eyre.rs.html#1-153">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><span class="item-info"><div class="stab portability">Available on <strong>crate feature <code>eyre</code></strong> only.</div></span><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>A conversion from
+<a href="https://docs.rs/eyre/" title="A library for easy idiomatic error handling and reporting in Rust applications.">eyre</a>’s
+<a href="https://docs.rs/eyre/0.6.8/eyre/struct.Report.html" title="Report"><code>Report</code></a> type to <a href="../err/struct.PyErr.html" title="PyErr"><code>PyErr</code></a>.</p>
+<p>Use of an error handling library like <a href="https://docs.rs/eyre/" title="A library for easy idiomatic error handling and reporting in Rust applications.">eyre</a> is common in application code and when you just
+want error handling to be easy. If you are writing a library or you need more control over your
+errors you might want to design your own error type instead.</p>
+<p>This implementation always creates a Python <a href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="Built-in Exceptions — Python documentation"><code>RuntimeError</code></a>. You might find that you need to
+map the error from your Rust code into another Python exception. See <a href="../err/struct.PyErr.html#method.new" title="PyErr::new"><code>PyErr::new</code></a> for more
+information about that.</p>
+<p>For information about error handling in general, see the <a href="https://doc.rust-lang.org/book/ch09-02-recoverable-errors-with-result.html" title="Recoverable Errors with Result - The Rust Programming Language">Error handling</a> chapter of the Rust
+book.</p>
+<h2 id="setup"><a href="#setup">Setup</a></h2>
+<p>To use this feature, add this to your <strong><code>Cargo.toml</code></strong>:</p>
+<div class="example-wrap"><pre class="language-toml"><code>[dependencies]
+# change * to the version you want to use, ideally the latest.
+eyre = &quot;*&quot;
+pyo3 = { version = &quot;0.16.5&quot;, features = [&quot;eyre&quot;] }</code></pre></div>
+<p>Note that you must use compatible versions of eyre and PyO3.
+The required eyre version may vary based on the version of PyO3.</p>
+<h2 id="example-propagating-a-pyerr-into-eyrereport"><a href="#example-propagating-a-pyerr-into-eyrereport">Example: Propagating a <code>PyErr</code> into <code>eyre::Report</code></a></h2>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>pyo3::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>pyo3::wrap_pyfunction;
+<span class="kw">use </span>std::path::PathBuf;
+
+<span class="comment">// A wrapper around a Rust function.
+// The pyfunction macro performs the conversion to a PyErr
+</span><span class="attribute">#[pyfunction]</span>
+<span class="kw">fn </span>py_open(filename: PathBuf) -&gt; eyre::Result&lt;Vec&lt;u8&gt;&gt; {
+    <span class="kw">let </span>data = std::fs::read(filename)<span class="question-mark">?</span>;
+    <span class="prelude-val">Ok</span>(data)
+}
+
+<span class="kw">fn </span>main() {
+    <span class="kw">let </span>error = Python::with_gil(|py| -&gt; PyResult&lt;Vec&lt;u8&gt;&gt; {
+        <span class="kw">let </span>fun = <span class="macro">wrap_pyfunction!</span>(py_open, py)<span class="question-mark">?</span>;
+        <span class="kw">let </span>text = fun.call1((<span class="string">&quot;foo.txt&quot;</span>,))<span class="question-mark">?</span>.extract::&lt;Vec&lt;u8&gt;&gt;()<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(text)
+    }).unwrap_err();
+
+    <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, error);
+}</code></pre></div>
+<h2 id="example-using-eyre-in-general"><a href="#example-using-eyre-in-general">Example: Using <code>eyre</code> in general</a></h2>
+<p>Note that you don’t need this feature to convert a <a href="../err/struct.PyErr.html" title="PyErr"><code>PyErr</code></a> into an <a href="https://docs.rs/eyre/0.6.8/eyre/struct.Report.html" title="eyre::Report"><code>eyre::Report</code></a>, because
+it can already convert anything that implements <a href="https://doc.rust-lang.org/nightly/std/error/trait.Error.html"><code>Error</code></a>:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>pyo3::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>pyo3::types::PyBytes;
+
+<span class="comment">// An example function that must handle multiple error types.
+//
+// To do this you usually need to design your own error type or use
+// `Box&lt;dyn Error&gt;`. `eyre` is a convenient alternative for this.
+</span><span class="kw">pub fn </span>decompress(bytes: <span class="kw-2">&amp;</span>[u8]) -&gt; eyre::Result&lt;String&gt; {
+    <span class="comment">// An arbitrary example of a Python api you
+    // could call inside an application...
+    // This might return a `PyErr`.
+    </span><span class="kw">let </span>res = Python::with_gil(|py| {
+        <span class="kw">let </span>zlib = PyModule::import(py, <span class="string">&quot;zlib&quot;</span>)<span class="question-mark">?</span>;
+        <span class="kw">let </span>decompress = zlib.getattr(<span class="string">&quot;decompress&quot;</span>)<span class="question-mark">?</span>;
+        <span class="kw">let </span>bytes = PyBytes::new(py, bytes);
+        <span class="kw">let </span>value = decompress.call1((bytes,))<span class="question-mark">?</span>;
+        value.extract::&lt;Vec&lt;u8&gt;&gt;()
+    })<span class="question-mark">?</span>;
+
+    <span class="comment">// This might be a `FromUtf8Error`.
+    </span><span class="kw">let </span>text = String::from_utf8(res)<span class="question-mark">?</span>;
+
+    <span class="prelude-val">Ok</span>(text)
+}
+
+<span class="kw">fn </span>main() -&gt; eyre::Result&lt;()&gt; {
+    <span class="kw">let </span>bytes: <span class="kw-2">&amp;</span>[u8] = <span class="string">b&quot;x\x9c\x8b\xcc/U(\xce\xc8/\xcdIQ((\xcaOJL\xca\xa9T\
+                        (-NU(\xc9HU\xc8\xc9LJ\xcbI,IUH.\x02\x91\x99y\xc5%\
+                        \xa9\x89)z\x00\xf2\x15\x12\xfe&quot;</span>;
+    <span class="kw">let </span>text = decompress(bytes)<span class="question-mark">?</span>;
+
+    <span class="macro">println!</span>(<span class="string">&quot;The text is \&quot;{}\&quot;&quot;</span>, text);
+    <span class="prelude-val">Ok</span>(())
+}</code></pre></div>
+</div></details></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="pyo3" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0-nightly (40336865f 2022-08-15)" ></div></body></html>

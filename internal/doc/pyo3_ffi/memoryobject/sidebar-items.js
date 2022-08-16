@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":[["PyMemoryView_Check",""],["PyMemoryView_FromMemory",""],["PyMemoryView_FromObject",""],["PyMemoryView_GetContiguous",""]],"static":[["PyMemoryView_Type",""],["_PyManagedBuffer_Type",""]]};

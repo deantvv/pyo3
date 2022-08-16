@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":[["PyFrame_BlockPop",""],["PyFrame_BlockSetup",""],["PyFrame_Check",""],["PyFrame_ClearFreeList",""],["PyFrame_FastToLocals",""],["PyFrame_FastToLocalsWithError",""],["PyFrame_LocalsToFast",""],["PyFrame_New",""]],"static":[["PyFrame_Type",""]],"struct":[["PyFrameObject",""],["PyTryBlock",""]],"type":[["PyFrameState",""]]};

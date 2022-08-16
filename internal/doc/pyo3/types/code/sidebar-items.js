@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["PyCode","Represents a Python code object."]]};

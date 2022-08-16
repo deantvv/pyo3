@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"static":[["PyEnum_Type",""],["PyReversed_Type",""]]};

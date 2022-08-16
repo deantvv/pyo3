@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["PythonVersionInfo","Represents the major, minor, and patch (if any) versions of this interpreter."]]};

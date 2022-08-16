@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":[["PY_STDIOTEXTMODE",""]],"fn":[["PyFile_FromFd",""],["PyFile_GetLine",""],["PyFile_WriteObject",""],["PyFile_WriteString",""],["PyObject_AsFileDescriptor",""]],"static":[["Py_FileSystemDefaultEncodeErrors",""],["Py_FileSystemDefaultEncoding",""],["Py_HasFileSystemDefaultEncoding",""]]};

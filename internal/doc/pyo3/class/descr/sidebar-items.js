@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":[["descr_get",""],["descr_set",""]],"trait":[["PyDescrGetProtocol",""],["PyDescrProtocol","Descriptor interface"],["PyDescrSetProtocol",""]]};

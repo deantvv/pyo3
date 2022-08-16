@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":[["PyRange_Check",""]],"static":[["PyLongRangeIter_Type",""],["PyRangeIter_Type",""],["PyRange_Type",""]]};

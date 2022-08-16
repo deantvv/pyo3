@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":[["get_mapping_abc",""]],"static":[["MAPPING_ABC",""]],"struct":[["PyMapping","Represents a reference to a Python object supporting the mapping protocol."]]};

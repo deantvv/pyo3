@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["PySlice","Represents a Python `slice`."],["PySliceIndices","Represents Python `slice` indices."]]};

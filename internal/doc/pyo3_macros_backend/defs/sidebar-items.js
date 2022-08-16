@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":[["ASYNC",""],["BUFFER",""],["DESCR",""],["GC",""],["ITER",""],["MAPPING",""],["NUM",""],["OBJECT",""],["SEQ",""]],"struct":[["Proto","Predicates for `#[pyproto]`."],["PyMethod","Represents a method registered as a normal method like `#[pymethods]`."],["SlotDef","Represents a slot definition."]]};

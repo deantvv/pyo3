@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":[["PyMemAllocatorDomain",""]],"fn":[["PyMem_GetAllocator",""],["PyMem_RawCalloc",""],["PyMem_RawFree",""],["PyMem_RawMalloc",""],["PyMem_RawRealloc",""],["PyMem_SetAllocator",""],["PyMem_SetupDebugHooks",""]],"struct":[["PyMemAllocatorEx",""]]};

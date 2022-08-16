@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["PyIterator","A Python iterator object."]]};

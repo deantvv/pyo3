@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":[["__all__",""],["__name__",""]],"struct":[["PyModule","Represents a Python `module` object."]]};
