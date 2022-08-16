@@ -1,4 +1,6 @@
 use crate::object::*;
+#[cfg(Py_3_11)]
+use crate::vectorcallfunc;
 use std::os::raw::c_int;
 
 #[cfg(all(not(PyPy), Py_LIMITED_API))]
@@ -12,6 +14,8 @@ pub struct PyWeakReference {
     pub hash: crate::Py_hash_t,
     pub wr_prev: *mut PyWeakReference,
     pub wr_next: *mut PyWeakReference,
+    #[cfg(Py_3_11)]
+    pub vectorcall: vectorcallfunc,
 }
 
 #[cfg_attr(windows, link(name = "pythonXY"))]

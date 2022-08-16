@@ -2,7 +2,7 @@ use crate::object::*;
 use crate::pyport::Py_ssize_t;
 
 #[allow(unused_imports)]
-use std::os::raw::{c_char, c_int, c_uchar, c_void};
+use std::os::raw::{c_char, c_int, c_short, c_uchar, c_void};
 
 // skipped _Py_CODEUNIT
 // skipped _Py_OPCODE
@@ -57,7 +57,8 @@ pub struct PyCodeObject {
     pub co_names: *mut PyObject,
     pub co_exceptiontable: *mut PyObject,
     pub co_flags: c_int,
-    pub co_warmup: c_int,
+    pub co_warmup: c_short,
+    pub _co_linearray_entry_size: c_short,
     pub co_argcount: c_int,
     pub co_posonlyargcount: c_int,
     pub co_kwonlyargcount: c_int,
@@ -75,6 +76,9 @@ pub struct PyCodeObject {
     pub co_qualname: *mut PyObject,
     pub co_linetable: *mut PyObject,
     pub co_weakreflist: *mut PyObject,
+    pub _co_code: *mut PyObject,
+    pub _co_linearray: *mut c_char,
+    pub _co_firsttraceable: c_int,
     pub co_extra: *mut c_void,
     pub co_code_adaptive: [c_char; 1],
 }

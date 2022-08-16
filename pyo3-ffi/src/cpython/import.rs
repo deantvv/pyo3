@@ -1,7 +1,8 @@
 use crate::{PyInterpreterState, PyObject};
 #[cfg(not(PyPy))]
 use std::os::raw::c_uchar;
-use std::os::raw::{c_char, c_int};
+#[allow(unused_imports)]
+use std::os::raw::{c_char, c_int, c_void};
 
 // skipped PyInit__imp
 
@@ -55,6 +56,10 @@ pub struct _frozen {
     pub name: *const c_char,
     pub code: *const c_uchar,
     pub size: c_int,
+    #[cfg(Py_3_11)]
+    pub is_package: c_int,
+    #[cfg(Py_3_11)]
+    pub get_code: unsafe extern "C" fn(c_void) -> *mut PyObject,
 }
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
