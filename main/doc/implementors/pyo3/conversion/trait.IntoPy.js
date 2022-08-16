@@ -1,3 +1,4 @@
-(function() {var implementors = {};
-implementors["pyo3"] = [];
-if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
+(function() {var implementors = {
+"pyo3":[],
+"pyo3_pytests":[["impl IntoPy&lt;Py&lt;PyAny&gt;&gt; for <a class=\"struct\" href=\"pyo3_pytests/dict_iter/struct.DictSize.html\" title=\"struct pyo3_pytests::dict_iter::DictSize\">DictSize</a>"],["impl IntoPy&lt;Py&lt;PyAny&gt;&gt; for <a class=\"struct\" href=\"pyo3_pytests/objstore/struct.ObjStore.html\" title=\"struct pyo3_pytests::objstore::ObjStore\">ObjStore</a>"],["impl IntoPy&lt;Py&lt;PyAny&gt;&gt; for <a class=\"struct\" href=\"pyo3_pytests/othermod/struct.ModClass.html\" title=\"struct pyo3_pytests::othermod::ModClass\">ModClass</a>"],["impl IntoPy&lt;Py&lt;PyAny&gt;&gt; for <a class=\"struct\" href=\"pyo3_pytests/subclassing/struct.Subclassable.html\" title=\"struct pyo3_pytests::subclassing::Subclassable\">Subclassable</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

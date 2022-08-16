@@ -1,102 +1,102 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src&#x2F;class&#x2F;number.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>number.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../pyo3/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/class/number.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>number.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><script defer src="../../../scrape-examples.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../pyo3/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../pyo3/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../pyo3/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -781,806 +781,788 @@
 <span id="781">781</span>
 <span id="782">782</span>
 <span id="783">783</span>
-<span id="784">784</span>
-<span id="785">785</span>
-<span id="786">786</span>
-<span id="787">787</span>
-<span id="788">788</span>
-<span id="789">789</span>
-<span id="790">790</span>
-<span id="791">791</span>
-</pre><pre class="rust"><code><span class="comment">// Copyright (c) 2017-present PyO3 Project and Contributors</span>
+</pre><pre class="rust"><code><span class="attribute">#![allow(deprecated)]</span>
+<span class="comment">// Copyright (c) 2017-present PyO3 Project and Contributors
 
-<span class="doccomment">//! Python Number Interface</span>
-<span class="doccomment">//! Trait and support implementation for implementing number protocol</span>
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::callback::IntoPyCallbackOutput</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::err::PyErr</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">ffi</span>, <span class="ident">FromPyObject</span>, <span class="ident">PyClass</span>, <span class="ident">PyObject</span>};
+</span><span class="doccomment">//! Python Number Interface
+//! Trait and support implementation for implementing number protocol
+</span><span class="kw">use </span><span class="kw">crate</span>::callback::IntoPyCallbackOutput;
+<span class="kw">use </span><span class="kw">crate</span>::err::PyErr;
+<span class="kw">use </span><span class="kw">crate</span>::pyclass::boolean_struct::False;
+<span class="kw">use crate</span>::{ffi, FromPyObject, PyClass, PyObject};
 
-<span class="doccomment">/// Number interface</span>
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_variables</span>)]</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyClass</span> {
-    <span class="kw">fn</span> <span class="ident">__add__</span>(<span class="ident">lhs</span>: <span class="ident"><span class="self">Self</span>::Left</span>, <span class="ident">rhs</span>: <span class="ident"><span class="self">Self</span>::Right</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberAddProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+<span class="doccomment">/// Number interface
+</span><span class="attribute">#[allow(unused_variables)]</span>
+<span class="attribute">#[deprecated(since = <span class="string">&quot;0.16.0&quot;</span>, note = <span class="string">&quot;prefer `#[pymethods]` to `#[pyproto]`&quot;</span>)]</span>
+<span class="kw">pub trait </span>PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyClass {
+    <span class="kw">fn </span>__add__(lhs: <span class="self">Self</span>::Left, rhs: <span class="self">Self</span>::Right) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberAddProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="kw">fn</span> <span class="ident">__sub__</span>(<span class="ident">lhs</span>: <span class="ident"><span class="self">Self</span>::Left</span>, <span class="ident">rhs</span>: <span class="ident"><span class="self">Self</span>::Right</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberSubProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__sub__(lhs: <span class="self">Self</span>::Left, rhs: <span class="self">Self</span>::Right) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberSubProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="kw">fn</span> <span class="ident">__mul__</span>(<span class="ident">lhs</span>: <span class="ident"><span class="self">Self</span>::Left</span>, <span class="ident">rhs</span>: <span class="ident"><span class="self">Self</span>::Right</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberMulProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__mul__(lhs: <span class="self">Self</span>::Left, rhs: <span class="self">Self</span>::Right) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberMulProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="kw">fn</span> <span class="ident">__matmul__</span>(<span class="ident">lhs</span>: <span class="ident"><span class="self">Self</span>::Left</span>, <span class="ident">rhs</span>: <span class="ident"><span class="self">Self</span>::Right</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberMatmulProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__matmul__(lhs: <span class="self">Self</span>::Left, rhs: <span class="self">Self</span>::Right) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberMatmulProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="kw">fn</span> <span class="ident">__truediv__</span>(<span class="ident">lhs</span>: <span class="ident"><span class="self">Self</span>::Left</span>, <span class="ident">rhs</span>: <span class="ident"><span class="self">Self</span>::Right</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberTruedivProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__truediv__(lhs: <span class="self">Self</span>::Left, rhs: <span class="self">Self</span>::Right) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberTruedivProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="kw">fn</span> <span class="ident">__floordiv__</span>(<span class="ident">lhs</span>: <span class="ident"><span class="self">Self</span>::Left</span>, <span class="ident">rhs</span>: <span class="ident"><span class="self">Self</span>::Right</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberFloordivProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__floordiv__(lhs: <span class="self">Self</span>::Left, rhs: <span class="self">Self</span>::Right) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberFloordivProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="kw">fn</span> <span class="ident">__mod__</span>(<span class="ident">lhs</span>: <span class="ident"><span class="self">Self</span>::Left</span>, <span class="ident">rhs</span>: <span class="ident"><span class="self">Self</span>::Right</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberModProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__mod__(lhs: <span class="self">Self</span>::Left, rhs: <span class="self">Self</span>::Right) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberModProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="kw">fn</span> <span class="ident">__divmod__</span>(<span class="ident">lhs</span>: <span class="ident"><span class="self">Self</span>::Left</span>, <span class="ident">rhs</span>: <span class="ident"><span class="self">Self</span>::Right</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberDivmodProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__divmod__(lhs: <span class="self">Self</span>::Left, rhs: <span class="self">Self</span>::Right) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberDivmodProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="kw">fn</span> <span class="ident">__pow__</span>(<span class="ident">lhs</span>: <span class="ident"><span class="self">Self</span>::Left</span>, <span class="ident">rhs</span>: <span class="ident"><span class="self">Self</span>::Right</span>, <span class="ident">modulo</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Modulo</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberPowProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__pow__(lhs: <span class="self">Self</span>::Left, rhs: <span class="self">Self</span>::Right, modulo: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Modulo&gt;) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberPowProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="kw">fn</span> <span class="ident">__lshift__</span>(<span class="ident">lhs</span>: <span class="ident"><span class="self">Self</span>::Left</span>, <span class="ident">rhs</span>: <span class="ident"><span class="self">Self</span>::Right</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberLShiftProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__lshift__(lhs: <span class="self">Self</span>::Left, rhs: <span class="self">Self</span>::Right) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberLShiftProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="kw">fn</span> <span class="ident">__rshift__</span>(<span class="ident">lhs</span>: <span class="ident"><span class="self">Self</span>::Left</span>, <span class="ident">rhs</span>: <span class="ident"><span class="self">Self</span>::Right</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberRShiftProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__rshift__(lhs: <span class="self">Self</span>::Left, rhs: <span class="self">Self</span>::Right) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberRShiftProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="kw">fn</span> <span class="ident">__and__</span>(<span class="ident">lhs</span>: <span class="ident"><span class="self">Self</span>::Left</span>, <span class="ident">rhs</span>: <span class="ident"><span class="self">Self</span>::Right</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberAndProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__and__(lhs: <span class="self">Self</span>::Left, rhs: <span class="self">Self</span>::Right) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberAndProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="kw">fn</span> <span class="ident">__xor__</span>(<span class="ident">lhs</span>: <span class="ident"><span class="self">Self</span>::Left</span>, <span class="ident">rhs</span>: <span class="ident"><span class="self">Self</span>::Right</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberXorProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__xor__(lhs: <span class="self">Self</span>::Left, rhs: <span class="self">Self</span>::Right) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberXorProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="kw">fn</span> <span class="ident">__or__</span>(<span class="ident">lhs</span>: <span class="ident"><span class="self">Self</span>::Left</span>, <span class="ident">rhs</span>: <span class="ident"><span class="self">Self</span>::Right</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberOrProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__or__(lhs: <span class="self">Self</span>::Left, rhs: <span class="self">Self</span>::Right) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberOrProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">__radd__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="ident"><span class="self">Self</span>::Other</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberRAddProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__radd__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="self">self</span>, other: <span class="self">Self</span>::Other) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberRAddProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="kw">fn</span> <span class="ident">__rsub__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="ident"><span class="self">Self</span>::Other</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberRSubProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__rsub__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="self">self</span>, other: <span class="self">Self</span>::Other) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberRSubProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="kw">fn</span> <span class="ident">__rmul__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="ident"><span class="self">Self</span>::Other</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberRMulProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__rmul__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="self">self</span>, other: <span class="self">Self</span>::Other) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberRMulProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="kw">fn</span> <span class="ident">__rmatmul__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="ident"><span class="self">Self</span>::Other</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberRMatmulProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__rmatmul__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="self">self</span>, other: <span class="self">Self</span>::Other) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberRMatmulProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="kw">fn</span> <span class="ident">__rtruediv__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="ident"><span class="self">Self</span>::Other</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberRTruedivProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__rtruediv__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="self">self</span>, other: <span class="self">Self</span>::Other) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberRTruedivProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="kw">fn</span> <span class="ident">__rfloordiv__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="ident"><span class="self">Self</span>::Other</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberRFloordivProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__rfloordiv__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="self">self</span>, other: <span class="self">Self</span>::Other) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberRFloordivProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="kw">fn</span> <span class="ident">__rmod__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="ident"><span class="self">Self</span>::Other</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberRModProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__rmod__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="self">self</span>, other: <span class="self">Self</span>::Other) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberRModProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="kw">fn</span> <span class="ident">__rdivmod__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="ident"><span class="self">Self</span>::Other</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberRDivmodProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__rdivmod__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="self">self</span>, other: <span class="self">Self</span>::Other) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberRDivmodProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="kw">fn</span> <span class="ident">__rpow__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="ident"><span class="self">Self</span>::Other</span>, <span class="ident">modulo</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Modulo</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberRPowProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__rpow__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="self">self</span>, other: <span class="self">Self</span>::Other, modulo: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Modulo&gt;) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberRPowProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="kw">fn</span> <span class="ident">__rlshift__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="ident"><span class="self">Self</span>::Other</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberRLShiftProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__rlshift__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="self">self</span>, other: <span class="self">Self</span>::Other) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberRLShiftProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="kw">fn</span> <span class="ident">__rrshift__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="ident"><span class="self">Self</span>::Other</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberRRShiftProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__rrshift__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="self">self</span>, other: <span class="self">Self</span>::Other) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberRRShiftProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="kw">fn</span> <span class="ident">__rand__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="ident"><span class="self">Self</span>::Other</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberRAndProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__rand__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="self">self</span>, other: <span class="self">Self</span>::Other) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberRAndProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="kw">fn</span> <span class="ident">__rxor__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="ident"><span class="self">Self</span>::Other</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberRXorProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__rxor__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="self">self</span>, other: <span class="self">Self</span>::Other) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberRXorProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="kw">fn</span> <span class="ident">__ror__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="ident"><span class="self">Self</span>::Other</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberROrProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
-    {
-        <span class="macro">unimplemented!</span>()
-    }
-
-    <span class="kw">fn</span> <span class="ident">__iadd__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="ident"><span class="self">Self</span>::Other</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberIAddProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
-    {
-        <span class="macro">unimplemented!</span>()
-    }
-    <span class="kw">fn</span> <span class="ident">__isub__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="ident"><span class="self">Self</span>::Other</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberISubProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
-    {
-        <span class="macro">unimplemented!</span>()
-    }
-    <span class="kw">fn</span> <span class="ident">__imul__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="ident"><span class="self">Self</span>::Other</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberIMulProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
-    {
-        <span class="macro">unimplemented!</span>()
-    }
-    <span class="kw">fn</span> <span class="ident">__imatmul__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="ident"><span class="self">Self</span>::Other</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberIMatmulProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
-    {
-        <span class="macro">unimplemented!</span>()
-    }
-    <span class="kw">fn</span> <span class="ident">__itruediv__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="ident"><span class="self">Self</span>::Other</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberITruedivProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
-    {
-        <span class="macro">unimplemented!</span>()
-    }
-    <span class="kw">fn</span> <span class="ident">__ifloordiv__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="ident"><span class="self">Self</span>::Other</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberIFloordivProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
-    {
-        <span class="macro">unimplemented!</span>()
-    }
-    <span class="kw">fn</span> <span class="ident">__imod__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="ident"><span class="self">Self</span>::Other</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberIModProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
-    {
-        <span class="macro">unimplemented!</span>()
-    }
-    <span class="kw">fn</span> <span class="ident">__ipow__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="ident"><span class="self">Self</span>::Other</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberIPowProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
-    {
-        <span class="macro">unimplemented!</span>()
-    }
-    <span class="kw">fn</span> <span class="ident">__ilshift__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="ident"><span class="self">Self</span>::Other</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberILShiftProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
-    {
-        <span class="macro">unimplemented!</span>()
-    }
-    <span class="kw">fn</span> <span class="ident">__irshift__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="ident"><span class="self">Self</span>::Other</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberIRShiftProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
-    {
-        <span class="macro">unimplemented!</span>()
-    }
-    <span class="kw">fn</span> <span class="ident">__iand__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="ident"><span class="self">Self</span>::Other</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberIAndProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
-    {
-        <span class="macro">unimplemented!</span>()
-    }
-    <span class="kw">fn</span> <span class="ident">__ixor__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="ident"><span class="self">Self</span>::Other</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberIXorProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
-    {
-        <span class="macro">unimplemented!</span>()
-    }
-    <span class="kw">fn</span> <span class="ident">__ior__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="ident"><span class="self">Self</span>::Other</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberIOrProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__ror__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="self">self</span>, other: <span class="self">Self</span>::Other) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberROrProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
 
-    <span class="comment">// Unary arithmetic</span>
-    <span class="kw">fn</span> <span class="ident">__neg__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberNegProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__iadd__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="kw-2">mut </span><span class="self">self</span>, other: <span class="self">Self</span>::Other) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberIAddProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="kw">fn</span> <span class="ident">__pos__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberPosProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__isub__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="kw-2">mut </span><span class="self">self</span>, other: <span class="self">Self</span>::Other) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberISubProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="kw">fn</span> <span class="ident">__abs__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberAbsProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__imul__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="kw-2">mut </span><span class="self">self</span>, other: <span class="self">Self</span>::Other) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberIMulProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="kw">fn</span> <span class="ident">__invert__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberInvertProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__imatmul__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="kw-2">mut </span><span class="self">self</span>, other: <span class="self">Self</span>::Other) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberIMatmulProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="attribute">#[<span class="ident">deprecated</span>(
-        <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.14.0&quot;</span>,
-        <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;prefer implementing `__complex__` in `#[pymethods]` instead of in a protocol&quot;</span>
-    )]</span>
-    <span class="kw">fn</span> <span class="ident">__complex__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberComplexProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__itruediv__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="kw-2">mut </span><span class="self">self</span>, other: <span class="self">Self</span>::Other) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberITruedivProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="kw">fn</span> <span class="ident">__int__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberIntProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__ifloordiv__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="kw-2">mut </span><span class="self">self</span>, other: <span class="self">Self</span>::Other) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberIFloordivProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="kw">fn</span> <span class="ident">__float__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberFloatProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__imod__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="kw-2">mut </span><span class="self">self</span>, other: <span class="self">Self</span>::Other) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberIModProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="kw">fn</span> <span class="ident">__index__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberIndexProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__ipow__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="kw-2">mut </span><span class="self">self</span>, other: <span class="self">Self</span>::Other, modulo: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Modulo&gt;) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberIPowProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
-    <span class="attribute">#[<span class="ident">deprecated</span>(
-        <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.14.0&quot;</span>,
-        <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;prefer implementing `__round__` in `#[pymethods]` instead of in a protocol&quot;</span>
-    )]</span>
-    <span class="kw">fn</span> <span class="ident">__round__</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="self">self</span>, <span class="ident">ndigits</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::NDigits</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Result</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">PyNumberRoundProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+    <span class="kw">fn </span>__ilshift__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="kw-2">mut </span><span class="self">self</span>, other: <span class="self">Self</span>::Other) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberILShiftProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
+    {
+        <span class="macro">unimplemented!</span>()
+    }
+    <span class="kw">fn </span>__irshift__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="kw-2">mut </span><span class="self">self</span>, other: <span class="self">Self</span>::Other) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberIRShiftProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
+    {
+        <span class="macro">unimplemented!</span>()
+    }
+    <span class="kw">fn </span>__iand__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="kw-2">mut </span><span class="self">self</span>, other: <span class="self">Self</span>::Other) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberIAndProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
+    {
+        <span class="macro">unimplemented!</span>()
+    }
+    <span class="kw">fn </span>__ixor__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="kw-2">mut </span><span class="self">self</span>, other: <span class="self">Self</span>::Other) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberIXorProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
+    {
+        <span class="macro">unimplemented!</span>()
+    }
+    <span class="kw">fn </span>__ior__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="kw-2">mut </span><span class="self">self</span>, other: <span class="self">Self</span>::Other) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberIOrProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
+    {
+        <span class="macro">unimplemented!</span>()
+    }
+
+    <span class="comment">// Unary arithmetic
+    </span><span class="kw">fn </span>__neg__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="self">self</span>) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberNegProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
+    {
+        <span class="macro">unimplemented!</span>()
+    }
+    <span class="kw">fn </span>__pos__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="self">self</span>) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberPosProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
+    {
+        <span class="macro">unimplemented!</span>()
+    }
+    <span class="kw">fn </span>__abs__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="self">self</span>) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberAbsProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
+    {
+        <span class="macro">unimplemented!</span>()
+    }
+    <span class="kw">fn </span>__invert__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="self">self</span>) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberInvertProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
+    {
+        <span class="macro">unimplemented!</span>()
+    }
+    <span class="kw">fn </span>__int__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="self">self</span>) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberIntProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
+    {
+        <span class="macro">unimplemented!</span>()
+    }
+    <span class="kw">fn </span>__float__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="self">self</span>) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberFloatProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
+    {
+        <span class="macro">unimplemented!</span>()
+    }
+    <span class="kw">fn </span>__index__(<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span><span class="self">self</span>) -&gt; <span class="self">Self</span>::Result
+    <span class="kw">where
+        </span><span class="self">Self</span>: PyNumberIndexProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
     {
         <span class="macro">unimplemented!</span>()
     }
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberAddProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Left</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">Right</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberAddProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span>Left: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span>Right: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberSubProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Left</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">Right</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberSubProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span>Left: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span>Right: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberMulProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Left</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">Right</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberMulProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span>Left: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span>Right: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberMatmulProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Left</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">Right</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberMatmulProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span>Left: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span>Right: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberTruedivProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Left</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">Right</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberTruedivProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span>Left: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span>Right: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberFloordivProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Left</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">Right</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberFloordivProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span>Left: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span>Right: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberModProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Left</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">Right</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberModProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span>Left: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span>Right: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberDivmodProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Left</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">Right</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberDivmodProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span>Left: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span>Right: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberPowProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Left</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">Right</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">Modulo</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberPowProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span>Left: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span>Right: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span>Modulo: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberLShiftProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Left</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">Right</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberLShiftProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span>Left: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span>Right: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberRShiftProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Left</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">Right</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberRShiftProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span>Left: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span>Right: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberAndProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Left</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">Right</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberAndProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span>Left: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span>Right: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberXorProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Left</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">Right</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberXorProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span>Left: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span>Right: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberOrProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Left</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">Right</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberOrProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span>Left: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span>Right: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberRAddProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Other</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberRAddProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span>Other: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberRSubProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Other</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberRSubProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span>Other: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberRMulProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Other</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberRMulProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span>Other: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberRMatmulProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Other</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberRMatmulProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span>Other: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberRTruedivProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Other</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberRTruedivProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span>Other: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberRFloordivProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Other</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberRFloordivProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span>Other: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberRModProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Other</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberRModProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span>Other: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberRDivmodProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Other</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberRDivmodProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span>Other: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberRPowProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Other</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">Modulo</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberRPowProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span>Other: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span>Modulo: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::upper_case_acronyms</span>)]</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberRLShiftProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Other</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberRLShiftProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span>Other: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::upper_case_acronyms</span>)]</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberRRShiftProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Other</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberRRShiftProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span>Other: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberRAndProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Other</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberRAndProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span>Other: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberRXorProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Other</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberRXorProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span>Other: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberROrProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Other</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberROrProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span>Other: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberIAddProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Other</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberIAddProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; + PyClass&lt;Frozen = False&gt; {
+    <span class="kw">type </span>Other: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;()&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberISubProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Other</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberISubProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; + PyClass&lt;Frozen = False&gt; {
+    <span class="kw">type </span>Other: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;()&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberIMulProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Other</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberIMulProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; + PyClass&lt;Frozen = False&gt; {
+    <span class="kw">type </span>Other: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;()&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberIMatmulProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Other</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberIMatmulProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; + PyClass&lt;Frozen = False&gt; {
+    <span class="kw">type </span>Other: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;()&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberITruedivProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Other</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberITruedivProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; + PyClass&lt;Frozen = False&gt; {
+    <span class="kw">type </span>Other: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;()&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberIFloordivProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Other</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberIFloordivProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; + PyClass&lt;Frozen = False&gt; {
+    <span class="kw">type </span>Other: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;()&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberIModProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Other</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberIModProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; + PyClass&lt;Frozen = False&gt; {
+    <span class="kw">type </span>Other: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;()&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberIDivmodProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Other</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberIDivmodProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; + PyClass&lt;Frozen = False&gt; {
+    <span class="kw">type </span>Other: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;()&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberIPowProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Other</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberIPowProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; + PyClass&lt;Frozen = False&gt; {
+    <span class="kw">type </span>Other: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;()&gt;;
+    <span class="comment">// See https://bugs.python.org/issue36379
+    </span><span class="kw">type </span>Modulo: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
 }
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::upper_case_acronyms</span>)]</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberILShiftProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Other</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+<span class="attribute">#[allow(clippy::upper_case_acronyms)]</span>
+<span class="kw">pub trait </span>PyNumberILShiftProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; + PyClass&lt;Frozen = False&gt; {
+    <span class="kw">type </span>Other: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;()&gt;;
 }
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::upper_case_acronyms</span>)]</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberIRShiftProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Other</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+<span class="attribute">#[allow(clippy::upper_case_acronyms)]</span>
+<span class="kw">pub trait </span>PyNumberIRShiftProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; + PyClass&lt;Frozen = False&gt; {
+    <span class="kw">type </span>Other: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;()&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberIAndProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Other</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberIAndProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; + PyClass&lt;Frozen = False&gt; {
+    <span class="kw">type </span>Other: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;()&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberIXorProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Other</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberIXorProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; + PyClass&lt;Frozen = False&gt; {
+    <span class="kw">type </span>Other: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;()&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberIOrProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Other</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberIOrProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; + PyClass&lt;Frozen = False&gt; {
+    <span class="kw">type </span>Other: FromPyObject&lt;<span class="lifetime">&#39;p</span>&gt;;
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;()&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberNegProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberNegProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberPosProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberPosProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberAbsProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberAbsProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberInvertProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberInvertProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberComplexProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberIntProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberIntProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberFloatProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberFloatProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
-}
-
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberRoundProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">NDigits</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
-}
-
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyNumberIndexProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PyNumberProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>;
+<span class="kw">pub trait </span>PyNumberIndexProtocol&lt;<span class="lifetime">&#39;p</span>&gt;: PyNumberProtocol&lt;<span class="lifetime">&#39;p</span>&gt; {
+    <span class="kw">type </span><span class="prelude-ty">Result</span>: IntoPyCallbackOutput&lt;PyObject&gt;;
 }
 
 <span class="macro">py_binary_fallback_num_func!</span>(
-    <span class="ident">add_radd</span>,
-    <span class="ident">T</span>,
-    <span class="ident">PyNumberAddProtocol::__add__</span>,
-    <span class="ident">PyNumberRAddProtocol::__radd__</span>
+    add_radd,
+    T,
+    PyNumberAddProtocol::__add__,
+    PyNumberRAddProtocol::__radd__
 );
-<span class="macro">py_binary_num_func!</span>(<span class="ident">add</span>, <span class="ident">PyNumberAddProtocol</span>, <span class="ident">T::__add__</span>);
-<span class="macro">py_binary_reversed_num_func!</span>(<span class="ident">radd</span>, <span class="ident">PyNumberRAddProtocol</span>, <span class="ident">T::__radd__</span>);
+<span class="macro">py_binary_num_func!</span>(add, PyNumberAddProtocol, T::__add__);
+<span class="macro">py_binary_reversed_num_func!</span>(radd, PyNumberRAddProtocol, T::__radd__);
 <span class="macro">py_binary_fallback_num_func!</span>(
-    <span class="ident">sub_rsub</span>,
-    <span class="ident">T</span>,
-    <span class="ident">PyNumberSubProtocol::__sub__</span>,
-    <span class="ident">PyNumberRSubProtocol::__rsub__</span>
+    sub_rsub,
+    T,
+    PyNumberSubProtocol::__sub__,
+    PyNumberRSubProtocol::__rsub__
 );
-<span class="macro">py_binary_num_func!</span>(<span class="ident">sub</span>, <span class="ident">PyNumberSubProtocol</span>, <span class="ident">T::__sub__</span>);
-<span class="macro">py_binary_reversed_num_func!</span>(<span class="ident">rsub</span>, <span class="ident">PyNumberRSubProtocol</span>, <span class="ident">T::__rsub__</span>);
+<span class="macro">py_binary_num_func!</span>(sub, PyNumberSubProtocol, T::__sub__);
+<span class="macro">py_binary_reversed_num_func!</span>(rsub, PyNumberRSubProtocol, T::__rsub__);
 <span class="macro">py_binary_fallback_num_func!</span>(
-    <span class="ident">mul_rmul</span>,
-    <span class="ident">T</span>,
-    <span class="ident">PyNumberMulProtocol::__mul__</span>,
-    <span class="ident">PyNumberRMulProtocol::__rmul__</span>
+    mul_rmul,
+    T,
+    PyNumberMulProtocol::__mul__,
+    PyNumberRMulProtocol::__rmul__
 );
-<span class="macro">py_binary_num_func!</span>(<span class="ident">mul</span>, <span class="ident">PyNumberMulProtocol</span>, <span class="ident">T::__mul__</span>);
-<span class="macro">py_binary_reversed_num_func!</span>(<span class="ident">rmul</span>, <span class="ident">PyNumberRMulProtocol</span>, <span class="ident">T::__rmul__</span>);
-<span class="macro">py_binary_num_func!</span>(<span class="ident">mod_</span>, <span class="ident">PyNumberModProtocol</span>, <span class="ident">T::__mod__</span>);
+<span class="macro">py_binary_num_func!</span>(mul, PyNumberMulProtocol, T::__mul__);
+<span class="macro">py_binary_reversed_num_func!</span>(rmul, PyNumberRMulProtocol, T::__rmul__);
 <span class="macro">py_binary_fallback_num_func!</span>(
-    <span class="ident">divmod_rdivmod</span>,
-    <span class="ident">T</span>,
-    <span class="ident">PyNumberDivmodProtocol::__divmod__</span>,
-    <span class="ident">PyNumberRDivmodProtocol::__rdivmod__</span>
+    mod_rmod,
+    T,
+    PyNumberModProtocol::__mod__,
+    PyNumberRModProtocol::__rmod__
 );
-<span class="macro">py_binary_num_func!</span>(<span class="ident">divmod</span>, <span class="ident">PyNumberDivmodProtocol</span>, <span class="ident">T::__divmod__</span>);
-<span class="macro">py_binary_reversed_num_func!</span>(<span class="ident">rdivmod</span>, <span class="ident">PyNumberRDivmodProtocol</span>, <span class="ident">T::__rdivmod__</span>);
+<span class="macro">py_binary_num_func!</span>(mod_, PyNumberModProtocol, T::__mod__);
+<span class="macro">py_binary_reversed_num_func!</span>(rmod, PyNumberRModProtocol, T::__rmod__);
+<span class="macro">py_binary_fallback_num_func!</span>(
+    divmod_rdivmod,
+    T,
+    PyNumberDivmodProtocol::__divmod__,
+    PyNumberRDivmodProtocol::__rdivmod__
+);
+<span class="macro">py_binary_num_func!</span>(divmod, PyNumberDivmodProtocol, T::__divmod__);
+<span class="macro">py_binary_reversed_num_func!</span>(rdivmod, PyNumberRDivmodProtocol, T::__rdivmod__);
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">pow_rpow</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
-    <span class="ident">lhs</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyObject</span>,
-    <span class="ident">rhs</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyObject</span>,
-    <span class="ident">modulo</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyObject</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyObject</span>
-<span class="kw">where</span>
-    <span class="ident">T</span>: <span class="kw">for</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> <span class="ident">PyNumberPowProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> <span class="op">+</span> <span class="kw">for</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> <span class="ident">PyNumberRPowProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+<span class="attribute">#[doc(hidden)]</span>
+<span class="kw">pub unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>pow_rpow&lt;T&gt;(
+    lhs: <span class="kw-2">*mut </span>ffi::PyObject,
+    rhs: <span class="kw-2">*mut </span>ffi::PyObject,
+    modulo: <span class="kw-2">*mut </span>ffi::PyObject,
+) -&gt; <span class="kw-2">*mut </span>ffi::PyObject
+<span class="kw">where
+    </span>T: <span class="kw">for</span>&lt;<span class="lifetime">&#39;p</span>&gt; PyNumberPowProtocol&lt;<span class="lifetime">&#39;p</span>&gt; + <span class="kw">for</span>&lt;<span class="lifetime">&#39;p</span>&gt; PyNumberRPowProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
 {
-    <span class="macro">crate::callback_body!</span>(<span class="ident">py</span>, {
-        <span class="kw">let</span> <span class="ident">lhs</span> <span class="op">=</span> <span class="ident">py</span>.<span class="ident">from_borrowed_ptr</span>::<span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::PyAny</span><span class="op">&gt;</span>(<span class="ident">lhs</span>);
-        <span class="kw">let</span> <span class="ident">rhs</span> <span class="op">=</span> <span class="ident">py</span>.<span class="ident">from_borrowed_ptr</span>::<span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::PyAny</span><span class="op">&gt;</span>(<span class="ident">rhs</span>);
-        <span class="kw">let</span> <span class="ident">modulo</span> <span class="op">=</span> <span class="ident">py</span>.<span class="ident">from_borrowed_ptr</span>::<span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::PyAny</span><span class="op">&gt;</span>(<span class="ident">modulo</span>);
-        <span class="comment">// First, try __pow__</span>
-        <span class="kw">match</span> (<span class="ident">lhs</span>.<span class="ident">extract</span>(), <span class="ident">rhs</span>.<span class="ident">extract</span>(), <span class="ident">modulo</span>.<span class="ident">extract</span>()) {
-            (<span class="prelude-val">Ok</span>(<span class="ident">l</span>), <span class="prelude-val">Ok</span>(<span class="ident">r</span>), <span class="prelude-val">Ok</span>(<span class="ident">m</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">T::__pow__</span>(<span class="ident">l</span>, <span class="ident">r</span>, <span class="ident">m</span>).<span class="ident">convert</span>(<span class="ident">py</span>),
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="comment">// Then try __rpow__</span>
-                <span class="kw">let</span> <span class="ident">slf</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="kw">crate</span>::PyCell</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> <span class="macro">extract_or_return_not_implemented!</span>(<span class="ident">rhs</span>);
-                <span class="kw">let</span> <span class="ident">arg</span> <span class="op">=</span> <span class="macro">extract_or_return_not_implemented!</span>(<span class="ident">lhs</span>);
-                <span class="kw">let</span> <span class="ident">modulo</span> <span class="op">=</span> <span class="macro">extract_or_return_not_implemented!</span>(<span class="ident">modulo</span>);
-                <span class="ident">slf</span>.<span class="ident">try_borrow</span>()<span class="question-mark">?</span>.<span class="ident">__rpow__</span>(<span class="ident">arg</span>, <span class="ident">modulo</span>).<span class="ident">convert</span>(<span class="ident">py</span>)
+    <span class="macro">crate::callback_body!</span>(py, {
+        <span class="kw">let </span>lhs = py.from_borrowed_ptr::&lt;<span class="kw">crate</span>::PyAny&gt;(lhs);
+        <span class="kw">let </span>rhs = py.from_borrowed_ptr::&lt;<span class="kw">crate</span>::PyAny&gt;(rhs);
+        <span class="kw">let </span>modulo = py.from_borrowed_ptr::&lt;<span class="kw">crate</span>::PyAny&gt;(modulo);
+        <span class="comment">// First, try __pow__
+        </span><span class="kw">match </span>(lhs.extract(), rhs.extract(), modulo.extract()) {
+            (<span class="prelude-val">Ok</span>(l), <span class="prelude-val">Ok</span>(r), <span class="prelude-val">Ok</span>(m)) =&gt; T::__pow__(l, r, m).convert(py),
+            <span class="kw">_ </span>=&gt; {
+                <span class="comment">// Then try __rpow__
+                </span><span class="kw">let </span>slf: <span class="kw-2">&amp;</span><span class="kw">crate</span>::PyCell&lt;T&gt; = <span class="macro">extract_or_return_not_implemented!</span>(rhs);
+                <span class="kw">let </span>arg = <span class="macro">extract_or_return_not_implemented!</span>(lhs);
+                <span class="kw">let </span>modulo = <span class="macro">extract_or_return_not_implemented!</span>(modulo);
+                slf.try_borrow()<span class="question-mark">?</span>.__rpow__(arg, modulo).convert(py)
             }
         }
     })
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">pow</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
-    <span class="ident">lhs</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyObject</span>,
-    <span class="ident">rhs</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyObject</span>,
-    <span class="ident">modulo</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyObject</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyObject</span>
-<span class="kw">where</span>
-    <span class="ident">T</span>: <span class="kw">for</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> <span class="ident">PyNumberPowProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+<span class="attribute">#[doc(hidden)]</span>
+<span class="kw">pub unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>pow&lt;T&gt;(
+    lhs: <span class="kw-2">*mut </span>ffi::PyObject,
+    rhs: <span class="kw-2">*mut </span>ffi::PyObject,
+    modulo: <span class="kw-2">*mut </span>ffi::PyObject,
+) -&gt; <span class="kw-2">*mut </span>ffi::PyObject
+<span class="kw">where
+    </span>T: <span class="kw">for</span>&lt;<span class="lifetime">&#39;p</span>&gt; PyNumberPowProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
 {
-    <span class="macro">crate::callback_body!</span>(<span class="ident">py</span>, {
-        <span class="kw">let</span> <span class="ident">lhs</span> <span class="op">=</span> <span class="macro">extract_or_return_not_implemented!</span>(<span class="ident">py</span>, <span class="ident">lhs</span>);
-        <span class="kw">let</span> <span class="ident">rhs</span> <span class="op">=</span> <span class="macro">extract_or_return_not_implemented!</span>(<span class="ident">py</span>, <span class="ident">rhs</span>);
-        <span class="kw">let</span> <span class="ident">modulo</span> <span class="op">=</span> <span class="macro">extract_or_return_not_implemented!</span>(<span class="ident">py</span>, <span class="ident">modulo</span>);
-        <span class="ident">T::__pow__</span>(<span class="ident">lhs</span>, <span class="ident">rhs</span>, <span class="ident">modulo</span>).<span class="ident">convert</span>(<span class="ident">py</span>)
+    <span class="macro">crate::callback_body!</span>(py, {
+        <span class="kw">let </span>lhs = <span class="macro">extract_or_return_not_implemented!</span>(py, lhs);
+        <span class="kw">let </span>rhs = <span class="macro">extract_or_return_not_implemented!</span>(py, rhs);
+        <span class="kw">let </span>modulo = <span class="macro">extract_or_return_not_implemented!</span>(py, modulo);
+        T::__pow__(lhs, rhs, modulo).convert(py)
     })
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">rpow</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
-    <span class="ident">arg</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyObject</span>,
-    <span class="ident">slf</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyObject</span>,
-    <span class="ident">modulo</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyObject</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyObject</span>
-<span class="kw">where</span>
-    <span class="ident">T</span>: <span class="kw">for</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> <span class="ident">PyNumberRPowProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+<span class="attribute">#[doc(hidden)]</span>
+<span class="kw">pub unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>rpow&lt;T&gt;(
+    arg: <span class="kw-2">*mut </span>ffi::PyObject,
+    slf: <span class="kw-2">*mut </span>ffi::PyObject,
+    modulo: <span class="kw-2">*mut </span>ffi::PyObject,
+) -&gt; <span class="kw-2">*mut </span>ffi::PyObject
+<span class="kw">where
+    </span>T: <span class="kw">for</span>&lt;<span class="lifetime">&#39;p</span>&gt; PyNumberRPowProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
 {
-    <span class="macro">crate::callback_body!</span>(<span class="ident">py</span>, {
-        <span class="kw">let</span> <span class="ident">slf</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="kw">crate</span>::PyCell</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> <span class="macro">extract_or_return_not_implemented!</span>(<span class="ident">py</span>, <span class="ident">slf</span>);
-        <span class="kw">let</span> <span class="ident">arg</span> <span class="op">=</span> <span class="macro">extract_or_return_not_implemented!</span>(<span class="ident">py</span>, <span class="ident">arg</span>);
-        <span class="kw">let</span> <span class="ident">modulo</span> <span class="op">=</span> <span class="macro">extract_or_return_not_implemented!</span>(<span class="ident">py</span>, <span class="ident">modulo</span>);
-        <span class="ident">slf</span>.<span class="ident">try_borrow</span>()<span class="question-mark">?</span>.<span class="ident">__rpow__</span>(<span class="ident">arg</span>, <span class="ident">modulo</span>).<span class="ident">convert</span>(<span class="ident">py</span>)
+    <span class="macro">crate::callback_body!</span>(py, {
+        <span class="kw">let </span>slf: <span class="kw-2">&amp;</span><span class="kw">crate</span>::PyCell&lt;T&gt; = <span class="macro">extract_or_return_not_implemented!</span>(py, slf);
+        <span class="kw">let </span>arg = <span class="macro">extract_or_return_not_implemented!</span>(py, arg);
+        <span class="kw">let </span>modulo = <span class="macro">extract_or_return_not_implemented!</span>(py, modulo);
+        slf.try_borrow()<span class="question-mark">?</span>.__rpow__(arg, modulo).convert(py)
     })
 }
 
-<span class="macro">py_unary_func!</span>(<span class="ident">neg</span>, <span class="ident">PyNumberNegProtocol</span>, <span class="ident">T::__neg__</span>);
-<span class="macro">py_unary_func!</span>(<span class="ident">pos</span>, <span class="ident">PyNumberPosProtocol</span>, <span class="ident">T::__pos__</span>);
-<span class="macro">py_unary_func!</span>(<span class="ident">abs</span>, <span class="ident">PyNumberAbsProtocol</span>, <span class="ident">T::__abs__</span>);
-<span class="macro">py_unary_func!</span>(<span class="ident">invert</span>, <span class="ident">PyNumberInvertProtocol</span>, <span class="ident">T::__invert__</span>);
+<span class="macro">py_unary_func!</span>(neg, PyNumberNegProtocol, T::__neg__);
+<span class="macro">py_unary_func!</span>(pos, PyNumberPosProtocol, T::__pos__);
+<span class="macro">py_unary_func!</span>(abs, PyNumberAbsProtocol, T::__abs__);
+<span class="macro">py_unary_func!</span>(invert, PyNumberInvertProtocol, T::__invert__);
 <span class="macro">py_binary_fallback_num_func!</span>(
-    <span class="ident">lshift_rlshift</span>,
-    <span class="ident">T</span>,
-    <span class="ident">PyNumberLShiftProtocol::__lshift__</span>,
-    <span class="ident">PyNumberRLShiftProtocol::__rlshift__</span>
+    lshift_rlshift,
+    T,
+    PyNumberLShiftProtocol::__lshift__,
+    PyNumberRLShiftProtocol::__rlshift__
 );
-<span class="macro">py_binary_num_func!</span>(<span class="ident">lshift</span>, <span class="ident">PyNumberLShiftProtocol</span>, <span class="ident">T::__lshift__</span>);
-<span class="macro">py_binary_reversed_num_func!</span>(<span class="ident">rlshift</span>, <span class="ident">PyNumberRLShiftProtocol</span>, <span class="ident">T::__rlshift__</span>);
+<span class="macro">py_binary_num_func!</span>(lshift, PyNumberLShiftProtocol, T::__lshift__);
+<span class="macro">py_binary_reversed_num_func!</span>(rlshift, PyNumberRLShiftProtocol, T::__rlshift__);
 <span class="macro">py_binary_fallback_num_func!</span>(
-    <span class="ident">rshift_rrshift</span>,
-    <span class="ident">T</span>,
-    <span class="ident">PyNumberRShiftProtocol::__rshift__</span>,
-    <span class="ident">PyNumberRRShiftProtocol::__rrshift__</span>
+    rshift_rrshift,
+    T,
+    PyNumberRShiftProtocol::__rshift__,
+    PyNumberRRShiftProtocol::__rrshift__
 );
-<span class="macro">py_binary_num_func!</span>(<span class="ident">rshift</span>, <span class="ident">PyNumberRShiftProtocol</span>, <span class="ident">T::__rshift__</span>);
-<span class="macro">py_binary_reversed_num_func!</span>(<span class="ident">rrshift</span>, <span class="ident">PyNumberRRShiftProtocol</span>, <span class="ident">T::__rrshift__</span>);
+<span class="macro">py_binary_num_func!</span>(rshift, PyNumberRShiftProtocol, T::__rshift__);
+<span class="macro">py_binary_reversed_num_func!</span>(rrshift, PyNumberRRShiftProtocol, T::__rrshift__);
 <span class="macro">py_binary_fallback_num_func!</span>(
-    <span class="ident">and_rand</span>,
-    <span class="ident">T</span>,
-    <span class="ident">PyNumberAndProtocol::__and__</span>,
-    <span class="ident">PyNumberRAndProtocol::__rand__</span>
+    and_rand,
+    T,
+    PyNumberAndProtocol::__and__,
+    PyNumberRAndProtocol::__rand__
 );
-<span class="macro">py_binary_num_func!</span>(<span class="ident">and</span>, <span class="ident">PyNumberAndProtocol</span>, <span class="ident">T::__and__</span>);
-<span class="macro">py_binary_reversed_num_func!</span>(<span class="ident">rand</span>, <span class="ident">PyNumberRAndProtocol</span>, <span class="ident">T::__rand__</span>);
+<span class="macro">py_binary_num_func!</span>(and, PyNumberAndProtocol, T::__and__);
+<span class="macro">py_binary_reversed_num_func!</span>(rand, PyNumberRAndProtocol, T::__rand__);
 <span class="macro">py_binary_fallback_num_func!</span>(
-    <span class="ident">xor_rxor</span>,
-    <span class="ident">T</span>,
-    <span class="ident">PyNumberXorProtocol::__xor__</span>,
-    <span class="ident">PyNumberRXorProtocol::__rxor__</span>
+    xor_rxor,
+    T,
+    PyNumberXorProtocol::__xor__,
+    PyNumberRXorProtocol::__rxor__
 );
-<span class="macro">py_binary_num_func!</span>(<span class="ident">xor</span>, <span class="ident">PyNumberXorProtocol</span>, <span class="ident">T::__xor__</span>);
-<span class="macro">py_binary_reversed_num_func!</span>(<span class="ident">rxor</span>, <span class="ident">PyNumberRXorProtocol</span>, <span class="ident">T::__rxor__</span>);
+<span class="macro">py_binary_num_func!</span>(xor, PyNumberXorProtocol, T::__xor__);
+<span class="macro">py_binary_reversed_num_func!</span>(rxor, PyNumberRXorProtocol, T::__rxor__);
 <span class="macro">py_binary_fallback_num_func!</span>(
-    <span class="ident">or_ror</span>,
-    <span class="ident">T</span>,
-    <span class="ident">PyNumberOrProtocol::__or__</span>,
-    <span class="ident">PyNumberROrProtocol::__ror__</span>
+    or_ror,
+    T,
+    PyNumberOrProtocol::__or__,
+    PyNumberROrProtocol::__ror__
 );
-<span class="macro">py_binary_num_func!</span>(<span class="ident">or</span>, <span class="ident">PyNumberOrProtocol</span>, <span class="ident">T::__or__</span>);
-<span class="macro">py_binary_reversed_num_func!</span>(<span class="ident">ror</span>, <span class="ident">PyNumberROrProtocol</span>, <span class="ident">T::__ror__</span>);
-<span class="macro">py_unary_func!</span>(<span class="ident">int</span>, <span class="ident">PyNumberIntProtocol</span>, <span class="ident">T::__int__</span>);
-<span class="macro">py_unary_func!</span>(<span class="ident">float</span>, <span class="ident">PyNumberFloatProtocol</span>, <span class="ident">T::__float__</span>);
-<span class="macro">py_binary_self_func!</span>(<span class="ident">iadd</span>, <span class="ident">PyNumberIAddProtocol</span>, <span class="ident">T::__iadd__</span>);
-<span class="macro">py_binary_self_func!</span>(<span class="ident">isub</span>, <span class="ident">PyNumberISubProtocol</span>, <span class="ident">T::__isub__</span>);
-<span class="macro">py_binary_self_func!</span>(<span class="ident">imul</span>, <span class="ident">PyNumberIMulProtocol</span>, <span class="ident">T::__imul__</span>);
-<span class="macro">py_binary_self_func!</span>(<span class="ident">imod</span>, <span class="ident">PyNumberIModProtocol</span>, <span class="ident">T::__imod__</span>);
+<span class="macro">py_binary_num_func!</span>(or, PyNumberOrProtocol, T::__or__);
+<span class="macro">py_binary_reversed_num_func!</span>(ror, PyNumberROrProtocol, T::__ror__);
+<span class="macro">py_unary_func!</span>(int, PyNumberIntProtocol, T::__int__);
+<span class="macro">py_unary_func!</span>(float, PyNumberFloatProtocol, T::__float__);
+<span class="macro">py_binary_self_func!</span>(iadd, PyNumberIAddProtocol, T::__iadd__);
+<span class="macro">py_binary_self_func!</span>(isub, PyNumberISubProtocol, T::__isub__);
+<span class="macro">py_binary_self_func!</span>(imul, PyNumberIMulProtocol, T::__imul__);
+<span class="macro">py_binary_self_func!</span>(imod, PyNumberIModProtocol, T::__imod__);
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">ipow</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
-    <span class="ident">slf</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyObject</span>,
-    <span class="ident">other</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyObject</span>,
-    <span class="ident">_modulo</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyObject</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyObject</span>
-<span class="kw">where</span>
-    <span class="ident">T</span>: <span class="kw">for</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> <span class="ident">PyNumberIPowProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
+<span class="attribute">#[doc(hidden)]</span>
+<span class="kw">pub unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>ipow&lt;T&gt;(
+    slf: <span class="kw-2">*mut </span>ffi::PyObject,
+    other: <span class="kw-2">*mut </span>ffi::PyObject,
+    modulo: <span class="kw">crate</span>::impl_::pymethods::IPowModulo,
+) -&gt; <span class="kw-2">*mut </span>ffi::PyObject
+<span class="kw">where
+    </span>T: <span class="kw">for</span>&lt;<span class="lifetime">&#39;p</span>&gt; PyNumberIPowProtocol&lt;<span class="lifetime">&#39;p</span>&gt;,
 {
-    <span class="comment">// NOTE: Somehow __ipow__ causes SIGSEGV in Python &lt; 3.8 when we extract,</span>
-    <span class="comment">// so we ignore it. It&#39;s the same as what CPython does.</span>
-    <span class="macro">crate::callback_body!</span>(<span class="ident">py</span>, {
-        <span class="kw">let</span> <span class="ident">slf_cell</span> <span class="op">=</span> <span class="ident">py</span>.<span class="ident">from_borrowed_ptr</span>::<span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::PyCell</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">slf</span>);
-        <span class="kw">let</span> <span class="ident">other</span> <span class="op">=</span> <span class="ident">py</span>.<span class="ident">from_borrowed_ptr</span>::<span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::PyAny</span><span class="op">&gt;</span>(<span class="ident">other</span>);
-        <span class="macro">call_operator_mut!</span>(<span class="ident">py</span>, <span class="ident">slf_cell</span>, <span class="ident">__ipow__</span>, <span class="ident">other</span>).<span class="ident">convert</span>(<span class="ident">py</span>)<span class="question-mark">?</span>;
-        <span class="ident">ffi::Py_INCREF</span>(<span class="ident">slf</span>);
-        <span class="prelude-val">Ok</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">PyErr</span><span class="op">&gt;</span>(<span class="ident">slf</span>)
+    <span class="macro">crate::callback_body!</span>(py, {
+        <span class="kw">let </span>slf_cell = py.from_borrowed_ptr::&lt;<span class="kw">crate</span>::PyCell&lt;T&gt;&gt;(slf);
+        <span class="kw">let </span>other = py.from_borrowed_ptr::&lt;<span class="kw">crate</span>::PyAny&gt;(other);
+        slf_cell
+            .try_borrow_mut()<span class="question-mark">?
+            </span>.__ipow__(
+                <span class="macro">extract_or_return_not_implemented!</span>(other),
+                <span class="kw">match </span>modulo.to_borrowed_any(py).extract() {
+                    <span class="prelude-val">Ok</span>(value) =&gt; value,
+                    <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; {
+                        <span class="kw">let </span>res = <span class="kw">crate</span>::ffi::Py_NotImplemented();
+                        <span class="kw">crate</span>::ffi::Py_INCREF(res);
+                        <span class="kw">return </span><span class="prelude-val">Ok</span>(res);
+                    }
+                },
+            )
+            .convert(py)<span class="question-mark">?</span>;
+        ffi::Py_INCREF(slf);
+        <span class="prelude-val">Ok</span>::&lt;<span class="kw">_</span>, PyErr&gt;(slf)
     })
 }
 
-<span class="macro">py_binary_self_func!</span>(<span class="ident">ilshift</span>, <span class="ident">PyNumberILShiftProtocol</span>, <span class="ident">T::__ilshift__</span>);
-<span class="macro">py_binary_self_func!</span>(<span class="ident">irshift</span>, <span class="ident">PyNumberIRShiftProtocol</span>, <span class="ident">T::__irshift__</span>);
-<span class="macro">py_binary_self_func!</span>(<span class="ident">iand</span>, <span class="ident">PyNumberIAndProtocol</span>, <span class="ident">T::__iand__</span>);
-<span class="macro">py_binary_self_func!</span>(<span class="ident">ixor</span>, <span class="ident">PyNumberIXorProtocol</span>, <span class="ident">T::__ixor__</span>);
-<span class="macro">py_binary_self_func!</span>(<span class="ident">ior</span>, <span class="ident">PyNumberIOrProtocol</span>, <span class="ident">T::__ior__</span>);
+<span class="macro">py_binary_self_func!</span>(ilshift, PyNumberILShiftProtocol, T::__ilshift__);
+<span class="macro">py_binary_self_func!</span>(irshift, PyNumberIRShiftProtocol, T::__irshift__);
+<span class="macro">py_binary_self_func!</span>(iand, PyNumberIAndProtocol, T::__iand__);
+<span class="macro">py_binary_self_func!</span>(ixor, PyNumberIXorProtocol, T::__ixor__);
+<span class="macro">py_binary_self_func!</span>(ior, PyNumberIOrProtocol, T::__ior__);
 <span class="macro">py_binary_fallback_num_func!</span>(
-    <span class="ident">floordiv_rfloordiv</span>,
-    <span class="ident">T</span>,
-    <span class="ident">PyNumberFloordivProtocol::__floordiv__</span>,
-    <span class="ident">PyNumberRFloordivProtocol::__rfloordiv__</span>
+    floordiv_rfloordiv,
+    T,
+    PyNumberFloordivProtocol::__floordiv__,
+    PyNumberRFloordivProtocol::__rfloordiv__
 );
-<span class="macro">py_binary_num_func!</span>(<span class="ident">floordiv</span>, <span class="ident">PyNumberFloordivProtocol</span>, <span class="ident">T::__floordiv__</span>);
-<span class="macro">py_binary_reversed_num_func!</span>(<span class="ident">rfloordiv</span>, <span class="ident">PyNumberRFloordivProtocol</span>, <span class="ident">T::__rfloordiv__</span>);
+<span class="macro">py_binary_num_func!</span>(floordiv, PyNumberFloordivProtocol, T::__floordiv__);
+<span class="macro">py_binary_reversed_num_func!</span>(rfloordiv, PyNumberRFloordivProtocol, T::__rfloordiv__);
 <span class="macro">py_binary_fallback_num_func!</span>(
-    <span class="ident">truediv_rtruediv</span>,
-    <span class="ident">T</span>,
-    <span class="ident">PyNumberTruedivProtocol::__truediv__</span>,
-    <span class="ident">PyNumberRTruedivProtocol::__rtruediv__</span>
+    truediv_rtruediv,
+    T,
+    PyNumberTruedivProtocol::__truediv__,
+    PyNumberRTruedivProtocol::__rtruediv__
 );
-<span class="macro">py_binary_num_func!</span>(<span class="ident">truediv</span>, <span class="ident">PyNumberTruedivProtocol</span>, <span class="ident">T::__truediv__</span>);
-<span class="macro">py_binary_reversed_num_func!</span>(<span class="ident">rtruediv</span>, <span class="ident">PyNumberRTruedivProtocol</span>, <span class="ident">T::__rtruediv__</span>);
-<span class="macro">py_binary_self_func!</span>(<span class="ident">ifloordiv</span>, <span class="ident">PyNumberIFloordivProtocol</span>, <span class="ident">T::__ifloordiv__</span>);
-<span class="macro">py_binary_self_func!</span>(<span class="ident">itruediv</span>, <span class="ident">PyNumberITruedivProtocol</span>, <span class="ident">T::__itruediv__</span>);
-<span class="macro">py_unary_func!</span>(<span class="ident">index</span>, <span class="ident">PyNumberIndexProtocol</span>, <span class="ident">T::__index__</span>);
+<span class="macro">py_binary_num_func!</span>(truediv, PyNumberTruedivProtocol, T::__truediv__);
+<span class="macro">py_binary_reversed_num_func!</span>(rtruediv, PyNumberRTruedivProtocol, T::__rtruediv__);
+<span class="macro">py_binary_self_func!</span>(ifloordiv, PyNumberIFloordivProtocol, T::__ifloordiv__);
+<span class="macro">py_binary_self_func!</span>(itruediv, PyNumberITruedivProtocol, T::__itruediv__);
+<span class="macro">py_unary_func!</span>(index, PyNumberIndexProtocol, T::__index__);
 <span class="macro">py_binary_fallback_num_func!</span>(
-    <span class="ident">matmul_rmatmul</span>,
-    <span class="ident">T</span>,
-    <span class="ident">PyNumberMatmulProtocol::__matmul__</span>,
-    <span class="ident">PyNumberRMatmulProtocol::__rmatmul__</span>
+    matmul_rmatmul,
+    T,
+    PyNumberMatmulProtocol::__matmul__,
+    PyNumberRMatmulProtocol::__rmatmul__
 );
-<span class="macro">py_binary_num_func!</span>(<span class="ident">matmul</span>, <span class="ident">PyNumberMatmulProtocol</span>, <span class="ident">T::__matmul__</span>);
-<span class="macro">py_binary_reversed_num_func!</span>(<span class="ident">rmatmul</span>, <span class="ident">PyNumberRMatmulProtocol</span>, <span class="ident">T::__rmatmul__</span>);
-<span class="macro">py_binary_self_func!</span>(<span class="ident">imatmul</span>, <span class="ident">PyNumberIMatmulProtocol</span>, <span class="ident">T::__imatmul__</span>);
+<span class="macro">py_binary_num_func!</span>(matmul, PyNumberMatmulProtocol, T::__matmul__);
+<span class="macro">py_binary_reversed_num_func!</span>(rmatmul, PyNumberRMatmulProtocol, T::__rmatmul__);
+<span class="macro">py_binary_self_func!</span>(imatmul, PyNumberIMatmulProtocol, T::__imatmul__);
 </code></pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="pyo3" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
-    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="pyo3" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0-nightly (40336865f 2022-08-15)" ></div></body></html>

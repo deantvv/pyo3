@@ -1,102 +1,102 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src&#x2F;types&#x2F;module.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>module.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../pyo3/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/types/module.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>module.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><script defer src="../../../scrape-examples.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../pyo3/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../pyo3/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../pyo3/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -419,452 +419,426 @@
 <span id="419">419</span>
 <span id="420">420</span>
 <span id="421">421</span>
-<span id="422">422</span>
-<span id="423">423</span>
-<span id="424">424</span>
-<span id="425">425</span>
-<span id="426">426</span>
-<span id="427">427</span>
-<span id="428">428</span>
-<span id="429">429</span>
-<span id="430">430</span>
-<span id="431">431</span>
-<span id="432">432</span>
-<span id="433">433</span>
-</pre><pre class="rust"><code><span class="comment">// Copyright (c) 2017-present PyO3 Project and Contributors</span>
-<span class="comment">//</span>
-<span class="comment">// based on Daniel Grunwald&#39;s https://github.com/dgrunwald/rust-cpython</span>
+</pre><pre class="rust"><code><span class="comment">// Copyright (c) 2017-present PyO3 Project and Contributors
+//
+// based on Daniel Grunwald&#39;s https://github.com/dgrunwald/rust-cpython
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::callback::IntoPyCallbackOutput</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::err</span>::{<span class="ident">PyErr</span>, <span class="ident">PyResult</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::exceptions</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ffi</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::pyclass::PyClass</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::type_object::PyTypeObject</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::types</span>::{<span class="ident">PyAny</span>, <span class="ident">PyDict</span>, <span class="ident">PyList</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::types</span>::{<span class="ident">PyCFunction</span>, <span class="ident">PyTuple</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">AsPyPointer</span>, <span class="ident">IntoPy</span>, <span class="ident">Py</span>, <span class="ident">PyObject</span>, <span class="ident">Python</span>};
-<span class="kw">use</span> <span class="ident">std::ffi</span>::{<span class="ident">CStr</span>, <span class="ident">CString</span>};
-<span class="kw">use</span> <span class="ident">std::str</span>;
+</span><span class="kw">use </span><span class="kw">crate</span>::callback::IntoPyCallbackOutput;
+<span class="kw">use </span><span class="kw">crate</span>::err::{PyErr, PyResult};
+<span class="kw">use </span><span class="kw">crate</span>::exceptions;
+<span class="kw">use </span><span class="kw">crate</span>::ffi;
+<span class="kw">use </span><span class="kw">crate</span>::pyclass::PyClass;
+<span class="kw">use </span><span class="kw">crate</span>::types::{PyAny, PyCFunction, PyDict, PyList, PyString};
+<span class="kw">use crate</span>::{AsPyPointer, IntoPy, Py, PyObject, Python};
+<span class="kw">use </span>std::ffi::{CStr, CString};
+<span class="kw">use </span>std::str;
 
-<span class="doccomment">/// Represents a Python [`module`][1] object.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// As with all other Python objects, modules are first class citizens.</span>
-<span class="doccomment">/// This means they can be passed to or returned from functions,</span>
-<span class="doccomment">/// created dynamically, assigned to variables and so forth.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [1]: https://docs.python.org/3/tutorial/modules.html</span>
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PyModule</span>(<span class="ident">PyAny</span>);
+<span class="doccomment">/// Represents a Python [`module`][1] object.
+///
+/// As with all other Python objects, modules are first class citizens.
+/// This means they can be passed to or returned from functions,
+/// created dynamically, assigned to variables and so forth.
+///
+/// [1]: https://docs.python.org/3/tutorial/modules.html
+</span><span class="attribute">#[repr(transparent)]</span>
+<span class="kw">pub struct </span>PyModule(PyAny);
 
-<span class="macro">pyobject_native_type_core!</span>(<span class="ident">PyModule</span>, <span class="ident">ffi::PyModule_Type</span>, #<span class="ident">checkfunction</span><span class="op">=</span><span class="ident">ffi::PyModule_Check</span>);
+<span class="macro">pyobject_native_type_core!</span>(PyModule, ffi::PyModule_Type, #checkfunction=ffi::PyModule_Check);
 
-<span class="kw">impl</span> <span class="ident">PyModule</span> {
-    <span class="doccomment">/// Creates a new module object with the `__name__` attribute set to `name`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ``` rust</span>
-    <span class="doccomment">/// use pyo3::prelude::*;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # fn main() -&gt; PyResult&lt;()&gt;{</span>
-    <span class="doccomment">/// Python::with_gil(|py| -&gt; PyResult&lt;()&gt;{</span>
-    <span class="doccomment">///     let module = PyModule::new(py, &quot;my_module&quot;)?;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///     assert_eq!(module.name()?, &quot;my_module&quot;);</span>
-    <span class="doccomment">///     Ok(())</span>
-    <span class="doccomment">/// })?;</span>
-    <span class="doccomment">/// # Ok(())}</span>
-    <span class="doccomment">///  ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>(<span class="ident">py</span>: <span class="ident">Python</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="ident">PyModule</span><span class="op">&gt;</span> {
-        <span class="comment">// Could use PyModule_NewObject, but it doesn&#39;t exist on PyPy.</span>
-        <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">CString::new</span>(<span class="ident">name</span>)<span class="question-mark">?</span>;
-        <span class="kw">unsafe</span> { <span class="ident">py</span>.<span class="ident">from_owned_ptr_or_err</span>(<span class="ident">ffi::PyModule_New</span>(<span class="ident">name</span>.<span class="ident">as_ptr</span>())) }
+<span class="kw">impl </span>PyModule {
+    <span class="doccomment">/// Creates a new module object with the `__name__` attribute set to `name`.
+    ///
+    /// # Examples
+    ///
+    /// ``` rust
+    /// use pyo3::prelude::*;
+    ///
+    /// # fn main() -&gt; PyResult&lt;()&gt;{
+    /// Python::with_gil(|py| -&gt; PyResult&lt;()&gt;{
+    ///     let module = PyModule::new(py, &quot;my_module&quot;)?;
+    ///
+    ///     assert_eq!(module.name()?, &quot;my_module&quot;);
+    ///     Ok(())
+    /// })?;
+    /// # Ok(())}
+    ///  ```
+    </span><span class="kw">pub fn </span>new&lt;<span class="lifetime">&#39;p</span>&gt;(py: Python&lt;<span class="lifetime">&#39;p</span>&gt;, name: <span class="kw-2">&amp;</span>str) -&gt; PyResult&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span>PyModule&gt; {
+        <span class="comment">// Could use PyModule_NewObject, but it doesn&#39;t exist on PyPy.
+        </span><span class="kw">let </span>name = CString::new(name)<span class="question-mark">?</span>;
+        <span class="kw">unsafe </span>{ py.from_owned_ptr_or_err(ffi::PyModule_New(name.as_ptr())) }
     }
 
-    <span class="doccomment">/// Imports the Python module with the specified name.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```no_run</span>
-    <span class="doccomment">/// # fn main(){</span>
-    <span class="doccomment">/// use pyo3::prelude::*;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Python::with_gil(|py| {</span>
-    <span class="doccomment">///     let module = PyModule::import(py, &quot;antigravity&quot;).expect(&quot;No flying for you.&quot;);</span>
-    <span class="doccomment">/// });</span>
-    <span class="doccomment">/// # }</span>
-    <span class="doccomment">///  ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the following Python expression:</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```python</span>
-    <span class="doccomment">/// import antigravity</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">import</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>(<span class="ident">py</span>: <span class="ident">Python</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="ident">PyModule</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">name</span>: <span class="ident">PyObject</span> <span class="op">=</span> <span class="ident">name</span>.<span class="ident">into_py</span>(<span class="ident">py</span>);
-        <span class="kw">unsafe</span> { <span class="ident">py</span>.<span class="ident">from_owned_ptr_or_err</span>(<span class="ident">ffi::PyImport_Import</span>(<span class="ident">name</span>.<span class="ident">as_ptr</span>())) }
+    <span class="doccomment">/// Imports the Python module with the specified name.
+    ///
+    /// # Examples
+    ///
+    /// ```no_run
+    /// # fn main(){
+    /// use pyo3::prelude::*;
+    ///
+    /// Python::with_gil(|py| {
+    ///     let module = PyModule::import(py, &quot;antigravity&quot;).expect(&quot;No flying for you.&quot;);
+    /// });
+    /// # }
+    ///  ```
+    ///
+    /// This is equivalent to the following Python expression:
+    /// ```python
+    /// import antigravity
+    /// ```
+    </span><span class="kw">pub fn </span>import&lt;N&gt;(py: Python&lt;<span class="lifetime">&#39;_</span>&gt;, name: N) -&gt; PyResult&lt;<span class="kw-2">&amp;</span>PyModule&gt;
+    <span class="kw">where
+        </span>N: IntoPy&lt;Py&lt;PyString&gt;&gt;,
+    {
+        <span class="kw">let </span>name: Py&lt;PyString&gt; = name.into_py(py);
+        <span class="kw">unsafe </span>{ py.from_owned_ptr_or_err(ffi::PyImport_Import(name.as_ptr())) }
     }
 
-    <span class="doccomment">/// Creates and loads a module named `module_name`,</span>
-    <span class="doccomment">/// containing the Python code passed to `code`</span>
-    <span class="doccomment">/// and pretending to live at `file_name`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// &lt;div class=&quot;information&quot;&gt;</span>
-    <span class="doccomment">///     &lt;div class=&quot;tooltip compile_fail&quot; style=&quot;&quot;&gt;&amp;#x26a0; &amp;#xfe0f;&lt;/div&gt;</span>
-    <span class="doccomment">/// &lt;/div&gt;&lt;div class=&quot;example-wrap&quot; style=&quot;display:inline-block&quot;&gt;&lt;pre class=&quot;compile_fail&quot; style=&quot;white-space:normal;font:inherit;&quot;&gt;</span>
-    <span class="comment">//</span>
-    <span class="doccomment">///  &lt;strong&gt;Warning&lt;/strong&gt;: This will compile and execute code. &lt;strong&gt;Never&lt;/strong&gt; pass untrusted code to this function!</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// &lt;/pre&gt;&lt;/div&gt;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Errors</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `PyErr` if:</span>
-    <span class="doccomment">/// - `code` is not syntactically correct Python.</span>
-    <span class="doccomment">/// - Any Python exceptions are raised while initializing the module.</span>
-    <span class="doccomment">/// - Any of the arguments cannot be converted to [`CString`](std::ffi::CString)s.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```no_run</span>
-    <span class="doccomment">/// use pyo3::prelude::*;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # fn main() -&gt; PyResult&lt;()&gt; {</span>
-    <span class="doccomment">/// Python::with_gil(|py| -&gt; PyResult&lt;()&gt; {</span>
-    <span class="doccomment">///    let module = PyModule::from_code(</span>
-    <span class="doccomment">///         py,</span>
-    <span class="doccomment">///         &quot;print(__file__, __name__)&quot;,</span>
-    <span class="doccomment">///         &quot;my_file&quot;,</span>
-    <span class="doccomment">///         &quot;my_module&quot;</span>
-    <span class="doccomment">///     )?;</span>
-    <span class="doccomment">///     Ok(())</span>
-    <span class="doccomment">/// })?;</span>
-    <span class="doccomment">/// # Ok(())}</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_code</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>(
-        <span class="ident">py</span>: <span class="ident">Python</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
-        <span class="ident">code</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">file_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">module_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;p</span> <span class="ident">PyModule</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">CString::new</span>(<span class="ident">code</span>)<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">filename</span> <span class="op">=</span> <span class="ident">CString::new</span>(<span class="ident">file_name</span>)<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="ident">CString::new</span>(<span class="ident">module_name</span>)<span class="question-mark">?</span>;
+    <span class="doccomment">/// Creates and loads a module named `module_name`,
+    /// containing the Python code passed to `code`
+    /// and pretending to live at `file_name`.
+    ///
+    /// &lt;div class=&quot;information&quot;&gt;
+    ///     &lt;div class=&quot;tooltip compile_fail&quot; style=&quot;&quot;&gt;&amp;#x26a0; &amp;#xfe0f;&lt;/div&gt;
+    /// &lt;/div&gt;&lt;div class=&quot;example-wrap&quot; style=&quot;display:inline-block&quot;&gt;&lt;pre class=&quot;compile_fail&quot; style=&quot;white-space:normal;font:inherit;&quot;&gt;
+    </span><span class="comment">//
+    </span><span class="doccomment">///  &lt;strong&gt;Warning&lt;/strong&gt;: This will compile and execute code. &lt;strong&gt;Never&lt;/strong&gt; pass untrusted code to this function!
+    ///
+    /// &lt;/pre&gt;&lt;/div&gt;
+    ///
+    /// # Errors
+    ///
+    /// Returns `PyErr` if:
+    /// - `code` is not syntactically correct Python.
+    /// - Any Python exceptions are raised while initializing the module.
+    /// - Any of the arguments cannot be converted to [`CString`](std::ffi::CString)s.
+    ///
+    /// # Example: bundle in a file at compile time with [`include_str!`][1]:
+    ///
+    /// ```rust
+    /// use pyo3::prelude::*;
+    ///
+    /// # fn main() -&gt; PyResult&lt;()&gt; {
+    /// // This path is resolved relative to this file.
+    /// let code = include_str!(&quot;../../assets/script.py&quot;);
+    ///
+    /// Python::with_gil(|py| -&gt; PyResult&lt;()&gt; {
+    ///     PyModule::from_code(py, code, &quot;example&quot;, &quot;example&quot;)?;
+    ///     Ok(())
+    /// })?;
+    /// # Ok(())
+    /// # }
+    /// ```
+    ///
+    /// # Example: Load a file at runtime with [`std::fs::read_to_string`][2].
+    ///
+    /// ```rust
+    /// use pyo3::prelude::*;
+    ///
+    /// # fn main() -&gt; PyResult&lt;()&gt; {
+    /// // This path is resolved by however the platform resolves paths,
+    /// // which also makes this less portable. Consider using `include_str`
+    /// // if you just want to bundle a script with your module.
+    /// let code = std::fs::read_to_string(&quot;assets/script.py&quot;)?;
+    ///
+    /// Python::with_gil(|py| -&gt; PyResult&lt;()&gt; {
+    ///     PyModule::from_code(py, &amp;code, &quot;example&quot;, &quot;example&quot;)?;
+    ///     Ok(())
+    /// })?;
+    /// Ok(())
+    /// # }
+    /// ```
+    ///
+    /// [1]: std::include_str
+    /// [2]: std::fs::read_to_string
+    </span><span class="kw">pub fn </span>from_code&lt;<span class="lifetime">&#39;p</span>&gt;(
+        py: Python&lt;<span class="lifetime">&#39;p</span>&gt;,
+        code: <span class="kw-2">&amp;</span>str,
+        file_name: <span class="kw-2">&amp;</span>str,
+        module_name: <span class="kw-2">&amp;</span>str,
+    ) -&gt; PyResult&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;p </span>PyModule&gt; {
+        <span class="kw">let </span>data = CString::new(code)<span class="question-mark">?</span>;
+        <span class="kw">let </span>filename = CString::new(file_name)<span class="question-mark">?</span>;
+        <span class="kw">let </span>module = CString::new(module_name)<span class="question-mark">?</span>;
 
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">cptr</span> <span class="op">=</span> <span class="ident">ffi::Py_CompileString</span>(<span class="ident">data</span>.<span class="ident">as_ptr</span>(), <span class="ident">filename</span>.<span class="ident">as_ptr</span>(), <span class="ident">ffi::Py_file_input</span>);
-            <span class="kw">if</span> <span class="ident">cptr</span>.<span class="ident">is_null</span>() {
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">PyErr::api_call_failed</span>(<span class="ident">py</span>));
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>cptr = ffi::Py_CompileString(data.as_ptr(), filename.as_ptr(), ffi::Py_file_input);
+            <span class="kw">if </span>cptr.is_null() {
+                <span class="kw">return </span><span class="prelude-val">Err</span>(PyErr::fetch(py));
             }
 
-            <span class="kw">let</span> <span class="ident">mptr</span> <span class="op">=</span> <span class="ident">ffi::PyImport_ExecCodeModuleEx</span>(<span class="ident">module</span>.<span class="ident">as_ptr</span>(), <span class="ident">cptr</span>, <span class="ident">filename</span>.<span class="ident">as_ptr</span>());
-            <span class="ident">ffi::Py_DECREF</span>(<span class="ident">cptr</span>);
-            <span class="kw">if</span> <span class="ident">mptr</span>.<span class="ident">is_null</span>() {
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">PyErr::api_call_failed</span>(<span class="ident">py</span>));
+            <span class="kw">let </span>mptr = ffi::PyImport_ExecCodeModuleEx(module.as_ptr(), cptr, filename.as_ptr());
+            ffi::Py_DECREF(cptr);
+            <span class="kw">if </span>mptr.is_null() {
+                <span class="kw">return </span><span class="prelude-val">Err</span>(PyErr::fetch(py));
             }
 
-            <span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">PyModule</span> <span class="kw">as</span> <span class="ident"><span class="kw">crate</span>::FromPyObject</span><span class="op">&gt;</span><span class="ident">::extract</span>(<span class="ident">py</span>.<span class="ident">from_owned_ptr_or_err</span>(<span class="ident">mptr</span>)<span class="question-mark">?</span>)
+            &lt;<span class="kw-2">&amp;</span>PyModule <span class="kw">as </span><span class="kw">crate</span>::FromPyObject&gt;::extract(py.from_owned_ptr_or_err(mptr)<span class="question-mark">?</span>)
         }
     }
 
-    <span class="doccomment">/// Returns the module&#39;s `__dict__` attribute, which contains the module&#39;s symbol table.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dict</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">PyDict</span> {
-        <span class="kw">unsafe</span> {
-            <span class="comment">// PyModule_GetDict returns borrowed ptr; must make owned for safety (see #890).</span>
-            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">ffi::PyModule_GetDict</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>());
-            <span class="ident">ffi::Py_INCREF</span>(<span class="ident">ptr</span>);
-            <span class="self">self</span>.<span class="ident">py</span>().<span class="ident">from_owned_ptr</span>(<span class="ident">ptr</span>)
+    <span class="doccomment">/// Returns the module&#39;s `__dict__` attribute, which contains the module&#39;s symbol table.
+    </span><span class="kw">pub fn </span>dict(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>PyDict {
+        <span class="kw">unsafe </span>{
+            <span class="comment">// PyModule_GetDict returns borrowed ptr; must make owned for safety (see #890).
+            </span><span class="kw">let </span>ptr = ffi::PyModule_GetDict(<span class="self">self</span>.as_ptr());
+            <span class="self">self</span>.py().from_owned_ptr(ffi::_Py_NewRef(ptr))
         }
     }
 
-    <span class="doccomment">/// Returns the index (the `__all__` attribute) of the module,</span>
-    <span class="doccomment">/// creating one if needed.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `__all__` declares the items that will be imported with `from my_module import *`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">PyList</span><span class="op">&gt;</span> {
-        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">getattr</span>(<span class="string">&quot;__all__&quot;</span>) {
-            <span class="prelude-val">Ok</span>(<span class="ident">idx</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">idx</span>.<span class="ident">downcast</span>().<span class="ident">map_err</span>(<span class="ident">PyErr::from</span>),
-            <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">if</span> <span class="ident">err</span>.<span class="ident">is_instance</span>::<span class="op">&lt;</span><span class="ident">exceptions::PyAttributeError</span><span class="op">&gt;</span>(<span class="self">self</span>.<span class="ident">py</span>()) {
-                    <span class="kw">let</span> <span class="ident">l</span> <span class="op">=</span> <span class="ident">PyList::empty</span>(<span class="self">self</span>.<span class="ident">py</span>());
-                    <span class="self">self</span>.<span class="ident">setattr</span>(<span class="string">&quot;__all__&quot;</span>, <span class="ident">l</span>).<span class="ident">map_err</span>(<span class="ident">PyErr::from</span>)<span class="question-mark">?</span>;
-                    <span class="prelude-val">Ok</span>(<span class="ident">l</span>)
-                } <span class="kw">else</span> {
-                    <span class="prelude-val">Err</span>(<span class="ident">err</span>)
+    <span class="doccomment">/// Returns the index (the `__all__` attribute) of the module,
+    /// creating one if needed.
+    ///
+    /// `__all__` declares the items that will be imported with `from my_module import *`.
+    </span><span class="kw">pub fn </span>index(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PyResult&lt;<span class="kw-2">&amp;</span>PyList&gt; {
+        <span class="kw">let </span>__all__ = __all__(<span class="self">self</span>.py());
+        <span class="kw">match </span><span class="self">self</span>.getattr(__all__) {
+            <span class="prelude-val">Ok</span>(idx) =&gt; idx.downcast().map_err(PyErr::from),
+            <span class="prelude-val">Err</span>(err) =&gt; {
+                <span class="kw">if </span>err.is_instance_of::&lt;exceptions::PyAttributeError&gt;(<span class="self">self</span>.py()) {
+                    <span class="kw">let </span>l = PyList::empty(<span class="self">self</span>.py());
+                    <span class="self">self</span>.setattr(__all__, l).map_err(PyErr::from)<span class="question-mark">?</span>;
+                    <span class="prelude-val">Ok</span>(l)
+                } <span class="kw">else </span>{
+                    <span class="prelude-val">Err</span>(err)
                 }
             }
         }
     }
 
-    <span class="doccomment">/// Returns the name (the `__name__` attribute) of the module.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// May fail if the module does not have a `__name__` attribute.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">ffi::PyModule_GetName</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>()) };
-        <span class="kw">if</span> <span class="ident">ptr</span>.<span class="ident">is_null</span>() {
-            <span class="prelude-val">Err</span>(<span class="ident">PyErr::api_call_failed</span>(<span class="self">self</span>.<span class="ident">py</span>()))
-        } <span class="kw">else</span> {
-            <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">CStr::from_ptr</span>(<span class="ident">ptr</span>) }
-                .<span class="ident">to_str</span>()
-                .<span class="ident">expect</span>(<span class="string">&quot;PyModule_GetName expected to return utf8&quot;</span>);
-            <span class="prelude-val">Ok</span>(<span class="ident">name</span>)
+    <span class="doccomment">/// Returns the name (the `__name__` attribute) of the module.
+    ///
+    /// May fail if the module does not have a `__name__` attribute.
+    </span><span class="kw">pub fn </span>name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PyResult&lt;<span class="kw-2">&amp;</span>str&gt; {
+        <span class="kw">let </span>ptr = <span class="kw">unsafe </span>{ ffi::PyModule_GetName(<span class="self">self</span>.as_ptr()) };
+        <span class="kw">if </span>ptr.is_null() {
+            <span class="prelude-val">Err</span>(PyErr::fetch(<span class="self">self</span>.py()))
+        } <span class="kw">else </span>{
+            <span class="kw">let </span>name = <span class="kw">unsafe </span>{ CStr::from_ptr(ptr) }
+                .to_str()
+                .expect(<span class="string">&quot;PyModule_GetName expected to return utf8&quot;</span>);
+            <span class="prelude-val">Ok</span>(name)
         }
     }
 
-    <span class="doccomment">/// Returns the filename (the `__file__` attribute) of the module.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// May fail if the module does not have a `__file__` attribute.</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">all</span>(<span class="ident">windows</span>, <span class="ident">PyPy</span>)))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">docsrs</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">all</span>(<span class="ident">windows</span>, <span class="ident">PyPy</span>)))))]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">filename</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> {
-        <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::types::PyString</span>;
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">py</span>()
-                .<span class="ident">from_owned_ptr_or_err</span>::<span class="op">&lt;</span><span class="ident">PyString</span><span class="op">&gt;</span>(<span class="ident">ffi::PyModule_GetFilenameObject</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>()))<span class="question-mark">?</span>
-                .<span class="ident">to_str</span>()
+    <span class="doccomment">/// Returns the filename (the `__file__` attribute) of the module.
+    ///
+    /// May fail if the module does not have a `__file__` attribute.
+    </span><span class="attribute">#[cfg(not(all(windows, PyPy)))]</span>
+    <span class="kw">pub fn </span>filename(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PyResult&lt;<span class="kw-2">&amp;</span>str&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.py()
+                .from_owned_ptr_or_err::&lt;PyString&gt;(ffi::PyModule_GetFilenameObject(<span class="self">self</span>.as_ptr()))<span class="question-mark">?
+                </span>.to_str()
         }
     }
 
-    <span class="doccomment">/// Adds an attribute to the module.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// For adding classes, functions or modules, prefer to use [`PyModule::add_class`],</span>
-    <span class="doccomment">/// [`PyModule::add_function`] or [`PyModule::add_submodule`] instead, respectively.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// use pyo3::prelude::*;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// #[pymodule]</span>
-    <span class="doccomment">/// fn my_module(_py: Python, module: &amp;PyModule) -&gt; PyResult&lt;()&gt; {</span>
-    <span class="doccomment">///     module.add(&quot;c&quot;, 299_792_458)?;</span>
-    <span class="doccomment">///     Ok(())</span>
-    <span class="doccomment">/// }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Python code can then do the following:</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```python</span>
-    <span class="doccomment">/// from my_module import c</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// print(&quot;c is&quot;, c)</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This will result in the following output:</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```text</span>
-    <span class="doccomment">/// c is 299792458</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">value</span>: <span class="ident">V</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">V</span>: <span class="ident">IntoPy</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Adds an attribute to the module.
+    ///
+    /// For adding classes, functions or modules, prefer to use [`PyModule::add_class`],
+    /// [`PyModule::add_function`] or [`PyModule::add_submodule`] instead, respectively.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use pyo3::prelude::*;
+    ///
+    /// #[pymodule]
+    /// fn my_module(_py: Python&lt;&#39;_&gt;, module: &amp;PyModule) -&gt; PyResult&lt;()&gt; {
+    ///     module.add(&quot;c&quot;, 299_792_458)?;
+    ///     Ok(())
+    /// }
+    /// ```
+    ///
+    /// Python code can then do the following:
+    ///
+    /// ```python
+    /// from my_module import c
+    ///
+    /// print(&quot;c is&quot;, c)
+    /// ```
+    ///
+    /// This will result in the following output:
+    ///
+    /// ```text
+    /// c is 299792458
+    /// ```
+    </span><span class="kw">pub fn </span>add&lt;V&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, name: <span class="kw-2">&amp;</span>str, value: V) -&gt; PyResult&lt;()&gt;
+    <span class="kw">where
+        </span>V: IntoPy&lt;PyObject&gt;,
     {
-        <span class="self">self</span>.<span class="ident">index</span>()<span class="question-mark">?</span>
-            .<span class="ident">append</span>(<span class="ident">name</span>)
-            .<span class="ident">expect</span>(<span class="string">&quot;could not append __name__ to __all__&quot;</span>);
-        <span class="self">self</span>.<span class="ident">setattr</span>(<span class="ident">name</span>, <span class="ident">value</span>.<span class="ident">into_py</span>(<span class="self">self</span>.<span class="ident">py</span>()))
+        <span class="self">self</span>.index()<span class="question-mark">?
+            </span>.append(name)
+            .expect(<span class="string">&quot;could not append __name__ to __all__&quot;</span>);
+        <span class="self">self</span>.setattr(name, value.into_py(<span class="self">self</span>.py()))
     }
 
-    <span class="doccomment">/// Adds a new class to the module.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Notice that this method does not take an argument.</span>
-    <span class="doccomment">/// Instead, this method is *generic*, and requires us to use the</span>
-    <span class="doccomment">/// &quot;turbofish&quot; syntax to specify the class we want to add.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// use pyo3::prelude::*;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// #[pyclass]</span>
-    <span class="doccomment">/// struct Foo { /* fields omitted */ }</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// #[pymodule]</span>
-    <span class="doccomment">/// fn my_module(_py: Python, module: &amp;PyModule) -&gt; PyResult&lt;()&gt; {</span>
-    <span class="doccomment">///     module.add_class::&lt;Foo&gt;()?;</span>
-    <span class="doccomment">///     Ok(())</span>
-    <span class="doccomment">/// }</span>
-    <span class="doccomment">///  ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Python code can see this class as such:</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```python</span>
-    <span class="doccomment">/// from my_module import Foo</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// print(&quot;Foo is&quot;, Foo)</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This will result in the following output:</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```text</span>
-    <span class="doccomment">/// Foo is &lt;class &#39;builtins.Foo&#39;&gt;</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Note that as we haven&#39;t defined a [constructor][1], Python code can&#39;t actually</span>
-    <span class="doccomment">/// make an *instance* of `Foo` (or *get* one for that matter, as we haven&#39;t exported</span>
-    <span class="doccomment">/// anything that can return instances of `Foo`).</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [1]: https://pyo3.rs/latest/class.html#constructor</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_class</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">PyClass</span>,
+    <span class="doccomment">/// Adds a new class to the module.
+    ///
+    /// Notice that this method does not take an argument.
+    /// Instead, this method is *generic*, and requires us to use the
+    /// &quot;turbofish&quot; syntax to specify the class we want to add.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use pyo3::prelude::*;
+    ///
+    /// #[pyclass]
+    /// struct Foo { /* fields omitted */ }
+    ///
+    /// #[pymodule]
+    /// fn my_module(_py: Python&lt;&#39;_&gt;, module: &amp;PyModule) -&gt; PyResult&lt;()&gt; {
+    ///     module.add_class::&lt;Foo&gt;()?;
+    ///     Ok(())
+    /// }
+    ///  ```
+    ///
+    /// Python code can see this class as such:
+    /// ```python
+    /// from my_module import Foo
+    ///
+    /// print(&quot;Foo is&quot;, Foo)
+    /// ```
+    ///
+    /// This will result in the following output:
+    /// ```text
+    /// Foo is &lt;class &#39;builtins.Foo&#39;&gt;
+    /// ```
+    ///
+    /// Note that as we haven&#39;t defined a [constructor][1], Python code can&#39;t actually
+    /// make an *instance* of `Foo` (or *get* one for that matter, as we haven&#39;t exported
+    /// anything that can return instances of `Foo`).
+    ///
+    /// [1]: https://pyo3.rs/latest/class.html#constructor
+    </span><span class="kw">pub fn </span>add_class&lt;T&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PyResult&lt;()&gt;
+    <span class="kw">where
+        </span>T: PyClass,
     {
-        <span class="self">self</span>.<span class="ident">add</span>(<span class="ident">T::NAME</span>, <span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">PyTypeObject</span><span class="op">&gt;</span><span class="ident">::type_object</span>(<span class="self">self</span>.<span class="ident">py</span>()))
+        <span class="self">self</span>.add(T::NAME, T::type_object(<span class="self">self</span>.py()))
     }
 
-    <span class="doccomment">/// Adds a function or a (sub)module to a module, using the functions name as name.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Prefer to use [`PyModule::add_function`] and/or [`PyModule::add_submodule`] instead.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_wrapped</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>, <span class="ident">wrapper</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">Fn</span>(<span class="ident">Python</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Adds a function or a (sub)module to a module, using the functions name as name.
+    ///
+    /// Prefer to use [`PyModule::add_function`] and/or [`PyModule::add_submodule`] instead.
+    </span><span class="kw">pub fn </span>add_wrapped&lt;<span class="lifetime">&#39;a</span>, T&gt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>, wrapper: <span class="kw-2">&amp;</span><span class="kw">impl </span>Fn(Python&lt;<span class="lifetime">&#39;a</span>&gt;) -&gt; T) -&gt; PyResult&lt;()&gt;
+    <span class="kw">where
+        </span>T: IntoPyCallbackOutput&lt;PyObject&gt;,
     {
-        <span class="kw">let</span> <span class="ident">py</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">py</span>();
-        <span class="kw">let</span> <span class="ident">function</span> <span class="op">=</span> <span class="ident">wrapper</span>(<span class="ident">py</span>).<span class="ident">convert</span>(<span class="ident">py</span>)<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">function</span>.<span class="ident">getattr</span>(<span class="ident">py</span>, <span class="string">&quot;__name__&quot;</span>)<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">name</span>.<span class="ident">extract</span>(<span class="ident">py</span>)<span class="question-mark">?</span>;
-        <span class="self">self</span>.<span class="ident">add</span>(<span class="ident">name</span>, <span class="ident">function</span>)
+        <span class="self">self</span>._add_wrapped(wrapper(<span class="self">self</span>.py()).convert(<span class="self">self</span>.py())<span class="question-mark">?</span>)
     }
 
-    <span class="doccomment">/// Adds a submodule to a module.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is especially useful for creating module hierarchies.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Note that this doesn&#39;t define a *package*, so this won&#39;t allow Python code</span>
-    <span class="doccomment">/// to directly import submodules by using</span>
-    <span class="doccomment">/// &lt;span style=&quot;white-space: pre&quot;&gt;`from my_module import submodule`&lt;/span&gt;.</span>
-    <span class="doccomment">/// For more information, see [#759][1] and [#1517][2].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// use pyo3::prelude::*;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// #[pymodule]</span>
-    <span class="doccomment">/// fn my_module(py: Python, module: &amp;PyModule) -&gt; PyResult&lt;()&gt; {</span>
-    <span class="doccomment">///     let submodule = PyModule::new(py, &quot;submodule&quot;)?;</span>
-    <span class="doccomment">///     submodule.add(&quot;super_useful_constant&quot;, &quot;important&quot;)?;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///     module.add_submodule(submodule)?;</span>
-    <span class="doccomment">///     Ok(())</span>
-    <span class="doccomment">/// }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Python code can then do the following:</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```python</span>
-    <span class="doccomment">/// import my_module</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// print(&quot;super_useful_constant is&quot;, my_module.submodule.super_useful_constant)</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This will result in the following output:</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```text</span>
-    <span class="doccomment">/// super_useful_constant is important</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [1]: https://github.com/PyO3/pyo3/issues/759</span>
-    <span class="doccomment">/// [2]: https://github.com/PyO3/pyo3/issues/1517#issuecomment-808664021</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_submodule</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">module</span>: <span class="kw-2">&amp;</span><span class="ident">PyModule</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">module</span>.<span class="ident">name</span>()<span class="question-mark">?</span>;
-        <span class="self">self</span>.<span class="ident">add</span>(<span class="ident">name</span>, <span class="ident">module</span>)
+    <span class="kw">fn </span>_add_wrapped(<span class="kw-2">&amp;</span><span class="self">self</span>, object: PyObject) -&gt; PyResult&lt;()&gt; {
+        <span class="kw">let </span>py = <span class="self">self</span>.py();
+        <span class="kw">let </span>name = object.getattr(py, __name__(py))<span class="question-mark">?</span>;
+        <span class="kw">let </span>name = name.extract(py)<span class="question-mark">?</span>;
+        <span class="self">self</span>.add(name, object)
     }
 
-    <span class="doccomment">/// Add a function to a module.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Note that this also requires the [`wrap_pyfunction!`][2] macro</span>
-    <span class="doccomment">/// to wrap a function annotated with [`#[pyfunction]`][1].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// use pyo3::prelude::*;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// #[pyfunction]</span>
-    <span class="doccomment">/// fn say_hello() {</span>
-    <span class="doccomment">///     println!(&quot;Hello world!&quot;)</span>
-    <span class="doccomment">/// }</span>
-    <span class="doccomment">/// #[pymodule]</span>
-    <span class="doccomment">/// fn my_module(_py: Python, module: &amp;PyModule) -&gt; PyResult&lt;()&gt; {</span>
-    <span class="doccomment">///     module.add_function(wrap_pyfunction!(say_hello, module)?)</span>
-    <span class="doccomment">/// }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Python code can then do the following:</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```python</span>
-    <span class="doccomment">/// from my_module import say_hello</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// say_hello()</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This will result in the following output:</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```text</span>
-    <span class="doccomment">/// Hello world!</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [1]: crate::prelude::pyfunction</span>
-    <span class="doccomment">/// [2]: crate::wrap_pyfunction</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_function</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>, <span class="ident">fun</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">PyCFunction</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">fun</span>.<span class="ident">getattr</span>(<span class="string">&quot;__name__&quot;</span>)<span class="question-mark">?</span>.<span class="ident">extract</span>()<span class="question-mark">?</span>;
-        <span class="self">self</span>.<span class="ident">add</span>(<span class="ident">name</span>, <span class="ident">fun</span>)
+    <span class="doccomment">/// Adds a submodule to a module.
+    ///
+    /// This is especially useful for creating module hierarchies.
+    ///
+    /// Note that this doesn&#39;t define a *package*, so this won&#39;t allow Python code
+    /// to directly import submodules by using
+    /// &lt;span style=&quot;white-space: pre&quot;&gt;`from my_module import submodule`&lt;/span&gt;.
+    /// For more information, see [#759][1] and [#1517][2].
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use pyo3::prelude::*;
+    ///
+    /// #[pymodule]
+    /// fn my_module(py: Python&lt;&#39;_&gt;, module: &amp;PyModule) -&gt; PyResult&lt;()&gt; {
+    ///     let submodule = PyModule::new(py, &quot;submodule&quot;)?;
+    ///     submodule.add(&quot;super_useful_constant&quot;, &quot;important&quot;)?;
+    ///
+    ///     module.add_submodule(submodule)?;
+    ///     Ok(())
+    /// }
+    /// ```
+    ///
+    /// Python code can then do the following:
+    ///
+    /// ```python
+    /// import my_module
+    ///
+    /// print(&quot;super_useful_constant is&quot;, my_module.submodule.super_useful_constant)
+    /// ```
+    ///
+    /// This will result in the following output:
+    ///
+    /// ```text
+    /// super_useful_constant is important
+    /// ```
+    ///
+    /// [1]: https://github.com/PyO3/pyo3/issues/759
+    /// [2]: https://github.com/PyO3/pyo3/issues/1517#issuecomment-808664021
+    </span><span class="kw">pub fn </span>add_submodule(<span class="kw-2">&amp;</span><span class="self">self</span>, module: <span class="kw-2">&amp;</span>PyModule) -&gt; PyResult&lt;()&gt; {
+        <span class="kw">let </span>name = module.name()<span class="question-mark">?</span>;
+        <span class="self">self</span>.add(name, module)
     }
 
-    <span class="doccomment">/// Calls a function in the module.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python expression `module.name(*args, **kwargs)`.</span>
-    <span class="attribute">#[<span class="ident">deprecated</span>(
-        <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.14.0&quot;</span>,
-        <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use getattr(name)?.call(args, kwargs) instead&quot;</span>
-    )]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">call</span>(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">args</span>: <span class="kw">impl</span> <span class="ident">IntoPy</span><span class="op">&lt;</span><span class="ident">Py</span><span class="op">&lt;</span><span class="ident">PyTuple</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">kwargs</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">PyDict</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">PyAny</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">getattr</span>(<span class="ident">name</span>)<span class="question-mark">?</span>.<span class="ident">call</span>(<span class="ident">args</span>, <span class="ident">kwargs</span>)
-    }
-
-    <span class="doccomment">/// Calls a function in the module with only positional arguments.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python expression `module.name(*args)`.</span>
-    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.14.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use getattr(name)?.call1(args) instead&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">call1</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">args</span>: <span class="kw">impl</span> <span class="ident">IntoPy</span><span class="op">&lt;</span><span class="ident">Py</span><span class="op">&lt;</span><span class="ident">PyTuple</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">PyAny</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">getattr</span>(<span class="ident">name</span>)<span class="question-mark">?</span>.<span class="ident">call1</span>(<span class="ident">args</span>)
-    }
-
-    <span class="doccomment">/// Calls a function in the module without arguments.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python expression `module.name()`.</span>
-    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.14.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use getattr(name)?.call0() instead&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">call0</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">PyAny</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">getattr</span>(<span class="ident">name</span>)<span class="question-mark">?</span>.<span class="ident">call0</span>()
-    }
-
-    <span class="doccomment">/// Gets a member from the module.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python expression `module.name`.</span>
-    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.14.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use getattr(name) instead&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">PyAny</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">getattr</span>(<span class="ident">name</span>)
+    <span class="doccomment">/// Add a function to a module.
+    ///
+    /// Note that this also requires the [`wrap_pyfunction!`][2] macro
+    /// to wrap a function annotated with [`#[pyfunction]`][1].
+    ///
+    /// ```rust
+    /// use pyo3::prelude::*;
+    ///
+    /// #[pyfunction]
+    /// fn say_hello() {
+    ///     println!(&quot;Hello world!&quot;)
+    /// }
+    /// #[pymodule]
+    /// fn my_module(_py: Python&lt;&#39;_&gt;, module: &amp;PyModule) -&gt; PyResult&lt;()&gt; {
+    ///     module.add_function(wrap_pyfunction!(say_hello, module)?)
+    /// }
+    /// ```
+    ///
+    /// Python code can then do the following:
+    ///
+    /// ```python
+    /// from my_module import say_hello
+    ///
+    /// say_hello()
+    /// ```
+    ///
+    /// This will result in the following output:
+    ///
+    /// ```text
+    /// Hello world!
+    /// ```
+    ///
+    /// [1]: crate::prelude::pyfunction
+    /// [2]: crate::wrap_pyfunction
+    </span><span class="kw">pub fn </span>add_function&lt;<span class="lifetime">&#39;a</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>, fun: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>PyCFunction) -&gt; PyResult&lt;()&gt; {
+        <span class="kw">let </span>name = fun.getattr(__name__(<span class="self">self</span>.py()))<span class="question-mark">?</span>.extract()<span class="question-mark">?</span>;
+        <span class="self">self</span>.add(name, fun)
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">types::PyModule</span>, <span class="ident">Python</span>};
+<span class="kw">fn </span>__all__(py: Python&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; <span class="kw-2">&amp;</span>PyString {
+    <span class="macro">intern!</span>(py, <span class="string">&quot;__all__&quot;</span>)
+}
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">module_import_and_name</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">builtins</span> <span class="op">=</span> <span class="ident">PyModule::import</span>(<span class="ident">py</span>, <span class="string">&quot;builtins&quot;</span>).<span class="ident">unwrap</span>();
-            <span class="macro">assert_eq!</span>(<span class="ident">builtins</span>.<span class="ident">name</span>().<span class="ident">unwrap</span>(), <span class="string">&quot;builtins&quot;</span>);
+<span class="kw">fn </span>__name__(py: Python&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; <span class="kw-2">&amp;</span>PyString {
+    <span class="macro">intern!</span>(py, <span class="string">&quot;__name__&quot;</span>)
+}
+
+<span class="attribute">#[cfg(test)]</span>
+<span class="kw">mod </span>tests {
+    <span class="kw">use crate</span>::{types::PyModule, Python};
+
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>module_import_and_name() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span>builtins = PyModule::import(py, <span class="string">&quot;builtins&quot;</span>).unwrap();
+            <span class="macro">assert_eq!</span>(builtins.name().unwrap(), <span class="string">&quot;builtins&quot;</span>);
         })
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="pyo3" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
-    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="pyo3" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0-nightly (40336865f 2022-08-15)" ></div></body></html>

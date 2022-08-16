@@ -1,1 +1,1 @@
-initSidebarItems({"trait":[["PyDescrDeleteProtocol",""],["PyDescrGetProtocol",""],["PyDescrProtocol","Descriptor interface"],["PyDescrSetNameProtocol",""],["PyDescrSetProtocol",""]]});
+window.SIDEBAR_ITEMS = {"trait":[["PyDescrGetProtocol",""],["PyDescrProtocol","Descriptor interface"],["PyDescrSetProtocol",""]]};

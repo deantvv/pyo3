@@ -1,102 +1,102 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src&#x2F;err&#x2F;mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../pyo3/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/err/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><script defer src="../../../scrape-examples.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../pyo3/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../pyo3/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../pyo3/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -738,747 +738,1143 @@
 <span id="738">738</span>
 <span id="739">739</span>
 <span id="740">740</span>
-</pre><pre class="rust"><code><span class="comment">// Copyright (c) 2017-present PyO3 Project and Contributors</span>
+<span id="741">741</span>
+<span id="742">742</span>
+<span id="743">743</span>
+<span id="744">744</span>
+<span id="745">745</span>
+<span id="746">746</span>
+<span id="747">747</span>
+<span id="748">748</span>
+<span id="749">749</span>
+<span id="750">750</span>
+<span id="751">751</span>
+<span id="752">752</span>
+<span id="753">753</span>
+<span id="754">754</span>
+<span id="755">755</span>
+<span id="756">756</span>
+<span id="757">757</span>
+<span id="758">758</span>
+<span id="759">759</span>
+<span id="760">760</span>
+<span id="761">761</span>
+<span id="762">762</span>
+<span id="763">763</span>
+<span id="764">764</span>
+<span id="765">765</span>
+<span id="766">766</span>
+<span id="767">767</span>
+<span id="768">768</span>
+<span id="769">769</span>
+<span id="770">770</span>
+<span id="771">771</span>
+<span id="772">772</span>
+<span id="773">773</span>
+<span id="774">774</span>
+<span id="775">775</span>
+<span id="776">776</span>
+<span id="777">777</span>
+<span id="778">778</span>
+<span id="779">779</span>
+<span id="780">780</span>
+<span id="781">781</span>
+<span id="782">782</span>
+<span id="783">783</span>
+<span id="784">784</span>
+<span id="785">785</span>
+<span id="786">786</span>
+<span id="787">787</span>
+<span id="788">788</span>
+<span id="789">789</span>
+<span id="790">790</span>
+<span id="791">791</span>
+<span id="792">792</span>
+<span id="793">793</span>
+<span id="794">794</span>
+<span id="795">795</span>
+<span id="796">796</span>
+<span id="797">797</span>
+<span id="798">798</span>
+<span id="799">799</span>
+<span id="800">800</span>
+<span id="801">801</span>
+<span id="802">802</span>
+<span id="803">803</span>
+<span id="804">804</span>
+<span id="805">805</span>
+<span id="806">806</span>
+<span id="807">807</span>
+<span id="808">808</span>
+<span id="809">809</span>
+<span id="810">810</span>
+<span id="811">811</span>
+<span id="812">812</span>
+<span id="813">813</span>
+<span id="814">814</span>
+<span id="815">815</span>
+<span id="816">816</span>
+<span id="817">817</span>
+<span id="818">818</span>
+<span id="819">819</span>
+<span id="820">820</span>
+<span id="821">821</span>
+<span id="822">822</span>
+<span id="823">823</span>
+<span id="824">824</span>
+<span id="825">825</span>
+<span id="826">826</span>
+<span id="827">827</span>
+<span id="828">828</span>
+<span id="829">829</span>
+<span id="830">830</span>
+<span id="831">831</span>
+<span id="832">832</span>
+<span id="833">833</span>
+<span id="834">834</span>
+<span id="835">835</span>
+<span id="836">836</span>
+<span id="837">837</span>
+<span id="838">838</span>
+<span id="839">839</span>
+<span id="840">840</span>
+<span id="841">841</span>
+<span id="842">842</span>
+<span id="843">843</span>
+<span id="844">844</span>
+<span id="845">845</span>
+<span id="846">846</span>
+<span id="847">847</span>
+<span id="848">848</span>
+<span id="849">849</span>
+<span id="850">850</span>
+<span id="851">851</span>
+<span id="852">852</span>
+<span id="853">853</span>
+<span id="854">854</span>
+<span id="855">855</span>
+<span id="856">856</span>
+<span id="857">857</span>
+<span id="858">858</span>
+<span id="859">859</span>
+<span id="860">860</span>
+<span id="861">861</span>
+<span id="862">862</span>
+<span id="863">863</span>
+<span id="864">864</span>
+<span id="865">865</span>
+<span id="866">866</span>
+<span id="867">867</span>
+<span id="868">868</span>
+<span id="869">869</span>
+<span id="870">870</span>
+<span id="871">871</span>
+<span id="872">872</span>
+<span id="873">873</span>
+<span id="874">874</span>
+<span id="875">875</span>
+<span id="876">876</span>
+<span id="877">877</span>
+<span id="878">878</span>
+<span id="879">879</span>
+<span id="880">880</span>
+<span id="881">881</span>
+<span id="882">882</span>
+<span id="883">883</span>
+<span id="884">884</span>
+<span id="885">885</span>
+<span id="886">886</span>
+<span id="887">887</span>
+<span id="888">888</span>
+<span id="889">889</span>
+<span id="890">890</span>
+<span id="891">891</span>
+<span id="892">892</span>
+<span id="893">893</span>
+<span id="894">894</span>
+<span id="895">895</span>
+<span id="896">896</span>
+<span id="897">897</span>
+<span id="898">898</span>
+<span id="899">899</span>
+<span id="900">900</span>
+<span id="901">901</span>
+<span id="902">902</span>
+<span id="903">903</span>
+<span id="904">904</span>
+<span id="905">905</span>
+<span id="906">906</span>
+<span id="907">907</span>
+<span id="908">908</span>
+<span id="909">909</span>
+<span id="910">910</span>
+<span id="911">911</span>
+<span id="912">912</span>
+<span id="913">913</span>
+<span id="914">914</span>
+<span id="915">915</span>
+<span id="916">916</span>
+<span id="917">917</span>
+<span id="918">918</span>
+<span id="919">919</span>
+<span id="920">920</span>
+<span id="921">921</span>
+<span id="922">922</span>
+<span id="923">923</span>
+<span id="924">924</span>
+<span id="925">925</span>
+<span id="926">926</span>
+<span id="927">927</span>
+<span id="928">928</span>
+<span id="929">929</span>
+<span id="930">930</span>
+<span id="931">931</span>
+<span id="932">932</span>
+<span id="933">933</span>
+<span id="934">934</span>
+<span id="935">935</span>
+<span id="936">936</span>
+<span id="937">937</span>
+<span id="938">938</span>
+<span id="939">939</span>
+</pre><pre class="rust"><code><span class="comment">// Copyright (c) 2017-present PyO3 Project and Contributors
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::panic::PanicException</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::type_object::PyTypeObject</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::types::PyType</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">exceptions</span>::{<span class="self">self</span>, <span class="ident">PyBaseException</span>},
-    <span class="ident">ffi</span>,
+</span><span class="kw">use </span><span class="kw">crate</span>::panic::PanicException;
+<span class="kw">use </span><span class="kw">crate</span>::type_object::PyTypeInfo;
+<span class="kw">use </span><span class="kw">crate</span>::types::{PyTraceback, PyType};
+<span class="kw">use crate</span>::{
+    exceptions::{<span class="self">self</span>, PyBaseException},
+    ffi,
 };
-<span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">AsPyPointer</span>, <span class="ident">FromPyPointer</span>, <span class="ident">IntoPy</span>, <span class="ident">Py</span>, <span class="ident">PyAny</span>, <span class="ident">PyObject</span>, <span class="ident">Python</span>, <span class="ident">ToBorrowedObject</span>, <span class="ident">ToPyObject</span>,
-};
-<span class="kw">use</span> <span class="ident">std::borrow::Cow</span>;
-<span class="kw">use</span> <span class="ident">std::cell::UnsafeCell</span>;
-<span class="kw">use</span> <span class="ident">std::ffi::CString</span>;
-<span class="kw">use</span> <span class="ident">std::os::raw::c_char</span>;
-<span class="kw">use</span> <span class="ident">std::os::raw::c_int</span>;
-<span class="kw">use</span> <span class="ident">std::ptr::NonNull</span>;
+<span class="kw">use crate</span>::{AsPyPointer, IntoPy, IntoPyPointer, Py, PyAny, PyObject, Python, ToPyObject};
+<span class="kw">use </span>std::borrow::Cow;
+<span class="kw">use </span>std::cell::UnsafeCell;
+<span class="kw">use </span>std::ffi::CString;
+<span class="kw">use </span>std::os::raw::c_int;
 
-<span class="kw">mod</span> <span class="ident">err_state</span>;
-<span class="kw">mod</span> <span class="ident">impls</span>;
+<span class="kw">mod </span>err_state;
+<span class="kw">mod </span>impls;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">err_state::PyErrArguments</span>;
-<span class="kw">use</span> <span class="ident">err_state</span>::{<span class="ident">boxed_args</span>, <span class="ident">PyErrState</span>, <span class="ident">PyErrStateNormalized</span>};
+<span class="kw">pub use </span>err_state::PyErrArguments;
+<span class="kw">use </span>err_state::{boxed_args, PyErrState, PyErrStateNormalized};
 
-<span class="doccomment">/// Represents a Python exception that was raised.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PyErr</span> {
-    <span class="comment">// Safety: can only hand out references when in the &quot;normalized&quot; state. Will never change</span>
-    <span class="comment">// after normalization.</span>
-    <span class="comment">//</span>
-    <span class="comment">// The state is temporarily removed from the PyErr during normalization, to avoid</span>
-    <span class="comment">// concurrent modifications.</span>
-    <span class="ident">state</span>: <span class="ident">UnsafeCell</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PyErrState</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+<span class="doccomment">/// Represents a Python exception.
+///
+/// Python exceptions can be raised in a &quot;lazy&quot; fashion, where the full Python object for the
+/// exception is not created until needed. The process of creating the full object is known
+/// as &quot;normalization&quot;. An exception which has not yet been created is known as &quot;unnormalized&quot;.
+///
+/// This struct builds upon that design, supporting all lazily-created Python exceptions and also
+/// supporting exceptions lazily-created from Rust.
+</span><span class="kw">pub struct </span>PyErr {
+    <span class="comment">// Safety: can only hand out references when in the &quot;normalized&quot; state. Will never change
+    // after normalization.
+    //
+    // The state is temporarily removed from the PyErr during normalization, to avoid
+    // concurrent modifications.
+    </span>state: UnsafeCell&lt;<span class="prelude-ty">Option</span>&lt;PyErrState&gt;&gt;,
 }
 
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Send</span> <span class="kw">for</span> <span class="ident">PyErr</span> {}
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Sync</span> <span class="kw">for</span> <span class="ident">PyErr</span> {}
+<span class="comment">// The inner value is only accessed through ways that require proving the gil is held
+</span><span class="attribute">#[cfg(feature = <span class="string">&quot;nightly&quot;</span>)]</span>
+<span class="kw">unsafe impl </span><span class="kw">crate</span>::marker::Ungil <span class="kw">for </span>PyErr {}
+<span class="kw">unsafe impl </span>Send <span class="kw">for </span>PyErr {}
+<span class="kw">unsafe impl </span>Sync <span class="kw">for </span>PyErr {}
 
-<span class="doccomment">/// Represents the result of a Python call.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">PyErr</span><span class="op">&gt;</span>;
+<span class="doccomment">/// Represents the result of a Python call.
+</span><span class="kw">pub type </span>PyResult&lt;T&gt; = <span class="prelude-ty">Result</span>&lt;T, PyErr&gt;;
 
-<span class="doccomment">/// Error that indicates a failure to convert a PyAny to a more specific Python type.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PyDowncastError</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="ident">from</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">PyAny</span>,
-    <span class="ident">to</span>: <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">str</span><span class="op">&gt;</span>,
+<span class="doccomment">/// Error that indicates a failure to convert a PyAny to a more specific Python type.
+</span><span class="attribute">#[derive(Debug)]</span>
+<span class="kw">pub struct </span>PyDowncastError&lt;<span class="lifetime">&#39;a</span>&gt; {
+    from: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>PyAny,
+    to: Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">PyDowncastError</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">from</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">PyAny</span>, <span class="ident">to</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">PyDowncastError</span> {
-            <span class="ident">from</span>,
-            <span class="ident">to</span>: <span class="ident">to</span>.<span class="ident">into</span>(),
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; PyDowncastError&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">pub fn </span>new(from: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>PyAny, to: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;&gt;) -&gt; <span class="self">Self </span>{
+        PyDowncastError {
+            from,
+            to: to.into(),
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">PyErr</span> {
-    <span class="doccomment">/// Creates a new PyErr of type `T`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `value` can be:</span>
-    <span class="doccomment">/// * a tuple: the exception instance will be created using Python `T(*tuple)`</span>
-    <span class="doccomment">/// * any other value: the exception instance will be created using Python `T(value)`</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Note: if `value` is not `Send` or `Sync`, consider using `PyErr::from_instance` instead.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Panics if `T` is not a Python class derived from `BaseException`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Example:</span>
-    <span class="doccomment">/// ```ignore</span>
-    <span class="doccomment">/// return Err(PyErr::new::&lt;exceptions::PyTypeError, _&gt;(&quot;Error message&quot;));</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// In most cases, you can use a concrete exception&#39;s constructor instead, which is equivalent:</span>
-    <span class="doccomment">/// ```ignore</span>
-    <span class="doccomment">/// return Err(exceptions::PyTypeError::new_err(&quot;Error message&quot;));</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span>(<span class="ident">args</span>: <span class="ident">A</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyErr</span>
-    <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">PyTypeObject</span>,
-        <span class="ident">A</span>: <span class="ident">PyErrArguments</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+<span class="kw">impl </span>PyErr {
+    <span class="doccomment">/// Creates a new PyErr of type `T`.
+    ///
+    /// `args` can be:
+    /// * a tuple: the exception instance will be created using the equivalent to the Python
+    ///   expression `T(*tuple)`
+    /// * any other value: the exception instance will be created using the equivalent to the Python
+    ///   expression `T(value)`
+    ///
+    /// This error will be stored in an unnormalized state. This avoids the need for the Python GIL
+    /// to be held, but requires `args` to be `Send` and `Sync`. If `args` is not `Send` or `Sync`,
+    /// consider using [`PyErr::from_value`] instead.
+    ///
+    /// If an error occurs during normalization (for example if `T` is not a Python type which
+    /// extends from `BaseException`), then a different error may be produced during normalization.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use pyo3::prelude::*;
+    /// use pyo3::exceptions::PyTypeError;
+    ///
+    /// #[pyfunction]
+    /// fn always_throws() -&gt; PyResult&lt;()&gt; {
+    ///     Err(PyErr::new::&lt;PyTypeError, _&gt;(&quot;Error message&quot;))
+    /// }
+    /// #
+    /// # Python::with_gil(|py| {
+    /// #     let fun = pyo3::wrap_pyfunction!(always_throws, py).unwrap();
+    /// #     let err = fun.call0().expect_err(&quot;called a function that should always return an error but the return value was Ok&quot;);
+    /// #     assert!(err.is_instance_of::&lt;PyTypeError&gt;(py))
+    /// # });
+    /// ```
+    ///
+    /// In most cases, you can use a concrete exception&#39;s constructor instead:
+    ///
+    /// ```
+    /// use pyo3::prelude::*;
+    /// use pyo3::exceptions::PyTypeError;
+    ///
+    /// #[pyfunction]
+    /// fn always_throws() -&gt; PyResult&lt;()&gt; {
+    ///     Err(PyTypeError::new_err(&quot;Error message&quot;))
+    /// }
+    /// #
+    /// # Python::with_gil(|py| {
+    /// #     let fun = pyo3::wrap_pyfunction!(always_throws, py).unwrap();
+    /// #     let err = fun.call0().expect_err(&quot;called a function that should always return an error but the return value was Ok&quot;);
+    /// #     assert!(err.is_instance_of::&lt;PyTypeError&gt;(py))
+    /// # });
+    /// ```
+    </span><span class="attribute">#[inline]</span>
+    <span class="kw">pub fn </span>new&lt;T, A&gt;(args: A) -&gt; PyErr
+    <span class="kw">where
+        </span>T: PyTypeInfo,
+        A: PyErrArguments + Send + Sync + <span class="lifetime">&#39;static</span>,
     {
-        <span class="ident">PyErr::from_state</span>(<span class="ident">PyErrState::LazyTypeAndValue</span> {
-            <span class="ident">ptype</span>: <span class="ident">T::type_object</span>,
-            <span class="ident">pvalue</span>: <span class="ident">boxed_args</span>(<span class="ident">args</span>),
+        PyErr::from_state(PyErrState::LazyTypeAndValue {
+            ptype: T::type_object,
+            pvalue: boxed_args(args),
         })
     }
 
-    <span class="doccomment">/// Constructs a new error, with the usual lazy initialization of Python exceptions.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `exc` is the exception type; usually one of the standard exceptions</span>
-    <span class="doccomment">/// like `exceptions::PyRuntimeError`.</span>
-    <span class="doccomment">/// `args` is the a tuple of arguments to pass to the exception constructor.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_type</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span>(<span class="ident">ty</span>: <span class="kw-2">&amp;</span><span class="ident">PyType</span>, <span class="ident">args</span>: <span class="ident">A</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyErr</span>
-    <span class="kw">where</span>
-        <span class="ident">A</span>: <span class="ident">PyErrArguments</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+    <span class="doccomment">/// Constructs a new PyErr from the given Python type and arguments.
+    ///
+    /// `ty` is the exception type; usually one of the standard exceptions
+    /// like `exceptions::PyRuntimeError`.
+    ///
+    /// `args` is either a tuple or a single value, with the same meaning as in [`PyErr::new`].
+    ///
+    /// If an error occurs during normalization (for example if `T` is not a Python type which
+    /// extends from `BaseException`), then a different error may be produced during normalization.
+    ///
+    /// This error will be stored in an unnormalized state.
+    </span><span class="kw">pub fn </span>from_type&lt;A&gt;(ty: <span class="kw-2">&amp;</span>PyType, args: A) -&gt; PyErr
+    <span class="kw">where
+        </span>A: PyErrArguments + Send + Sync + <span class="lifetime">&#39;static</span>,
     {
-        <span class="kw">if</span> <span class="kw">unsafe</span> { <span class="ident">ffi::PyExceptionClass_Check</span>(<span class="ident">ty</span>.<span class="ident">as_ptr</span>()) } <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="kw">return</span> <span class="ident">exceptions_must_derive_from_base_exception</span>(<span class="ident">ty</span>.<span class="ident">py</span>());
+        <span class="kw">if unsafe </span>{ ffi::PyExceptionClass_Check(ty.as_ptr()) } == <span class="number">0 </span>{
+            <span class="kw">return </span>exceptions_must_derive_from_base_exception(ty.py());
         }
 
-        <span class="ident">PyErr::from_state</span>(<span class="ident">PyErrState::LazyValue</span> {
-            <span class="ident">ptype</span>: <span class="ident">ty</span>.<span class="ident">into</span>(),
-            <span class="ident">pvalue</span>: <span class="ident">boxed_args</span>(<span class="ident">args</span>),
+        PyErr::from_state(PyErrState::LazyValue {
+            ptype: ty.into(),
+            pvalue: boxed_args(args),
         })
     }
 
-    <span class="doccomment">/// Creates a new PyErr.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `obj` must be an Python exception instance, the PyErr will use that instance.</span>
-    <span class="doccomment">/// If `obj` is a Python exception type object, the PyErr will (lazily) create a new</span>
-    <span class="doccomment">/// instance of that type.</span>
-    <span class="doccomment">/// Otherwise, a `TypeError` is created instead.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// use pyo3::{Python, PyErr, IntoPy, exceptions::PyTypeError, types::PyType};</span>
-    <span class="doccomment">/// Python::with_gil(|py| {</span>
-    <span class="doccomment">///     // Case #1: Exception instance</span>
-    <span class="doccomment">///     let err = PyErr::from_instance(PyTypeError::new_err(&quot;some type error&quot;,).instance(py));</span>
-    <span class="doccomment">///     assert_eq!(err.to_string(), &quot;TypeError: some type error&quot;);</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///     // Case #2: Exception type</span>
-    <span class="doccomment">///     let err = PyErr::from_instance(PyType::new::&lt;PyTypeError&gt;(py));</span>
-    <span class="doccomment">///     assert_eq!(err.to_string(), &quot;TypeError: &quot;);</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///     // Case #3: Invalid exception value</span>
-    <span class="doccomment">///     let err = PyErr::from_instance(&quot;foo&quot;.into_py(py).as_ref(py));</span>
-    <span class="doccomment">///     assert_eq!(err.to_string(), &quot;TypeError: exceptions must derive from BaseException&quot;);</span>
-    <span class="doccomment">/// });</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_instance</span>(<span class="ident">obj</span>: <span class="kw-2">&amp;</span><span class="ident">PyAny</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyErr</span> {
-        <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">obj</span>.<span class="ident">as_ptr</span>();
+    <span class="doccomment">/// Creates a new PyErr.
+    ///
+    /// If `obj` is a Python exception object, the PyErr will contain that object. The error will be
+    /// in a normalized state.
+    ///
+    /// If `obj` is a Python exception type object, this is equivalent to `PyErr::from_type(obj, ())`.
+    ///
+    /// Otherwise, a `TypeError` is created.
+    ///
+    /// # Examples
+    /// ```rust
+    /// use pyo3::prelude::*;
+    /// use pyo3::exceptions::PyTypeError;
+    /// use pyo3::types::{PyType, PyString};
+    ///
+    /// Python::with_gil(|py| {
+    ///     // Case #1: Exception object
+    ///     let err = PyErr::from_value(PyTypeError::new_err(&quot;some type error&quot;).value(py));
+    ///     assert_eq!(err.to_string(), &quot;TypeError: some type error&quot;);
+    ///
+    ///     // Case #2: Exception type
+    ///     let err = PyErr::from_value(PyType::new::&lt;PyTypeError&gt;(py));
+    ///     assert_eq!(err.to_string(), &quot;TypeError: &quot;);
+    ///
+    ///     // Case #3: Invalid exception value
+    ///     let err = PyErr::from_value(PyString::new(py, &quot;foo&quot;).into());
+    ///     assert_eq!(
+    ///         err.to_string(),
+    ///         &quot;TypeError: exceptions must derive from BaseException&quot;
+    ///     );
+    /// });
+    /// ```
+    </span><span class="kw">pub fn </span>from_value(obj: <span class="kw-2">&amp;</span>PyAny) -&gt; PyErr {
+        <span class="kw">let </span>ptr = obj.as_ptr();
 
-        <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">unsafe</span> { <span class="ident">ffi::PyExceptionInstance_Check</span>(<span class="ident">ptr</span>) } <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="ident">PyErrState::Normalized</span>(<span class="ident">PyErrStateNormalized</span> {
-                <span class="ident">ptype</span>: <span class="kw">unsafe</span> {
-                    <span class="ident">Py::from_borrowed_ptr</span>(<span class="ident">obj</span>.<span class="ident">py</span>(), <span class="ident">ffi::PyExceptionInstance_Class</span>(<span class="ident">ptr</span>))
-                },
-                <span class="ident">pvalue</span>: <span class="kw">unsafe</span> { <span class="ident">Py::from_borrowed_ptr</span>(<span class="ident">obj</span>.<span class="ident">py</span>(), <span class="ident">obj</span>.<span class="ident">as_ptr</span>()) },
-                <span class="ident">ptraceback</span>: <span class="prelude-val">None</span>,
+        <span class="kw">let </span>state = <span class="kw">if unsafe </span>{ ffi::PyExceptionInstance_Check(ptr) } != <span class="number">0 </span>{
+            PyErrState::Normalized(PyErrStateNormalized {
+                ptype: obj.get_type().into(),
+                pvalue: <span class="kw">unsafe </span>{ Py::from_borrowed_ptr(obj.py(), obj.as_ptr()) },
+                ptraceback: <span class="prelude-val">None</span>,
             })
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="kw">unsafe</span> { <span class="ident">ffi::PyExceptionClass_Check</span>(<span class="ident">obj</span>.<span class="ident">as_ptr</span>()) } <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="ident">PyErrState::FfiTuple</span> {
-                <span class="ident">ptype</span>: <span class="kw">unsafe</span> { <span class="prelude-val">Some</span>(<span class="ident">Py::from_borrowed_ptr</span>(<span class="ident">obj</span>.<span class="ident">py</span>(), <span class="ident">ptr</span>)) },
-                <span class="ident">pvalue</span>: <span class="prelude-val">None</span>,
-                <span class="ident">ptraceback</span>: <span class="prelude-val">None</span>,
+        } <span class="kw">else if unsafe </span>{ ffi::PyExceptionClass_Check(obj.as_ptr()) } != <span class="number">0 </span>{
+            PyErrState::FfiTuple {
+                ptype: obj.into(),
+                pvalue: <span class="prelude-val">None</span>,
+                ptraceback: <span class="prelude-val">None</span>,
             }
-        } <span class="kw">else</span> {
-            <span class="kw">return</span> <span class="ident">exceptions_must_derive_from_base_exception</span>(<span class="ident">obj</span>.<span class="ident">py</span>());
+        } <span class="kw">else </span>{
+            <span class="kw">return </span>exceptions_must_derive_from_base_exception(obj.py());
         };
 
-        <span class="ident">PyErr::from_state</span>(<span class="ident">state</span>)
+        PyErr::from_state(state)
     }
 
-    <span class="doccomment">/// Get the type of this exception object.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The object will be normalized first if needed.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// use pyo3::{Python, PyErr, exceptions::PyTypeError, types::PyType};</span>
-    <span class="doccomment">/// Python::with_gil(|py| {</span>
-    <span class="doccomment">///     let err = PyTypeError::new_err((&quot;some type error&quot;,));</span>
-    <span class="doccomment">///     assert_eq!(err.ptype(py), PyType::new::&lt;PyTypeError&gt;(py));</span>
-    <span class="doccomment">/// });</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ptype</span><span class="op">&lt;</span><span class="lifetime">&#39;py</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;py</span> <span class="self">self</span>, <span class="ident">py</span>: <span class="ident">Python</span><span class="op">&lt;</span><span class="lifetime">&#39;py</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;py</span> <span class="ident">PyType</span> {
-        <span class="self">self</span>.<span class="ident">normalized</span>(<span class="ident">py</span>).<span class="ident">ptype</span>.<span class="ident">as_ref</span>(<span class="ident">py</span>)
+    <span class="doccomment">/// Returns the type of this exception.
+    ///
+    /// The object will be normalized first if needed.
+    ///
+    /// # Examples
+    /// ```rust
+    /// use pyo3::{exceptions::PyTypeError, types::PyType, PyErr, Python};
+    ///
+    /// Python::with_gil(|py| {
+    ///     let err: PyErr = PyTypeError::new_err((&quot;some type error&quot;,));
+    ///     assert!(err.get_type(py).is(PyType::new::&lt;PyTypeError&gt;(py)));
+    /// });
+    /// ```
+    </span><span class="kw">pub fn </span>get_type&lt;<span class="lifetime">&#39;py</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;py </span><span class="self">self</span>, py: Python&lt;<span class="lifetime">&#39;py</span>&gt;) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;py </span>PyType {
+        <span class="self">self</span>.normalized(py).ptype.as_ref(py)
     }
 
-    <span class="doccomment">/// Get the value of this exception object.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The object will be normalized first if needed.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// use pyo3::{Python, PyErr, exceptions::PyTypeError, types::PyType};</span>
-    <span class="doccomment">/// Python::with_gil(|py| {</span>
-    <span class="doccomment">///     let err = PyTypeError::new_err((&quot;some type error&quot;,));</span>
-    <span class="doccomment">///     assert!(err.is_instance::&lt;PyTypeError&gt;(py));</span>
-    <span class="doccomment">///     assert_eq!(err.pvalue(py).to_string(), &quot;some type error&quot;);</span>
-    <span class="doccomment">/// });</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pvalue</span><span class="op">&lt;</span><span class="lifetime">&#39;py</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;py</span> <span class="self">self</span>, <span class="ident">py</span>: <span class="ident">Python</span><span class="op">&lt;</span><span class="lifetime">&#39;py</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;py</span> <span class="ident">PyBaseException</span> {
-        <span class="self">self</span>.<span class="ident">normalized</span>(<span class="ident">py</span>).<span class="ident">pvalue</span>.<span class="ident">as_ref</span>(<span class="ident">py</span>)
+    <span class="doccomment">/// Returns the value of this exception.
+    ///
+    /// The object will be normalized first if needed.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use pyo3::{exceptions::PyTypeError, PyErr, Python};
+    ///
+    /// Python::with_gil(|py| {
+    ///     let err: PyErr = PyTypeError::new_err((&quot;some type error&quot;,));
+    ///     assert!(err.is_instance_of::&lt;PyTypeError&gt;(py));
+    ///     assert_eq!(err.value(py).to_string(), &quot;some type error&quot;);
+    /// });
+    /// ```
+    </span><span class="kw">pub fn </span>value&lt;<span class="lifetime">&#39;py</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;py </span><span class="self">self</span>, py: Python&lt;<span class="lifetime">&#39;py</span>&gt;) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;py </span>PyBaseException {
+        <span class="self">self</span>.normalized(py).pvalue.as_ref(py)
     }
 
-    <span class="doccomment">/// Get the value of this exception object.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The object will be normalized first if needed.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// use pyo3::{Python, PyErr, exceptions::PyTypeError, types::PyType};</span>
-    <span class="doccomment">/// Python::with_gil(|py| {</span>
-    <span class="doccomment">///     let err = PyTypeError::new_err((&quot;some type error&quot;,));</span>
-    <span class="doccomment">///     assert_eq!(err.ptraceback(py), None);</span>
-    <span class="doccomment">/// });</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ptraceback</span><span class="op">&lt;</span><span class="lifetime">&#39;py</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;py</span> <span class="self">self</span>, <span class="ident">py</span>: <span class="ident">Python</span><span class="op">&lt;</span><span class="lifetime">&#39;py</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;py</span> <span class="ident">PyAny</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">normalized</span>(<span class="ident">py</span>)
-            .<span class="ident">ptraceback</span>
-            .<span class="ident">as_ref</span>()
-            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">obj</span><span class="op">|</span> <span class="ident">obj</span>.<span class="ident">as_ref</span>(<span class="ident">py</span>))
+    <span class="doccomment">/// Consumes self to take ownership of the exception value contained in this error.
+    </span><span class="kw">pub fn </span>into_value(<span class="self">self</span>, py: Python&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Py&lt;PyBaseException&gt; {
+        <span class="comment">// NB technically this causes one reference count increase and decrease in quick succession
+        // on pvalue, but it&#39;s probably not worth optimizing this right now for the additional code
+        // complexity.
+        </span><span class="self">self</span>.normalized(py).pvalue.clone_ref(py)
     }
 
-    <span class="doccomment">/// Gets whether an error is present in the Python interpreter&#39;s global state.</span>
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">occurred</span>(<span class="kw">_</span>: <span class="ident">Python</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="op">!</span><span class="ident">ffi::PyErr_Occurred</span>().<span class="ident">is_null</span>() }
+    <span class="doccomment">/// Returns the traceback of this exception object.
+    ///
+    /// The object will be normalized first if needed.
+    ///
+    /// # Examples
+    /// ```rust
+    /// use pyo3::{exceptions::PyTypeError, Python};
+    ///
+    /// Python::with_gil(|py| {
+    ///     let err = PyTypeError::new_err((&quot;some type error&quot;,));
+    ///     assert!(err.traceback(py).is_none());
+    /// });
+    /// ```
+    </span><span class="kw">pub fn </span>traceback&lt;<span class="lifetime">&#39;py</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;py </span><span class="self">self</span>, py: Python&lt;<span class="lifetime">&#39;py</span>&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;py </span>PyTraceback&gt; {
+        <span class="self">self</span>.normalized(py)
+            .ptraceback
+            .as_ref()
+            .map(|obj| obj.as_ref(py))
     }
 
-    <span class="doccomment">/// Retrieves the current error from the Python interpreter&#39;s global state.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The error is cleared from the Python interpreter.</span>
-    <span class="doccomment">/// If no error is set, returns a `None`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If the error fetched is a `PanicException` (which would have originated from a panic in a</span>
-    <span class="doccomment">/// pyo3 callback) then this function will resume the panic.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fetch</span>(<span class="ident">py</span>: <span class="ident">Python</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PyErr</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ptype</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyObject</span> <span class="op">=</span> <span class="ident">std::ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pvalue</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyObject</span> <span class="op">=</span> <span class="ident">std::ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ptraceback</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyObject</span> <span class="op">=</span> <span class="ident">std::ptr::null_mut</span>();
-            <span class="ident">ffi::PyErr_Fetch</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ptype</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">pvalue</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ptraceback</span>);
-
-            <span class="comment">// If the error indicator is not set, all three variables are set to NULL</span>
-            <span class="kw">if</span> <span class="ident">ptype</span>.<span class="ident">is_null</span>() <span class="op">&amp;&amp;</span> <span class="ident">pvalue</span>.<span class="ident">is_null</span>() <span class="op">&amp;&amp;</span> <span class="ident">ptraceback</span>.<span class="ident">is_null</span>() {
-                <span class="kw">return</span> <span class="prelude-val">None</span>;
-            }
-
-            <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="ident">PyErr::new_from_ffi_tuple</span>(<span class="ident">py</span>, <span class="ident">ptype</span>, <span class="ident">pvalue</span>, <span class="ident">ptraceback</span>);
-
-            <span class="kw">if</span> <span class="ident">ptype</span> <span class="op">=</span><span class="op">=</span> <span class="ident">PanicException::type_object</span>(<span class="ident">py</span>).<span class="ident">as_ptr</span>() {
-                <span class="kw">let</span> <span class="ident">msg</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">PyAny::from_borrowed_ptr_or_opt</span>(<span class="ident">py</span>, <span class="ident">pvalue</span>)
-                    .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">obj</span><span class="op">|</span> <span class="ident">obj</span>.<span class="ident">extract</span>().<span class="ident">ok</span>())
-                    .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">String::from</span>(<span class="string">&quot;Unwrapped panic from Python code&quot;</span>));
-
-                <span class="macro">eprintln!</span>(
-                    <span class="string">&quot;--- PyO3 is resuming a panic after fetching a PanicException from Python. ---&quot;</span>
-                );
-                <span class="macro">eprintln!</span>(<span class="string">&quot;Python stack trace below:&quot;</span>);
-                <span class="ident">err</span>.<span class="ident">print</span>(<span class="ident">py</span>);
-
-                <span class="ident">std::panic::resume_unwind</span>(<span class="ident">Box::new</span>(<span class="ident">msg</span>))
-            }
-
-            <span class="prelude-val">Some</span>(<span class="ident">err</span>)
-        }
+    <span class="doccomment">/// Gets whether an error is present in the Python interpreter&#39;s global state.
+    </span><span class="attribute">#[inline]</span>
+    <span class="kw">pub fn </span>occurred(<span class="kw">_</span>: Python&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; bool {
+        <span class="kw">unsafe </span>{ !ffi::PyErr_Occurred().is_null() }
     }
 
-    <span class="doccomment">/// Retrieves the current error from the Python interpreter&#39;s global state.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The error is cleared from the Python interpreter.</span>
-    <span class="doccomment">/// If no error is set, returns a `SystemError` in release mode,</span>
-    <span class="doccomment">/// panics in debug mode.</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">api_call_failed</span>(<span class="ident">py</span>: <span class="ident">Python</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyErr</span> {
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">debug_assertions</span>)]</span>
-        {
-            <span class="ident">PyErr::fetch</span>(<span class="ident">py</span>).<span class="ident">expect</span>(<span class="string">&quot;error return without exception set&quot;</span>)
-        }
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">debug_assertions</span>))]</span>
-        {
-            <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::exceptions::PySystemError</span>;
+    <span class="doccomment">/// Takes the current error from the Python interpreter&#39;s global state and clears the global
+    /// state. If no error is set, returns `None`.
+    ///
+    /// If the error is a `PanicException` (which would have originated from a panic in a pyo3
+    /// callback) then this function will resume the panic.
+    ///
+    /// Use this function when it is not known if an error should be present. If the error is
+    /// expected to have been set, for example from [`PyErr::occurred`] or by an error return value
+    /// from a C FFI function, use [`PyErr::fetch`].
+    </span><span class="kw">pub fn </span>take(py: Python&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;PyErr&gt; {
+        <span class="kw">let </span>(ptype, pvalue, ptraceback) = <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>ptype: <span class="kw-2">*mut </span>ffi::PyObject = std::ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>pvalue: <span class="kw-2">*mut </span>ffi::PyObject = std::ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>ptraceback: <span class="kw-2">*mut </span>ffi::PyObject = std::ptr::null_mut();
+            ffi::PyErr_Fetch(<span class="kw-2">&amp;mut </span>ptype, <span class="kw-2">&amp;mut </span>pvalue, <span class="kw-2">&amp;mut </span>ptraceback);
 
-            <span class="ident">PyErr::fetch</span>(<span class="ident">py</span>)
-                .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">PySystemError::new_err</span>(<span class="string">&quot;error return without exception set&quot;</span>))
-        }
-    }
+            <span class="comment">// Convert to Py immediately so that any references are freed by early return.
+            </span><span class="kw">let </span>ptype = Py::from_owned_ptr_or_opt(py, ptype);
+            <span class="kw">let </span>pvalue = Py::from_owned_ptr_or_opt(py, pvalue);
+            <span class="kw">let </span>ptraceback = Py::from_owned_ptr_or_opt(py, ptraceback);
 
-    <span class="doccomment">/// Creates a new exception type with the given name, which must be of the form</span>
-    <span class="doccomment">/// `&lt;module&gt;.&lt;ExceptionName&gt;`, as required by `PyErr_NewException`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `base` can be an existing exception type to subclass, or a tuple of classes</span>
-    <span class="doccomment">/// `dict` specifies an optional dictionary of class variables and methods</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_type</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>(
-        <span class="kw">_</span>: <span class="ident">Python</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>,
-        <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">base</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">PyType</span><span class="op">&gt;</span>,
-        <span class="ident">dict</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">ffi::PyTypeObject</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">base</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyObject</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">base</span> {
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">std::ptr::null_mut</span>(),
-            <span class="prelude-val">Some</span>(<span class="ident">obj</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">obj</span>.<span class="ident">as_ptr</span>(),
+            <span class="comment">// A valid exception state should always have a non-null ptype, but the other two may be
+            // null.
+            </span><span class="kw">let </span>ptype = <span class="kw">match </span>ptype {
+                <span class="prelude-val">Some</span>(ptype) =&gt; ptype,
+                <span class="prelude-val">None </span>=&gt; {
+                    <span class="macro">debug_assert!</span>(
+                        pvalue.is_none(),
+                        <span class="string">&quot;Exception type was null but value was not null&quot;
+                    </span>);
+                    <span class="macro">debug_assert!</span>(
+                        ptraceback.is_none(),
+                        <span class="string">&quot;Exception type was null but traceback was not null&quot;
+                    </span>);
+                    <span class="kw">return </span><span class="prelude-val">None</span>;
+                }
+            };
+
+            (ptype, pvalue, ptraceback)
         };
 
-        <span class="kw">let</span> <span class="ident">dict</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyObject</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">dict</span> {
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">std::ptr::null_mut</span>(),
-            <span class="prelude-val">Some</span>(<span class="ident">obj</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">obj</span>.<span class="ident">as_ptr</span>(),
-        };
+        <span class="kw">if </span>ptype.as_ptr() == PanicException::type_object(py).as_ptr() {
+            <span class="kw">let </span>msg: String = pvalue
+                .as_ref()
+                .and_then(|obj| obj.extract(py).ok())
+                .unwrap_or_else(|| String::from(<span class="string">&quot;Unwrapped panic from Python code&quot;</span>));
 
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">null_terminated_name</span> <span class="op">=</span>
-                <span class="ident">CString::new</span>(<span class="ident">name</span>).<span class="ident">expect</span>(<span class="string">&quot;Failed to initialize nul terminated exception name&quot;</span>);
+            <span class="macro">eprintln!</span>(
+                <span class="string">&quot;--- PyO3 is resuming a panic after fetching a PanicException from Python. ---&quot;
+            </span>);
+            <span class="macro">eprintln!</span>(<span class="string">&quot;Python stack trace below:&quot;</span>);
 
-            <span class="ident">NonNull::new_unchecked</span>(<span class="ident">ffi::PyErr_NewException</span>(
-                <span class="ident">null_terminated_name</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_char</span>,
-                <span class="ident">base</span>,
-                <span class="ident">dict</span>,
-            ) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyTypeObject</span>)
+            <span class="kw">unsafe </span>{
+                ffi::PyErr_Restore(ptype.into_ptr(), pvalue.into_ptr(), ptraceback.into_ptr());
+                ffi::PyErr_PrintEx(<span class="number">0</span>);
+            }
+
+            std::panic::resume_unwind(Box::new(msg))
+        }
+
+        <span class="prelude-val">Some</span>(PyErr::from_state(PyErrState::FfiTuple {
+            ptype,
+            pvalue,
+            ptraceback,
+        }))
+    }
+
+    <span class="doccomment">/// Equivalent to [PyErr::take], but when no error is set:
+    ///  - Panics in debug mode.
+    ///  - Returns a `SystemError` in release mode.
+    ///
+    /// This behavior is consistent with Python&#39;s internal handling of what happens when a C return
+    /// value indicates an error occurred but the global error state is empty. (A lack of exception
+    /// should be treated as a bug in the code which returned an error code but did not set an
+    /// exception.)
+    ///
+    /// Use this function when the error is expected to have been set, for example from
+    /// [PyErr::occurred] or by an error return value from a C FFI function.
+    </span><span class="attribute">#[cfg_attr(all(debug_assertions, track_caller), track_caller)]</span>
+    <span class="attribute">#[inline]</span>
+    <span class="kw">pub fn </span>fetch(py: Python&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; PyErr {
+        <span class="kw">const </span>FAILED_TO_FETCH: <span class="kw-2">&amp;</span>str = <span class="string">&quot;attempted to fetch exception but none was set&quot;</span>;
+        <span class="kw">match </span>PyErr::take(py) {
+            <span class="prelude-val">Some</span>(err) =&gt; err,
+            <span class="attribute">#[cfg(debug_assertions)]</span>
+            <span class="prelude-val">None </span>=&gt; <span class="macro">panic!</span>(<span class="string">&quot;{}&quot;</span>, FAILED_TO_FETCH),
+            <span class="attribute">#[cfg(not(debug_assertions))]</span>
+            <span class="prelude-val">None </span>=&gt; exceptions::PySystemError::new_err(FAILED_TO_FETCH),
         }
     }
 
-    <span class="doccomment">/// Create a PyErr from an ffi tuple</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Safety</span>
-    <span class="doccomment">/// - `ptype` must be a pointer to valid Python exception type object.</span>
-    <span class="doccomment">/// - `pvalue` must be a pointer to a valid Python object, or NULL.</span>
-    <span class="doccomment">/// - `ptraceback` must be a pointer to a valid Python traceback object, or NULL.</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new_from_ffi_tuple</span>(
-        <span class="ident">py</span>: <span class="ident">Python</span>,
-        <span class="ident">ptype</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyObject</span>,
-        <span class="ident">pvalue</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyObject</span>,
-        <span class="ident">ptraceback</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyObject</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyErr</span> {
-        <span class="comment">// Note: must not panic to ensure all owned pointers get acquired correctly,</span>
-        <span class="comment">// and because we mustn&#39;t panic in normalize().</span>
-        <span class="ident">PyErr::from_state</span>(<span class="ident">PyErrState::FfiTuple</span> {
-            <span class="ident">ptype</span>: <span class="ident">Py::from_owned_ptr_or_opt</span>(<span class="ident">py</span>, <span class="ident">ptype</span>),
-            <span class="ident">pvalue</span>: <span class="ident">Py::from_owned_ptr_or_opt</span>(<span class="ident">py</span>, <span class="ident">pvalue</span>),
-            <span class="ident">ptraceback</span>: <span class="ident">Py::from_owned_ptr_or_opt</span>(<span class="ident">py</span>, <span class="ident">ptraceback</span>),
-        })
+    <span class="doccomment">/// Creates a new exception type with the given name and docstring.
+    ///
+    /// - `base` can be an existing exception type to subclass, or a tuple of classes.
+    /// - `dict` specifies an optional dictionary of class variables and methods.
+    /// - `doc` will be the docstring seen by python users.
+    ///
+    ///
+    /// # Errors
+    ///
+    /// This function returns an error if `name` is not of the form `&lt;module&gt;.&lt;ExceptionName&gt;`.
+    ///
+    /// # Panics
+    ///
+    /// This function will panic if  `name` or `doc` cannot be converted to [`CString`]s.
+    </span><span class="kw">pub fn </span>new_type(
+        py: Python&lt;<span class="lifetime">&#39;_</span>&gt;,
+        name: <span class="kw-2">&amp;</span>str,
+        doc: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
+        base: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>PyType&gt;,
+        dict: <span class="prelude-ty">Option</span>&lt;PyObject&gt;,
+    ) -&gt; PyResult&lt;Py&lt;PyType&gt;&gt; {
+        <span class="kw">let </span>base: <span class="kw-2">*mut </span>ffi::PyObject = <span class="kw">match </span>base {
+            <span class="prelude-val">None </span>=&gt; std::ptr::null_mut(),
+            <span class="prelude-val">Some</span>(obj) =&gt; obj.as_ptr(),
+        };
+
+        <span class="kw">let </span>dict: <span class="kw-2">*mut </span>ffi::PyObject = <span class="kw">match </span>dict {
+            <span class="prelude-val">None </span>=&gt; std::ptr::null_mut(),
+            <span class="prelude-val">Some</span>(obj) =&gt; obj.as_ptr(),
+        };
+
+        <span class="kw">let </span>null_terminated_name =
+            CString::new(name).expect(<span class="string">&quot;Failed to initialize nul terminated exception name&quot;</span>);
+
+        <span class="kw">let </span>null_terminated_doc =
+            doc.map(|d| CString::new(d).expect(<span class="string">&quot;Failed to initialize nul terminated docstring&quot;</span>));
+
+        <span class="kw">let </span>null_terminated_doc_ptr = <span class="kw">match </span>null_terminated_doc.as_ref() {
+            <span class="prelude-val">Some</span>(c) =&gt; c.as_ptr(),
+            <span class="prelude-val">None </span>=&gt; std::ptr::null(),
+        };
+
+        <span class="kw">let </span>ptr = <span class="kw">unsafe </span>{
+            ffi::PyErr_NewExceptionWithDoc(
+                null_terminated_name.as_ptr(),
+                null_terminated_doc_ptr,
+                base,
+                dict,
+            )
+        };
+
+        <span class="kw">unsafe </span>{ Py::from_owned_ptr_or_err(py, ptr) }
     }
 
-    <span class="doccomment">/// Prints a standard traceback to `sys.stderr`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">print</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">py</span>: <span class="ident">Python</span>) {
-        <span class="self">self</span>.<span class="ident">clone_ref</span>(<span class="ident">py</span>).<span class="ident">restore</span>(<span class="ident">py</span>);
-        <span class="kw">unsafe</span> { <span class="ident">ffi::PyErr_PrintEx</span>(<span class="number">0</span>) }
+    <span class="doccomment">/// Prints a standard traceback to `sys.stderr`.
+    </span><span class="kw">pub fn </span>print(<span class="kw-2">&amp;</span><span class="self">self</span>, py: Python&lt;<span class="lifetime">&#39;_</span>&gt;) {
+        <span class="self">self</span>.clone_ref(py).restore(py);
+        <span class="kw">unsafe </span>{ ffi::PyErr_PrintEx(<span class="number">0</span>) }
     }
 
-    <span class="doccomment">/// Prints a standard traceback to `sys.stderr`, and sets</span>
-    <span class="doccomment">/// `sys.last_{type,value,traceback}` attributes to this exception&#39;s data.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">print_and_set_sys_last_vars</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">py</span>: <span class="ident">Python</span>) {
-        <span class="self">self</span>.<span class="ident">clone_ref</span>(<span class="ident">py</span>).<span class="ident">restore</span>(<span class="ident">py</span>);
-        <span class="kw">unsafe</span> { <span class="ident">ffi::PyErr_PrintEx</span>(<span class="number">1</span>) }
+    <span class="doccomment">/// Prints a standard traceback to `sys.stderr`, and sets
+    /// `sys.last_{type,value,traceback}` attributes to this exception&#39;s data.
+    </span><span class="kw">pub fn </span>print_and_set_sys_last_vars(<span class="kw-2">&amp;</span><span class="self">self</span>, py: Python&lt;<span class="lifetime">&#39;_</span>&gt;) {
+        <span class="self">self</span>.clone_ref(py).restore(py);
+        <span class="kw">unsafe </span>{ ffi::PyErr_PrintEx(<span class="number">1</span>) }
     }
 
-    <span class="doccomment">/// Returns true if the current exception matches the exception in `exc`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `exc` is a class object, this also returns `true` when `self` is an instance of a subclass.</span>
-    <span class="doccomment">/// If `exc` is a tuple, all exceptions in the tuple (and recursively in subtuples) are searched for a match.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">matches</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">py</span>: <span class="ident">Python</span>, <span class="ident">exc</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>
-    <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">ToBorrowedObject</span>,
+    <span class="doccomment">/// Returns true if the current exception matches the exception in `exc`.
+    ///
+    /// If `exc` is a class object, this also returns `true` when `self` is an instance of a subclass.
+    /// If `exc` is a tuple, all exceptions in the tuple (and recursively in subtuples) are searched for a match.
+    </span><span class="kw">pub fn </span>matches&lt;T&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, py: Python&lt;<span class="lifetime">&#39;_</span>&gt;, exc: T) -&gt; bool
+    <span class="kw">where
+        </span>T: ToPyObject,
     {
-        <span class="ident">exc</span>.<span class="ident">with_borrowed_ptr</span>(<span class="ident">py</span>, <span class="op">|</span><span class="ident">exc</span><span class="op">|</span> <span class="kw">unsafe</span> {
-            <span class="ident">ffi::PyErr_GivenExceptionMatches</span>(<span class="self">self</span>.<span class="ident">ptype_ptr</span>(<span class="ident">py</span>), <span class="ident">exc</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span>
-        })
+        <span class="kw">unsafe </span>{
+            ffi::PyErr_GivenExceptionMatches(<span class="self">self</span>.type_ptr(py), exc.to_object(py).as_ptr()) != <span class="number">0
+        </span>}
     }
 
-    <span class="doccomment">/// Returns true if the current exception is instance of `T`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_instance</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">py</span>: <span class="ident">Python</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>
-    <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">PyTypeObject</span>,
+    <span class="doccomment">/// Returns true if the current exception is instance of `T`.
+    </span><span class="attribute">#[inline]</span>
+    <span class="kw">pub fn </span>is_instance(<span class="kw-2">&amp;</span><span class="self">self</span>, py: Python&lt;<span class="lifetime">&#39;_</span>&gt;, typ: <span class="kw-2">&amp;</span>PyType) -&gt; bool {
+        <span class="kw">unsafe </span>{ ffi::PyErr_GivenExceptionMatches(<span class="self">self</span>.type_ptr(py), typ.as_ptr()) != <span class="number">0 </span>}
+    }
+
+    <span class="doccomment">/// Returns true if the current exception is instance of `T`.
+    </span><span class="attribute">#[inline]</span>
+    <span class="kw">pub fn </span>is_instance_of&lt;T&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, py: Python&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; bool
+    <span class="kw">where
+        </span>T: PyTypeInfo,
     {
-        <span class="kw">unsafe</span> {
-            <span class="ident">ffi::PyErr_GivenExceptionMatches</span>(<span class="self">self</span>.<span class="ident">ptype_ptr</span>(<span class="ident">py</span>), <span class="ident">T::type_object</span>(<span class="ident">py</span>).<span class="ident">as_ptr</span>()) <span class="op">!</span><span class="op">=</span> <span class="number">0</span>
-        }
+        <span class="self">self</span>.is_instance(py, T::type_object(py))
     }
 
-    <span class="doccomment">/// Retrieves the exception instance for this error.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">instance</span><span class="op">&lt;</span><span class="lifetime">&#39;py</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;py</span> <span class="self">self</span>, <span class="ident">py</span>: <span class="ident">Python</span><span class="op">&lt;</span><span class="lifetime">&#39;py</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;py</span> <span class="ident">PyBaseException</span> {
-        <span class="self">self</span>.<span class="ident">normalized</span>(<span class="ident">py</span>).<span class="ident">pvalue</span>.<span class="ident">as_ref</span>(<span class="ident">py</span>)
+    <span class="doccomment">/// Writes the error back to the Python interpreter&#39;s global state.
+    /// This is the opposite of `PyErr::fetch()`.
+    </span><span class="attribute">#[inline]</span>
+    <span class="kw">pub fn </span>restore(<span class="self">self</span>, py: Python&lt;<span class="lifetime">&#39;_</span>&gt;) {
+        <span class="kw">let </span>state = <span class="kw">match </span><span class="self">self</span>.state.into_inner() {
+            <span class="prelude-val">Some</span>(state) =&gt; state,
+            <span class="comment">// Safety: restore takes `self` by value so nothing else is accessing this err
+            // and the invariant is that state is always defined except during make_normalized
+            </span><span class="prelude-val">None </span>=&gt; <span class="kw">unsafe </span>{ std::hint::unreachable_unchecked() },
+        };
+
+        <span class="kw">let </span>(ptype, pvalue, ptraceback) = state.into_ffi_tuple(py);
+        <span class="kw">unsafe </span>{ ffi::PyErr_Restore(ptype, pvalue, ptraceback) }
     }
 
-    <span class="doccomment">/// Consumes self to take ownership of the exception instance for this error.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_instance</span>(<span class="self">self</span>, <span class="ident">py</span>: <span class="ident">Python</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Py</span><span class="op">&lt;</span><span class="ident">PyBaseException</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">out</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">normalized</span>(<span class="ident">py</span>).<span class="ident">pvalue</span>.<span class="ident">as_ref</span>(<span class="ident">py</span>).<span class="ident">into</span>();
-        <span class="ident">std::mem::forget</span>(<span class="self">self</span>);
-        <span class="ident">out</span>
-    }
-
-    <span class="doccomment">/// Writes the error back to the Python interpreter&#39;s global state.</span>
-    <span class="doccomment">/// This is the opposite of `PyErr::fetch()`.</span>
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">restore</span>(<span class="self">self</span>, <span class="ident">py</span>: <span class="ident">Python</span>) {
-        <span class="kw">let</span> (<span class="ident">ptype</span>, <span class="ident">pvalue</span>, <span class="ident">ptraceback</span>) <span class="op">=</span> <span class="self">self</span>
-            .<span class="ident">state</span>
-            .<span class="ident">into_inner</span>()
-            .<span class="ident">expect</span>(<span class="string">&quot;Cannot restore a PyErr while normalizing it&quot;</span>)
-            .<span class="ident">into_ffi_tuple</span>(<span class="ident">py</span>);
-        <span class="kw">unsafe</span> { <span class="ident">ffi::PyErr_Restore</span>(<span class="ident">ptype</span>, <span class="ident">pvalue</span>, <span class="ident">ptraceback</span>) }
-    }
-
-    <span class="doccomment">/// Issues a warning message.</span>
-    <span class="doccomment">/// May return a `PyErr` if warnings-as-errors is enabled.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">warn</span>(<span class="ident">py</span>: <span class="ident">Python</span>, <span class="ident">category</span>: <span class="kw-2">&amp;</span><span class="ident">PyAny</span>, <span class="ident">message</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">stacklevel</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="ident">CString::new</span>(<span class="ident">message</span>)<span class="question-mark">?</span>;
-        <span class="kw">unsafe</span> {
-            <span class="ident">error_on_minusone</span>(
-                <span class="ident">py</span>,
-                <span class="ident">ffi::PyErr_WarnEx</span>(
-                    <span class="ident">category</span>.<span class="ident">as_ptr</span>(),
-                    <span class="ident">message</span>.<span class="ident">as_ptr</span>(),
-                    <span class="ident">stacklevel</span> <span class="kw">as</span> <span class="ident">ffi::Py_ssize_t</span>,
+    <span class="doccomment">/// Issues a warning message.
+    /// May return a `PyErr` if warnings-as-errors is enabled.
+    </span><span class="kw">pub fn </span>warn(py: Python&lt;<span class="lifetime">&#39;_</span>&gt;, category: <span class="kw-2">&amp;</span>PyAny, message: <span class="kw-2">&amp;</span>str, stacklevel: i32) -&gt; PyResult&lt;()&gt; {
+        <span class="kw">let </span>message = CString::new(message)<span class="question-mark">?</span>;
+        <span class="kw">unsafe </span>{
+            error_on_minusone(
+                py,
+                ffi::PyErr_WarnEx(
+                    category.as_ptr(),
+                    message.as_ptr(),
+                    stacklevel <span class="kw">as </span>ffi::Py_ssize_t,
                 ),
             )
         }
     }
 
-    <span class="doccomment">/// Clone the PyErr. This requires the GIL, which is why PyErr does not implement Clone.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// use pyo3::{Python, PyErr, exceptions::PyTypeError, types::PyType};</span>
-    <span class="doccomment">/// Python::with_gil(|py| {</span>
-    <span class="doccomment">///     let err = PyTypeError::new_err((&quot;some type error&quot;,));</span>
-    <span class="doccomment">///     let err_clone = err.clone_ref(py);</span>
-    <span class="doccomment">///     assert_eq!(err.ptype(py), err_clone.ptype(py));</span>
-    <span class="doccomment">///     assert_eq!(err.pvalue(py), err_clone.pvalue(py));</span>
-    <span class="doccomment">///     assert_eq!(err.ptraceback(py), err_clone.ptraceback(py));</span>
-    <span class="doccomment">/// });</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clone_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">py</span>: <span class="ident">Python</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyErr</span> {
-        <span class="ident">PyErr::from_state</span>(<span class="ident">PyErrState::Normalized</span>(<span class="self">self</span>.<span class="ident">normalized</span>(<span class="ident">py</span>).<span class="ident">clone</span>()))
+    <span class="doccomment">/// Clone the PyErr. This requires the GIL, which is why PyErr does not implement Clone.
+    ///
+    /// # Examples
+    /// ```rust
+    /// use pyo3::{exceptions::PyTypeError, PyErr, Python};
+    /// Python::with_gil(|py| {
+    ///     let err: PyErr = PyTypeError::new_err((&quot;some type error&quot;,));
+    ///     let err_clone = err.clone_ref(py);
+    ///     assert!(err.get_type(py).is(err_clone.get_type(py)));
+    ///     assert!(err.value(py).is(err_clone.value(py)));
+    ///     match err.traceback(py) {
+    ///         None =&gt; assert!(err_clone.traceback(py).is_none()),
+    ///         Some(tb) =&gt; assert!(err_clone.traceback(py).unwrap().is(tb)),
+    ///     }
+    /// });
+    /// ```
+    </span><span class="attribute">#[inline]</span>
+    <span class="kw">pub fn </span>clone_ref(<span class="kw-2">&amp;</span><span class="self">self</span>, py: Python&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; PyErr {
+        PyErr::from_state(PyErrState::Normalized(<span class="self">self</span>.normalized(py).clone()))
     }
 
-    <span class="doccomment">/// Return the cause (either an exception instance, or None, set by `raise ... from ...`)</span>
-    <span class="doccomment">/// associated with the exception, as accessible from Python through `__cause__`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cause</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">py</span>: <span class="ident">Python</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PyErr</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">ffi::PyException_GetCause</span>(<span class="self">self</span>.<span class="ident">pvalue</span>(<span class="ident">py</span>).<span class="ident">as_ptr</span>()) };
-        <span class="kw">let</span> <span class="ident">obj</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">py</span>.<span class="ident">from_owned_ptr_or_opt</span>::<span class="op">&lt;</span><span class="ident">PyAny</span><span class="op">&gt;</span>(<span class="ident">ptr</span>) };
-        <span class="ident">obj</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident"><span class="self">Self</span>::from_instance</span>(<span class="ident">x</span>))
+    <span class="doccomment">/// Return the cause (either an exception instance, or None, set by `raise ... from ...`)
+    /// associated with the exception, as accessible from Python through `__cause__`.
+    </span><span class="kw">pub fn </span>cause(<span class="kw-2">&amp;</span><span class="self">self</span>, py: Python&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;PyErr&gt; {
+        <span class="kw">let </span>ptr = <span class="kw">unsafe </span>{ ffi::PyException_GetCause(<span class="self">self</span>.value(py).as_ptr()) };
+        <span class="kw">let </span>obj = <span class="kw">unsafe </span>{ py.from_owned_ptr_or_opt::&lt;PyAny&gt;(ptr) };
+        obj.map(<span class="self">Self</span>::from_value)
     }
 
-    <span class="doccomment">/// Set the cause associated with the exception, pass `None` to clear it.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_cause</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">py</span>: <span class="ident">Python</span>, <span class="ident">cause</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>) {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">cause</span>) <span class="op">=</span> <span class="ident">cause</span> {
-            <span class="kw">let</span> <span class="ident">cause</span> <span class="op">=</span> <span class="ident">cause</span>.<span class="ident">into_instance</span>(<span class="ident">py</span>);
-            <span class="kw">unsafe</span> {
-                <span class="ident">ffi::PyException_SetCause</span>(<span class="self">self</span>.<span class="ident">pvalue</span>(<span class="ident">py</span>).<span class="ident">as_ptr</span>(), <span class="ident">cause</span>.<span class="ident">as_ptr</span>());
-            }
-        } <span class="kw">else</span> {
-            <span class="kw">unsafe</span> {
-                <span class="ident">ffi::PyException_SetCause</span>(<span class="self">self</span>.<span class="ident">pvalue</span>(<span class="ident">py</span>).<span class="ident">as_ptr</span>(), <span class="ident">std::ptr::null_mut</span>());
-            }
+    <span class="doccomment">/// Set the cause associated with the exception, pass `None` to clear it.
+    </span><span class="kw">pub fn </span>set_cause(<span class="kw-2">&amp;</span><span class="self">self</span>, py: Python&lt;<span class="lifetime">&#39;_</span>&gt;, cause: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;) {
+        <span class="kw">unsafe </span>{
+            <span class="comment">// PyException_SetCause _steals_ a reference to cause, so must use .into_ptr()
+            </span>ffi::PyException_SetCause(
+                <span class="self">self</span>.value(py).as_ptr(),
+                cause.map_or(std::ptr::null_mut(), |err| err.into_value(py).into_ptr()),
+            );
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">from_state</span>(<span class="ident">state</span>: <span class="ident">PyErrState</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyErr</span> {
-        <span class="ident">PyErr</span> {
-            <span class="ident">state</span>: <span class="ident">UnsafeCell::new</span>(<span class="prelude-val">Some</span>(<span class="ident">state</span>)),
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>write_unraisable(<span class="self">self</span>, py: Python&lt;<span class="lifetime">&#39;_</span>&gt;, context: PyObject) {
+        <span class="self">self</span>.restore(py);
+        <span class="kw">unsafe </span>{ ffi::PyErr_WriteUnraisable(context.as_ptr()) };
+    }
+
+    <span class="attribute">#[inline]</span>
+    <span class="kw">fn </span>from_state(state: PyErrState) -&gt; PyErr {
+        PyErr {
+            state: UnsafeCell::new(<span class="prelude-val">Some</span>(state)),
         }
     }
 
-    <span class="doccomment">/// Returns borrowed reference to this Err&#39;s type</span>
-    <span class="kw">fn</span> <span class="ident">ptype_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">py</span>: <span class="ident">Python</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyObject</span> {
-        <span class="kw">match</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">state</span>.<span class="ident">get</span>() } {
-            <span class="comment">// In lazy type case, normalize before returning ptype in case the type is not a valid</span>
-            <span class="comment">// exception type.</span>
-            <span class="prelude-val">Some</span>(<span class="ident">PyErrState::LazyTypeAndValue</span> { .. }) <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">normalized</span>(<span class="ident">py</span>).<span class="ident">ptype</span>.<span class="ident">as_ptr</span>(),
-            <span class="prelude-val">Some</span>(<span class="ident">PyErrState::LazyValue</span> { <span class="ident">ptype</span>, .. }) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ptype</span>.<span class="ident">as_ptr</span>(),
-            <span class="prelude-val">Some</span>(<span class="ident">PyErrState::FfiTuple</span> { <span class="ident">ptype</span>, .. }) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ptype</span>.<span class="ident">as_ptr</span>(),
-            <span class="prelude-val">Some</span>(<span class="ident">PyErrState::Normalized</span>(<span class="ident">n</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">n</span>.<span class="ident">ptype</span>.<span class="ident">as_ptr</span>(),
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Cannot access exception type while normalizing&quot;</span>),
+    <span class="doccomment">/// Returns borrowed reference to this Err&#39;s type
+    </span><span class="kw">fn </span>type_ptr(<span class="kw-2">&amp;</span><span class="self">self</span>, py: Python&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; <span class="kw-2">*mut </span>ffi::PyObject {
+        <span class="kw">match unsafe </span>{ <span class="kw-2">&amp;*</span><span class="self">self</span>.state.get() } {
+            <span class="comment">// In lazy type case, normalize before returning ptype in case the type is not a valid
+            // exception type.
+            </span><span class="prelude-val">Some</span>(PyErrState::LazyTypeAndValue { .. }) =&gt; <span class="self">self</span>.normalized(py).ptype.as_ptr(),
+            <span class="prelude-val">Some</span>(PyErrState::LazyValue { ptype, .. }) =&gt; ptype.as_ptr(),
+            <span class="prelude-val">Some</span>(PyErrState::FfiTuple { ptype, .. }) =&gt; ptype.as_ptr(),
+            <span class="prelude-val">Some</span>(PyErrState::Normalized(n)) =&gt; n.ptype.as_ptr(),
+            <span class="prelude-val">None </span>=&gt; <span class="macro">panic!</span>(<span class="string">&quot;Cannot access exception type while normalizing&quot;</span>),
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">normalized</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">py</span>: <span class="ident">Python</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">PyErrStateNormalized</span> {
-        <span class="comment">// This process is safe because:</span>
-        <span class="comment">// - Access is guaranteed not to be concurrent thanks to `Python` GIL token</span>
-        <span class="comment">// - Write happens only once, and then never will change again.</span>
-        <span class="comment">// - State is set to None during the normalization process, so that a second</span>
-        <span class="comment">//   concurrent normalization attempt will panic before changing anything.</span>
-
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">PyErrState::Normalized</span>(<span class="ident">n</span>)) <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">state</span>.<span class="ident">get</span>() } {
-            <span class="kw">return</span> <span class="ident">n</span>;
+    <span class="attribute">#[inline]</span>
+    <span class="kw">fn </span>normalized(<span class="kw-2">&amp;</span><span class="self">self</span>, py: Python&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; <span class="kw-2">&amp;</span>PyErrStateNormalized {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(PyErrState::Normalized(n)) = <span class="kw">unsafe </span>{
+            <span class="comment">// Safety: self.state will never be written again once normalized.
+            </span><span class="kw-2">&amp;*</span><span class="self">self</span>.state.get()
+        } {
+            <span class="kw">return </span>n;
         }
 
-        <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            (<span class="kw-2">*</span><span class="self">self</span>.<span class="ident">state</span>.<span class="ident">get</span>())
-                .<span class="ident">take</span>()
-                .<span class="ident">expect</span>(<span class="string">&quot;Cannot normalize a PyErr while already normalizing it.&quot;</span>)
+        <span class="self">self</span>.make_normalized(py)
+    }
+
+    <span class="attribute">#[cold]</span>
+    <span class="kw">fn </span>make_normalized(<span class="kw-2">&amp;</span><span class="self">self</span>, py: Python&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; <span class="kw-2">&amp;</span>PyErrStateNormalized {
+        <span class="comment">// This process is safe because:
+        // - Access is guaranteed not to be concurrent thanks to `Python` GIL token
+        // - Write happens only once, and then never will change again.
+        // - State is set to None during the normalization process, so that a second
+        //   concurrent normalization attempt will panic before changing anything.
+
+        </span><span class="kw">let </span>state = <span class="kw">unsafe </span>{
+            (<span class="kw-2">*</span><span class="self">self</span>.state.get())
+                .take()
+                .expect(<span class="string">&quot;Cannot normalize a PyErr while already normalizing it.&quot;</span>)
         };
-        <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">ptype</span>, <span class="kw-2">mut</span> <span class="ident">pvalue</span>, <span class="kw-2">mut</span> <span class="ident">ptraceback</span>) <span class="op">=</span> <span class="ident">state</span>.<span class="ident">into_ffi_tuple</span>(<span class="ident">py</span>);
+        <span class="kw">let </span>(<span class="kw-2">mut </span>ptype, <span class="kw-2">mut </span>pvalue, <span class="kw-2">mut </span>ptraceback) = state.into_ffi_tuple(py);
 
-        <span class="kw">unsafe</span> {
-            <span class="ident">ffi::PyErr_NormalizeException</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ptype</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">pvalue</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ptraceback</span>);
-            <span class="kw">let</span> <span class="ident">self_state</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">state</span>.<span class="ident">get</span>();
-            <span class="kw-2">*</span><span class="ident">self_state</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">PyErrState::Normalized</span>(<span class="ident">PyErrStateNormalized</span> {
-                <span class="ident">ptype</span>: <span class="ident">Py::from_owned_ptr_or_opt</span>(<span class="ident">py</span>, <span class="ident">ptype</span>).<span class="ident">expect</span>(<span class="string">&quot;Exception type missing&quot;</span>),
-                <span class="ident">pvalue</span>: <span class="ident">Py::from_owned_ptr_or_opt</span>(<span class="ident">py</span>, <span class="ident">pvalue</span>).<span class="ident">expect</span>(<span class="string">&quot;Exception value missing&quot;</span>),
-                <span class="ident">ptraceback</span>: <span class="ident">PyObject::from_owned_ptr_or_opt</span>(<span class="ident">py</span>, <span class="ident">ptraceback</span>),
+        <span class="kw">unsafe </span>{
+            ffi::PyErr_NormalizeException(<span class="kw-2">&amp;mut </span>ptype, <span class="kw-2">&amp;mut </span>pvalue, <span class="kw-2">&amp;mut </span>ptraceback);
+            <span class="kw">let </span>self_state = <span class="kw-2">&amp;mut *</span><span class="self">self</span>.state.get();
+            <span class="kw-2">*</span>self_state = <span class="prelude-val">Some</span>(PyErrState::Normalized(PyErrStateNormalized {
+                ptype: Py::from_owned_ptr_or_opt(py, ptype).expect(<span class="string">&quot;Exception type missing&quot;</span>),
+                pvalue: Py::from_owned_ptr_or_opt(py, pvalue).expect(<span class="string">&quot;Exception value missing&quot;</span>),
+                ptraceback: Py::from_owned_ptr_or_opt(py, ptraceback),
             }));
 
-            <span class="kw">match</span> <span class="ident">self_state</span> {
-                <span class="prelude-val">Some</span>(<span class="ident">PyErrState::Normalized</span>(<span class="ident">n</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">n</span>,
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+            <span class="kw">match </span>self_state {
+                <span class="prelude-val">Some</span>(PyErrState::Normalized(n)) =&gt; n,
+                <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
             }
         }
     }
+
+    <span class="doccomment">/// Deprecated name for [`PyErr::get_type`].
+    </span><span class="attribute">#[deprecated(
+        since = <span class="string">&quot;0.16.0&quot;</span>,
+        note = <span class="string">&quot;Use err.get_type(py) instead of err.ptype(py)&quot;
+    </span>)]</span>
+    <span class="kw">pub fn </span>ptype&lt;<span class="lifetime">&#39;py</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;py </span><span class="self">self</span>, py: Python&lt;<span class="lifetime">&#39;py</span>&gt;) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;py </span>PyType {
+        <span class="self">self</span>.get_type(py)
+    }
+
+    <span class="doccomment">/// Deprecated name for [`PyErr::value`].
+    </span><span class="attribute">#[deprecated(since = <span class="string">&quot;0.16.0&quot;</span>, note = <span class="string">&quot;Use err.value(py) instead of err.pvalue(py)&quot;</span>)]</span>
+    <span class="kw">pub fn </span>pvalue&lt;<span class="lifetime">&#39;py</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;py </span><span class="self">self</span>, py: Python&lt;<span class="lifetime">&#39;py</span>&gt;) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;py </span>PyBaseException {
+        <span class="self">self</span>.value(py)
+    }
+
+    <span class="doccomment">/// Deprecated name for [`PyErr::traceback`].
+    </span><span class="attribute">#[deprecated(
+        since = <span class="string">&quot;0.16.0&quot;</span>,
+        note = <span class="string">&quot;Use err.traceback(py) instead of err.ptraceback(py)&quot;
+    </span>)]</span>
+    <span class="kw">pub fn </span>ptraceback&lt;<span class="lifetime">&#39;py</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;py </span><span class="self">self</span>, py: Python&lt;<span class="lifetime">&#39;py</span>&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;py </span>PyTraceback&gt; {
+        <span class="self">self</span>.traceback(py)
+    }
+
+    <span class="doccomment">/// Deprecated name for [`PyErr::value`].
+    </span><span class="attribute">#[deprecated(
+        since = <span class="string">&quot;0.16.0&quot;</span>,
+        note = <span class="string">&quot;Use err.value(py) instead of err.instance(py)&quot;
+    </span>)]</span>
+    <span class="kw">pub fn </span>instance&lt;<span class="lifetime">&#39;py</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;py </span><span class="self">self</span>, py: Python&lt;<span class="lifetime">&#39;py</span>&gt;) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;py </span>PyBaseException {
+        <span class="self">self</span>.value(py)
+    }
+
+    <span class="doccomment">/// Deprecated name for [`PyErr::from_value`].
+    </span><span class="attribute">#[deprecated(
+        since = <span class="string">&quot;0.16.0&quot;</span>,
+        note = <span class="string">&quot;Use err.from_value(py, obj) instead of err.from_instance(py, obj)&quot;
+    </span>)]</span>
+    <span class="kw">pub fn </span>from_instance(value: <span class="kw-2">&amp;</span>PyAny) -&gt; PyErr {
+        PyErr::from_value(value)
+    }
+
+    <span class="doccomment">/// Deprecated name for [`PyErr::into_value`].
+    </span><span class="attribute">#[deprecated(
+        since = <span class="string">&quot;0.16.0&quot;</span>,
+        note = <span class="string">&quot;Use err.into_value(py) instead of err.into_instance(py)&quot;
+    </span>)]</span>
+    <span class="kw">pub fn </span>into_instance(<span class="self">self</span>, py: Python&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Py&lt;PyBaseException&gt; {
+        <span class="self">self</span>.into_value(py)
+    }
 }
 
-<span class="kw">impl</span> <span class="ident">std::fmt::Debug</span> <span class="kw">for</span> <span class="ident">PyErr</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std::fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">std::fmt::Error</span><span class="op">&gt;</span> {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;PyErr&quot;</span>)
-                .<span class="ident">field</span>(<span class="string">&quot;type&quot;</span>, <span class="self">self</span>.<span class="ident">ptype</span>(<span class="ident">py</span>))
-                .<span class="ident">field</span>(<span class="string">&quot;value&quot;</span>, <span class="self">self</span>.<span class="ident">pvalue</span>(<span class="ident">py</span>))
-                .<span class="ident">field</span>(<span class="string">&quot;traceback&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">ptraceback</span>(<span class="ident">py</span>))
-                .<span class="ident">finish</span>()
+<span class="kw">impl </span>std::fmt::Debug <span class="kw">for </span>PyErr {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), std::fmt::Error&gt; {
+        Python::with_gil(|py| {
+            f.debug_struct(<span class="string">&quot;PyErr&quot;</span>)
+                .field(<span class="string">&quot;type&quot;</span>, <span class="self">self</span>.get_type(py))
+                .field(<span class="string">&quot;value&quot;</span>, <span class="self">self</span>.value(py))
+                .field(<span class="string">&quot;traceback&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.traceback(py))
+                .finish()
         })
     }
 }
 
-<span class="kw">impl</span> <span class="ident">std::fmt::Display</span> <span class="kw">for</span> <span class="ident">PyErr</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std::fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std::fmt::Result</span> {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">instance</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">instance</span>(<span class="ident">py</span>);
-            <span class="kw">let</span> <span class="ident">type_name</span> <span class="op">=</span> <span class="ident">instance</span>.<span class="ident">get_type</span>().<span class="ident">name</span>().<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">std::fmt::Error</span>)<span class="question-mark">?</span>;
-            <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">type_name</span>)<span class="question-mark">?</span>;
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">s</span>) <span class="op">=</span> <span class="ident">instance</span>.<span class="ident">str</span>() {
-                <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;: {}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">s</span>.<span class="ident">to_string_lossy</span>())
-            } <span class="kw">else</span> {
-                <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;: &lt;exception str() failed&gt;&quot;</span>)
+<span class="kw">impl </span>std::fmt::Display <span class="kw">for </span>PyErr {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
+        Python::with_gil(|py| {
+            <span class="kw">let </span>value = <span class="self">self</span>.value(py);
+            <span class="kw">let </span>type_name = value.get_type().name().map_err(|<span class="kw">_</span>| std::fmt::Error)<span class="question-mark">?</span>;
+            <span class="macro">write!</span>(f, <span class="string">&quot;{}&quot;</span>, type_name)<span class="question-mark">?</span>;
+            <span class="kw">if let </span><span class="prelude-val">Ok</span>(s) = value.str() {
+                <span class="macro">write!</span>(f, <span class="string">&quot;: {}&quot;</span>, <span class="kw-2">&amp;</span>s.to_string_lossy())
+            } <span class="kw">else </span>{
+                <span class="macro">write!</span>(f, <span class="string">&quot;: &lt;exception str() failed&gt;&quot;</span>)
             }
         })
     }
 }
 
-<span class="kw">impl</span> <span class="ident">std::error::Error</span> <span class="kw">for</span> <span class="ident">PyErr</span> {}
+<span class="kw">impl </span>std::error::Error <span class="kw">for </span>PyErr {}
 
-<span class="kw">impl</span> <span class="ident">IntoPy</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PyErr</span> {
-    <span class="kw">fn</span> <span class="ident">into_py</span>(<span class="self">self</span>, <span class="ident">py</span>: <span class="ident">Python</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyObject</span> {
-        <span class="self">self</span>.<span class="ident">into_instance</span>(<span class="ident">py</span>).<span class="ident">into</span>()
+<span class="kw">impl </span>IntoPy&lt;PyObject&gt; <span class="kw">for </span>PyErr {
+    <span class="kw">fn </span>into_py(<span class="self">self</span>, py: Python&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; PyObject {
+        <span class="self">self</span>.into_value(py).into()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">ToPyObject</span> <span class="kw">for</span> <span class="ident">PyErr</span> {
-    <span class="kw">fn</span> <span class="ident">to_object</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">py</span>: <span class="ident">Python</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyObject</span> {
-        <span class="self">self</span>.<span class="ident">clone_ref</span>(<span class="ident">py</span>).<span class="ident">into_py</span>(<span class="ident">py</span>)
+<span class="kw">impl </span>ToPyObject <span class="kw">for </span>PyErr {
+    <span class="kw">fn </span>to_object(<span class="kw-2">&amp;</span><span class="self">self</span>, py: Python&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; PyObject {
+        <span class="self">self</span>.clone_ref(py).into_py(py)
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">IntoPy</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">PyErr</span> {
-    <span class="kw">fn</span> <span class="ident">into_py</span>(<span class="self">self</span>, <span class="ident">py</span>: <span class="ident">Python</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyObject</span> {
-        <span class="self">self</span>.<span class="ident">clone_ref</span>(<span class="ident">py</span>).<span class="ident">into_py</span>(<span class="ident">py</span>)
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; IntoPy&lt;PyObject&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>PyErr {
+    <span class="kw">fn </span>into_py(<span class="self">self</span>, py: Python&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; PyObject {
+        <span class="self">self</span>.clone_ref(py).into_py(py)
     }
 }
 
-<span class="doccomment">/// Convert `PyDowncastError` to Python `TypeError`.</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">std::convert::From</span><span class="op">&lt;</span><span class="ident">PyDowncastError</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PyErr</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">err</span>: <span class="ident">PyDowncastError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyErr</span> {
-        <span class="ident">exceptions::PyTypeError::new_err</span>(<span class="ident">err</span>.<span class="ident">to_string</span>())
-    }
+<span class="kw">struct </span>PyDowncastErrorArguments {
+    from: Py&lt;PyType&gt;,
+    to: Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">std::error::Error</span> <span class="kw">for</span> <span class="ident">PyDowncastError</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">std::fmt::Display</span> <span class="kw">for</span> <span class="ident">PyDowncastError</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std::fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">std::fmt::Error</span><span class="op">&gt;</span> {
-        <span class="macro">write!</span>(
-            <span class="ident">f</span>,
+<span class="kw">impl </span>PyErrArguments <span class="kw">for </span>PyDowncastErrorArguments {
+    <span class="kw">fn </span>arguments(<span class="self">self</span>, py: Python&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; PyObject {
+        <span class="macro">format!</span>(
             <span class="string">&quot;&#39;{}&#39; object cannot be converted to &#39;{}&#39;&quot;</span>,
-            <span class="self">self</span>.<span class="ident">from</span>.<span class="ident">get_type</span>().<span class="ident">name</span>().<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">std::fmt::Error</span>)<span class="question-mark">?</span>,
-            <span class="self">self</span>.<span class="ident">to</span>
+            <span class="self">self</span>.from
+                .as_ref(py)
+                .name()
+                .unwrap_or(<span class="string">&quot;&lt;failed to extract type name&gt;&quot;</span>),
+            <span class="self">self</span>.to
+        )
+        .to_object(py)
+    }
+}
+
+<span class="doccomment">/// Convert `PyDowncastError` to Python `TypeError`.
+</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; std::convert::From&lt;PyDowncastError&lt;<span class="lifetime">&#39;a</span>&gt;&gt; <span class="kw">for </span>PyErr {
+    <span class="kw">fn </span>from(err: PyDowncastError&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; PyErr {
+        <span class="kw">let </span>args = PyDowncastErrorArguments {
+            from: err.from.get_type().into(),
+            to: err.to,
+        };
+
+        exceptions::PyTypeError::new_err(args)
+    }
+}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; std::error::Error <span class="kw">for </span>PyDowncastError&lt;<span class="lifetime">&#39;a</span>&gt; {}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; std::fmt::Display <span class="kw">for </span>PyDowncastError&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), std::fmt::Error&gt; {
+        <span class="macro">write!</span>(
+            f,
+            <span class="string">&quot;&#39;{}&#39; object cannot be converted to &#39;{}&#39;&quot;</span>,
+            <span class="self">self</span>.from.get_type().name().map_err(|<span class="kw">_</span>| std::fmt::Error)<span class="question-mark">?</span>,
+            <span class="self">self</span>.to
         )
     }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">panic_after_error</span>(<span class="ident">_py</span>: <span class="ident">Python</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
-    <span class="kw">unsafe</span> {
-        <span class="ident">ffi::PyErr_Print</span>();
+<span class="kw">pub fn </span>panic_after_error(_py: Python&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; ! {
+    <span class="kw">unsafe </span>{
+        ffi::PyErr_Print();
     }
     <span class="macro">panic!</span>(<span class="string">&quot;Python API call failed&quot;</span>);
 }
 
-<span class="doccomment">/// Returns Ok if the error code is not -1.</span>
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">error_on_minusone</span>(<span class="ident">py</span>: <span class="ident">Python</span>, <span class="ident">result</span>: <span class="ident">c_int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-    <span class="kw">if</span> <span class="ident">result</span> <span class="op">!</span><span class="op">=</span> <span class="op">-</span><span class="number">1</span> {
+<span class="doccomment">/// Returns Ok if the error code is not -1.
+</span><span class="attribute">#[inline]</span>
+<span class="kw">pub fn </span>error_on_minusone(py: Python&lt;<span class="lifetime">&#39;_</span>&gt;, result: c_int) -&gt; PyResult&lt;()&gt; {
+    <span class="kw">if </span>result != -<span class="number">1 </span>{
         <span class="prelude-val">Ok</span>(())
-    } <span class="kw">else</span> {
-        <span class="prelude-val">Err</span>(<span class="ident">PyErr::api_call_failed</span>(<span class="ident">py</span>))
+    } <span class="kw">else </span>{
+        <span class="prelude-val">Err</span>(PyErr::fetch(py))
     }
 }
 
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">fn</span> <span class="ident">exceptions_must_derive_from_base_exception</span>(<span class="ident">py</span>: <span class="ident">Python</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyErr</span> {
-    <span class="ident">PyErr::from_state</span>(<span class="ident">PyErrState::exceptions_must_derive_from_base_exception</span>(<span class="ident">py</span>))
+<span class="attribute">#[inline]</span>
+<span class="kw">fn </span>exceptions_must_derive_from_base_exception(py: Python&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; PyErr {
+    PyErr::from_state(PyErrState::exceptions_must_derive_from_base_exception(py))
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::PyErrState</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::exceptions</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">PyErr</span>, <span class="ident">Python</span>};
+<span class="attribute">#[cfg(test)]</span>
+<span class="kw">mod </span>tests {
+    <span class="kw">use </span><span class="kw">super</span>::PyErrState;
+    <span class="kw">use </span><span class="kw">crate</span>::exceptions;
+    <span class="kw">use crate</span>::{AsPyPointer, PyErr, Python};
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">no_error</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="macro">assert!</span>(<span class="ident">PyErr::fetch</span>(<span class="ident">py</span>).<span class="ident">is_none</span>());
-        });
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>no_error() {
+        <span class="macro">assert!</span>(Python::with_gil(PyErr::take).is_none());
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">set_valueerror</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">err</span>: <span class="ident">PyErr</span> <span class="op">=</span> <span class="ident">exceptions::PyValueError::new_err</span>(<span class="string">&quot;some exception message&quot;</span>);
-            <span class="macro">assert!</span>(<span class="ident">err</span>.<span class="ident">is_instance</span>::<span class="op">&lt;</span><span class="ident">exceptions::PyValueError</span><span class="op">&gt;</span>(<span class="ident">py</span>));
-            <span class="ident">err</span>.<span class="ident">restore</span>(<span class="ident">py</span>);
-            <span class="macro">assert!</span>(<span class="ident">PyErr::occurred</span>(<span class="ident">py</span>));
-            <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="ident">PyErr::fetch</span>(<span class="ident">py</span>).<span class="ident">unwrap</span>();
-            <span class="macro">assert!</span>(<span class="ident">err</span>.<span class="ident">is_instance</span>::<span class="op">&lt;</span><span class="ident">exceptions::PyValueError</span><span class="op">&gt;</span>(<span class="ident">py</span>));
-            <span class="macro">assert_eq!</span>(<span class="ident">err</span>.<span class="ident">to_string</span>(), <span class="string">&quot;ValueError: some exception message&quot;</span>);
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>set_valueerror() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span>err: PyErr = exceptions::PyValueError::new_err(<span class="string">&quot;some exception message&quot;</span>);
+            <span class="macro">assert!</span>(err.is_instance_of::&lt;exceptions::PyValueError&gt;(py));
+            err.restore(py);
+            <span class="macro">assert!</span>(PyErr::occurred(py));
+            <span class="kw">let </span>err = PyErr::fetch(py);
+            <span class="macro">assert!</span>(err.is_instance_of::&lt;exceptions::PyValueError&gt;(py));
+            <span class="macro">assert_eq!</span>(err.to_string(), <span class="string">&quot;ValueError: some exception message&quot;</span>);
         })
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">invalid_error_type</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">err</span>: <span class="ident">PyErr</span> <span class="op">=</span> <span class="ident">PyErr::new</span>::<span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::types::PyString</span>, <span class="kw">_</span><span class="op">&gt;</span>(());
-            <span class="macro">assert!</span>(<span class="ident">err</span>.<span class="ident">is_instance</span>::<span class="op">&lt;</span><span class="ident">exceptions::PyTypeError</span><span class="op">&gt;</span>(<span class="ident">py</span>));
-            <span class="ident">err</span>.<span class="ident">restore</span>(<span class="ident">py</span>);
-            <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="ident">PyErr::fetch</span>(<span class="ident">py</span>).<span class="ident">unwrap</span>();
-            <span class="macro">assert!</span>(<span class="ident">err</span>.<span class="ident">is_instance</span>::<span class="op">&lt;</span><span class="ident">exceptions::PyTypeError</span><span class="op">&gt;</span>(<span class="ident">py</span>));
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>invalid_error_type() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span>err: PyErr = PyErr::new::&lt;<span class="kw">crate</span>::types::PyString, <span class="kw">_</span>&gt;(());
+            <span class="macro">assert!</span>(err.is_instance_of::&lt;exceptions::PyTypeError&gt;(py));
+            err.restore(py);
+            <span class="kw">let </span>err = PyErr::fetch(py);
+            <span class="macro">assert!</span>(err.is_instance_of::&lt;exceptions::PyTypeError&gt;(py));
             <span class="macro">assert_eq!</span>(
-                <span class="ident">err</span>.<span class="ident">to_string</span>(),
-                <span class="string">&quot;TypeError: exceptions must derive from BaseException&quot;</span>
-            );
+                err.to_string(),
+                <span class="string">&quot;TypeError: exceptions must derive from BaseException&quot;
+            </span>);
         })
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">set_typeerror</span>() {
-        <span class="kw">let</span> <span class="ident">gil</span> <span class="op">=</span> <span class="ident">Python::acquire_gil</span>();
-        <span class="kw">let</span> <span class="ident">py</span> <span class="op">=</span> <span class="ident">gil</span>.<span class="ident">python</span>();
-        <span class="kw">let</span> <span class="ident">err</span>: <span class="ident">PyErr</span> <span class="op">=</span> <span class="ident">exceptions::PyTypeError::new_err</span>(());
-        <span class="ident">err</span>.<span class="ident">restore</span>(<span class="ident">py</span>);
-        <span class="macro">assert!</span>(<span class="ident">PyErr::occurred</span>(<span class="ident">py</span>));
-        <span class="ident">drop</span>(<span class="ident">PyErr::fetch</span>(<span class="ident">py</span>));
-    }
-
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="attribute">#[<span class="ident">should_panic</span>(<span class="ident">expected</span> <span class="op">=</span> <span class="string">&quot;new panic&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">fetching_panic_exception_resumes_unwind</span>() {
-        <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::panic::PanicException</span>;
-
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">err</span>: <span class="ident">PyErr</span> <span class="op">=</span> <span class="ident">PanicException::new_err</span>(<span class="string">&quot;new panic&quot;</span>);
-            <span class="ident">err</span>.<span class="ident">restore</span>(<span class="ident">py</span>);
-            <span class="macro">assert!</span>(<span class="ident">PyErr::occurred</span>(<span class="ident">py</span>));
-
-            <span class="comment">// should resume unwind</span>
-            <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">PyErr::fetch</span>(<span class="ident">py</span>);
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>set_typeerror() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span>err: PyErr = exceptions::PyTypeError::new_err(());
+            err.restore(py);
+            <span class="macro">assert!</span>(PyErr::occurred(py));
+            drop(PyErr::fetch(py));
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">err_debug</span>() {
-        <span class="comment">// Debug representation should be like the following (without the newlines):</span>
-        <span class="comment">// PyErr {</span>
-        <span class="comment">//     type: &lt;class &#39;Exception&#39;&gt;,</span>
-        <span class="comment">//     value: Exception(&#39;banana&#39;),</span>
-        <span class="comment">//     traceback: Some(&lt;traceback object at 0x..)&quot;</span>
-        <span class="comment">// }</span>
+    <span class="attribute">#[test]</span>
+    <span class="attribute">#[should_panic(expected = <span class="string">&quot;new panic&quot;</span>)]</span>
+    <span class="kw">fn </span>fetching_panic_exception_resumes_unwind() {
+        <span class="kw">use </span><span class="kw">crate</span>::panic::PanicException;
 
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="ident">py</span>
-                .<span class="ident">run</span>(<span class="string">&quot;raise Exception(&#39;banana&#39;)&quot;</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>)
-                .<span class="ident">expect_err</span>(<span class="string">&quot;raising should have given us an error&quot;</span>);
+        Python::with_gil(|py| {
+            <span class="kw">let </span>err: PyErr = PanicException::new_err(<span class="string">&quot;new panic&quot;</span>);
+            err.restore(py);
+            <span class="macro">assert!</span>(PyErr::occurred(py));
 
-            <span class="kw">let</span> <span class="ident">debug_str</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">err</span>);
-            <span class="macro">assert!</span>(<span class="ident">debug_str</span>.<span class="ident">starts_with</span>(<span class="string">&quot;PyErr { &quot;</span>));
-            <span class="macro">assert!</span>(<span class="ident">debug_str</span>.<span class="ident">ends_with</span>(<span class="string">&quot; }&quot;</span>));
-
-            <span class="comment">// strip &quot;PyErr { &quot; and &quot; }&quot;</span>
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">fields</span> <span class="op">=</span> <span class="ident">debug_str</span>[<span class="string">&quot;PyErr { &quot;</span>.<span class="ident">len</span>()..<span class="ident">debug_str</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="number">2</span>].<span class="ident">split</span>(<span class="string">&quot;, &quot;</span>);
-
-            <span class="macro">assert_eq!</span>(<span class="ident">fields</span>.<span class="ident">next</span>().<span class="ident">unwrap</span>(), <span class="string">&quot;type: &lt;class &#39;Exception&#39;&gt;&quot;</span>);
-            <span class="kw">if</span> <span class="ident">py</span>.<span class="ident">version_info</span>() <span class="op">&gt;</span><span class="op">=</span> (<span class="number">3</span>, <span class="number">7</span>) {
-                <span class="macro">assert_eq!</span>(<span class="ident">fields</span>.<span class="ident">next</span>().<span class="ident">unwrap</span>(), <span class="string">&quot;value: Exception(&#39;banana&#39;)&quot;</span>);
-            } <span class="kw">else</span> {
-                <span class="comment">// Python 3.6 and below formats the repr differently</span>
-                <span class="macro">assert_eq!</span>(<span class="ident">fields</span>.<span class="ident">next</span>().<span class="ident">unwrap</span>(), (<span class="string">&quot;value: Exception(&#39;banana&#39;,)&quot;</span>));
-            }
-
-            <span class="kw">let</span> <span class="ident">traceback</span> <span class="op">=</span> <span class="ident">fields</span>.<span class="ident">next</span>().<span class="ident">unwrap</span>();
-            <span class="macro">assert!</span>(<span class="ident">traceback</span>.<span class="ident">starts_with</span>(<span class="string">&quot;traceback: Some(&lt;traceback object at 0x&quot;</span>));
-            <span class="macro">assert!</span>(<span class="ident">traceback</span>.<span class="ident">ends_with</span>(<span class="string">&quot;&gt;)&quot;</span>));
-
-            <span class="macro">assert!</span>(<span class="ident">fields</span>.<span class="ident">next</span>().<span class="ident">is_none</span>());
+            <span class="comment">// should resume unwind
+            </span><span class="kw">let _ </span>= PyErr::fetch(py);
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">err_display</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="ident">py</span>
-                .<span class="ident">run</span>(<span class="string">&quot;raise Exception(&#39;banana&#39;)&quot;</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>)
-                .<span class="ident">expect_err</span>(<span class="string">&quot;raising should have given us an error&quot;</span>);
-            <span class="macro">assert_eq!</span>(<span class="ident">err</span>.<span class="ident">to_string</span>(), <span class="string">&quot;Exception: banana&quot;</span>);
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>err_debug() {
+        <span class="comment">// Debug representation should be like the following (without the newlines):
+        // PyErr {
+        //     type: &lt;class &#39;Exception&#39;&gt;,
+        //     value: Exception(&#39;banana&#39;),
+        //     traceback: Some(&lt;traceback object at 0x..)&quot;
+        // }
+
+        </span>Python::with_gil(|py| {
+            <span class="kw">let </span>err = py
+                .run(<span class="string">&quot;raise Exception(&#39;banana&#39;)&quot;</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>)
+                .expect_err(<span class="string">&quot;raising should have given us an error&quot;</span>);
+
+            <span class="kw">let </span>debug_str = <span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, err);
+            <span class="macro">assert!</span>(debug_str.starts_with(<span class="string">&quot;PyErr { &quot;</span>));
+            <span class="macro">assert!</span>(debug_str.ends_with(<span class="string">&quot; }&quot;</span>));
+
+            <span class="comment">// strip &quot;PyErr { &quot; and &quot; }&quot;
+            </span><span class="kw">let </span><span class="kw-2">mut </span>fields = debug_str[<span class="string">&quot;PyErr { &quot;</span>.len()..debug_str.len() - <span class="number">2</span>].split(<span class="string">&quot;, &quot;</span>);
+
+            <span class="macro">assert_eq!</span>(fields.next().unwrap(), <span class="string">&quot;type: &lt;class &#39;Exception&#39;&gt;&quot;</span>);
+            <span class="macro">assert_eq!</span>(fields.next().unwrap(), <span class="string">&quot;value: Exception(&#39;banana&#39;)&quot;</span>);
+
+            <span class="kw">let </span>traceback = fields.next().unwrap();
+            <span class="macro">assert!</span>(traceback.starts_with(<span class="string">&quot;traceback: Some(&lt;traceback object at 0x&quot;</span>));
+            <span class="macro">assert!</span>(traceback.ends_with(<span class="string">&quot;&gt;)&quot;</span>));
+
+            <span class="macro">assert!</span>(fields.next().is_none());
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_pyerr_send_sync</span>() {
-        <span class="kw">fn</span> <span class="ident">is_send</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Send</span><span class="op">&gt;</span>() {}
-        <span class="kw">fn</span> <span class="ident">is_sync</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Sync</span><span class="op">&gt;</span>() {}
-
-        <span class="ident">is_send</span>::<span class="op">&lt;</span><span class="ident">PyErr</span><span class="op">&gt;</span>();
-        <span class="ident">is_sync</span>::<span class="op">&lt;</span><span class="ident">PyErr</span><span class="op">&gt;</span>();
-
-        <span class="ident">is_send</span>::<span class="op">&lt;</span><span class="ident">PyErrState</span><span class="op">&gt;</span>();
-        <span class="ident">is_sync</span>::<span class="op">&lt;</span><span class="ident">PyErrState</span><span class="op">&gt;</span>();
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>err_display() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span>err = py
+                .run(<span class="string">&quot;raise Exception(&#39;banana&#39;)&quot;</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>)
+                .expect_err(<span class="string">&quot;raising should have given us an error&quot;</span>);
+            <span class="macro">assert_eq!</span>(err.to_string(), <span class="string">&quot;Exception: banana&quot;</span>);
+        });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_pyerr_cause</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="ident">py</span>
-                .<span class="ident">run</span>(<span class="string">&quot;raise Exception(&#39;banana&#39;)&quot;</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>)
-                .<span class="ident">expect_err</span>(<span class="string">&quot;raising should have given us an error&quot;</span>);
-            <span class="macro">assert!</span>(<span class="ident">err</span>.<span class="ident">cause</span>(<span class="ident">py</span>).<span class="ident">is_none</span>());
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_pyerr_send_sync() {
+        <span class="kw">fn </span>is_send&lt;T: Send&gt;() {}
+        <span class="kw">fn </span>is_sync&lt;T: Sync&gt;() {}
 
-            <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="ident">py</span>
-                .<span class="ident">run</span>(
+        is_send::&lt;PyErr&gt;();
+        is_sync::&lt;PyErr&gt;();
+
+        is_send::&lt;PyErrState&gt;();
+        is_sync::&lt;PyErrState&gt;();
+    }
+
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_pyerr_cause() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span>err = py
+                .run(<span class="string">&quot;raise Exception(&#39;banana&#39;)&quot;</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>)
+                .expect_err(<span class="string">&quot;raising should have given us an error&quot;</span>);
+            <span class="macro">assert!</span>(err.cause(py).is_none());
+
+            <span class="kw">let </span>err = py
+                .run(
                     <span class="string">&quot;raise Exception(&#39;banana&#39;) from Exception(&#39;apple&#39;)&quot;</span>,
                     <span class="prelude-val">None</span>,
                     <span class="prelude-val">None</span>,
                 )
-                .<span class="ident">expect_err</span>(<span class="string">&quot;raising should have given us an error&quot;</span>);
-            <span class="kw">let</span> <span class="ident">cause</span> <span class="op">=</span> <span class="ident">err</span>
-                .<span class="ident">cause</span>(<span class="ident">py</span>)
-                .<span class="ident">expect</span>(<span class="string">&quot;raising from should have given us a cause&quot;</span>);
-            <span class="macro">assert_eq!</span>(<span class="ident">cause</span>.<span class="ident">to_string</span>(), <span class="string">&quot;Exception: apple&quot;</span>);
+                .expect_err(<span class="string">&quot;raising should have given us an error&quot;</span>);
+            <span class="kw">let </span>cause = err
+                .cause(py)
+                .expect(<span class="string">&quot;raising from should have given us a cause&quot;</span>);
+            <span class="macro">assert_eq!</span>(cause.to_string(), <span class="string">&quot;Exception: apple&quot;</span>);
 
-            <span class="ident">err</span>.<span class="ident">set_cause</span>(<span class="ident">py</span>, <span class="prelude-val">None</span>);
-            <span class="macro">assert!</span>(<span class="ident">err</span>.<span class="ident">cause</span>(<span class="ident">py</span>).<span class="ident">is_none</span>());
+            err.set_cause(py, <span class="prelude-val">None</span>);
+            <span class="macro">assert!</span>(err.cause(py).is_none());
 
-            <span class="kw">let</span> <span class="ident">new_cause</span> <span class="op">=</span> <span class="ident">exceptions::PyValueError::new_err</span>(<span class="string">&quot;orange&quot;</span>);
-            <span class="ident">err</span>.<span class="ident">set_cause</span>(<span class="ident">py</span>, <span class="prelude-val">Some</span>(<span class="ident">new_cause</span>));
-            <span class="kw">let</span> <span class="ident">cause</span> <span class="op">=</span> <span class="ident">err</span>
-                .<span class="ident">cause</span>(<span class="ident">py</span>)
-                .<span class="ident">expect</span>(<span class="string">&quot;set_cause should have given us a cause&quot;</span>);
-            <span class="macro">assert_eq!</span>(<span class="ident">cause</span>.<span class="ident">to_string</span>(), <span class="string">&quot;ValueError: orange&quot;</span>);
+            <span class="kw">let </span>new_cause = exceptions::PyValueError::new_err(<span class="string">&quot;orange&quot;</span>);
+            err.set_cause(py, <span class="prelude-val">Some</span>(new_cause));
+            <span class="kw">let </span>cause = err
+                .cause(py)
+                .expect(<span class="string">&quot;set_cause should have given us a cause&quot;</span>);
+            <span class="macro">assert_eq!</span>(cause.to_string(), <span class="string">&quot;ValueError: orange&quot;</span>);
+        });
+    }
+
+    <span class="attribute">#[allow(deprecated)]</span>
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>deprecations() {
+        <span class="kw">let </span>err = exceptions::PyValueError::new_err(<span class="string">&quot;an error&quot;</span>);
+        Python::with_gil(|py| {
+            <span class="macro">assert_eq!</span>(err.ptype(py).as_ptr(), err.get_type(py).as_ptr());
+            <span class="macro">assert_eq!</span>(err.pvalue(py).as_ptr(), err.value(py).as_ptr());
+            <span class="macro">assert_eq!</span>(err.instance(py).as_ptr(), err.value(py).as_ptr());
+            <span class="macro">assert_eq!</span>(
+                err.ptraceback(py).map(|t| t.as_ptr()),
+                err.traceback(py).map(|t| t.as_ptr())
+            );
+
+            <span class="macro">assert_eq!</span>(
+                err.clone_ref(py).into_instance(py).as_ref(py).as_ptr(),
+                err.value(py).as_ptr()
+            );
+            <span class="macro">assert_eq!</span>(
+                PyErr::from_instance(err.value(py)).value(py).as_ptr(),
+                err.value(py).as_ptr()
+            );
         });
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="pyo3" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
-    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="pyo3" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0-nightly (40336865f 2022-08-15)" ></div></body></html>

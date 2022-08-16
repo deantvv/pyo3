@@ -1,102 +1,102 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src&#x2F;types&#x2F;dict.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>dict.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../pyo3/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/types/dict.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>dict.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><script defer src="../../../scrape-examples.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../pyo3/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../pyo3/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../pyo3/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -763,772 +763,1328 @@
 <span id="763">763</span>
 <span id="764">764</span>
 <span id="765">765</span>
-</pre><pre class="rust"><code><span class="comment">// Copyright (c) 2017-present PyO3 Project and Contributors</span>
+<span id="766">766</span>
+<span id="767">767</span>
+<span id="768">768</span>
+<span id="769">769</span>
+<span id="770">770</span>
+<span id="771">771</span>
+<span id="772">772</span>
+<span id="773">773</span>
+<span id="774">774</span>
+<span id="775">775</span>
+<span id="776">776</span>
+<span id="777">777</span>
+<span id="778">778</span>
+<span id="779">779</span>
+<span id="780">780</span>
+<span id="781">781</span>
+<span id="782">782</span>
+<span id="783">783</span>
+<span id="784">784</span>
+<span id="785">785</span>
+<span id="786">786</span>
+<span id="787">787</span>
+<span id="788">788</span>
+<span id="789">789</span>
+<span id="790">790</span>
+<span id="791">791</span>
+<span id="792">792</span>
+<span id="793">793</span>
+<span id="794">794</span>
+<span id="795">795</span>
+<span id="796">796</span>
+<span id="797">797</span>
+<span id="798">798</span>
+<span id="799">799</span>
+<span id="800">800</span>
+<span id="801">801</span>
+<span id="802">802</span>
+<span id="803">803</span>
+<span id="804">804</span>
+<span id="805">805</span>
+<span id="806">806</span>
+<span id="807">807</span>
+<span id="808">808</span>
+<span id="809">809</span>
+<span id="810">810</span>
+<span id="811">811</span>
+<span id="812">812</span>
+<span id="813">813</span>
+<span id="814">814</span>
+<span id="815">815</span>
+<span id="816">816</span>
+<span id="817">817</span>
+<span id="818">818</span>
+<span id="819">819</span>
+<span id="820">820</span>
+<span id="821">821</span>
+<span id="822">822</span>
+<span id="823">823</span>
+<span id="824">824</span>
+<span id="825">825</span>
+<span id="826">826</span>
+<span id="827">827</span>
+<span id="828">828</span>
+<span id="829">829</span>
+<span id="830">830</span>
+<span id="831">831</span>
+<span id="832">832</span>
+<span id="833">833</span>
+<span id="834">834</span>
+<span id="835">835</span>
+<span id="836">836</span>
+<span id="837">837</span>
+<span id="838">838</span>
+<span id="839">839</span>
+<span id="840">840</span>
+<span id="841">841</span>
+<span id="842">842</span>
+<span id="843">843</span>
+<span id="844">844</span>
+<span id="845">845</span>
+<span id="846">846</span>
+<span id="847">847</span>
+<span id="848">848</span>
+<span id="849">849</span>
+<span id="850">850</span>
+<span id="851">851</span>
+<span id="852">852</span>
+<span id="853">853</span>
+<span id="854">854</span>
+<span id="855">855</span>
+<span id="856">856</span>
+<span id="857">857</span>
+<span id="858">858</span>
+<span id="859">859</span>
+<span id="860">860</span>
+<span id="861">861</span>
+<span id="862">862</span>
+<span id="863">863</span>
+<span id="864">864</span>
+<span id="865">865</span>
+<span id="866">866</span>
+<span id="867">867</span>
+<span id="868">868</span>
+<span id="869">869</span>
+<span id="870">870</span>
+<span id="871">871</span>
+<span id="872">872</span>
+<span id="873">873</span>
+<span id="874">874</span>
+<span id="875">875</span>
+<span id="876">876</span>
+<span id="877">877</span>
+<span id="878">878</span>
+<span id="879">879</span>
+<span id="880">880</span>
+<span id="881">881</span>
+<span id="882">882</span>
+<span id="883">883</span>
+<span id="884">884</span>
+<span id="885">885</span>
+<span id="886">886</span>
+<span id="887">887</span>
+<span id="888">888</span>
+<span id="889">889</span>
+<span id="890">890</span>
+<span id="891">891</span>
+<span id="892">892</span>
+<span id="893">893</span>
+<span id="894">894</span>
+<span id="895">895</span>
+<span id="896">896</span>
+<span id="897">897</span>
+<span id="898">898</span>
+<span id="899">899</span>
+<span id="900">900</span>
+<span id="901">901</span>
+<span id="902">902</span>
+<span id="903">903</span>
+<span id="904">904</span>
+<span id="905">905</span>
+<span id="906">906</span>
+<span id="907">907</span>
+<span id="908">908</span>
+<span id="909">909</span>
+<span id="910">910</span>
+<span id="911">911</span>
+<span id="912">912</span>
+<span id="913">913</span>
+<span id="914">914</span>
+<span id="915">915</span>
+<span id="916">916</span>
+<span id="917">917</span>
+<span id="918">918</span>
+<span id="919">919</span>
+<span id="920">920</span>
+<span id="921">921</span>
+<span id="922">922</span>
+<span id="923">923</span>
+<span id="924">924</span>
+<span id="925">925</span>
+<span id="926">926</span>
+<span id="927">927</span>
+<span id="928">928</span>
+<span id="929">929</span>
+<span id="930">930</span>
+<span id="931">931</span>
+<span id="932">932</span>
+<span id="933">933</span>
+<span id="934">934</span>
+<span id="935">935</span>
+<span id="936">936</span>
+<span id="937">937</span>
+<span id="938">938</span>
+<span id="939">939</span>
+<span id="940">940</span>
+<span id="941">941</span>
+<span id="942">942</span>
+<span id="943">943</span>
+<span id="944">944</span>
+<span id="945">945</span>
+<span id="946">946</span>
+<span id="947">947</span>
+<span id="948">948</span>
+<span id="949">949</span>
+<span id="950">950</span>
+<span id="951">951</span>
+<span id="952">952</span>
+<span id="953">953</span>
+<span id="954">954</span>
+<span id="955">955</span>
+<span id="956">956</span>
+<span id="957">957</span>
+<span id="958">958</span>
+<span id="959">959</span>
+<span id="960">960</span>
+<span id="961">961</span>
+<span id="962">962</span>
+<span id="963">963</span>
+<span id="964">964</span>
+<span id="965">965</span>
+<span id="966">966</span>
+<span id="967">967</span>
+<span id="968">968</span>
+<span id="969">969</span>
+<span id="970">970</span>
+<span id="971">971</span>
+<span id="972">972</span>
+<span id="973">973</span>
+<span id="974">974</span>
+<span id="975">975</span>
+<span id="976">976</span>
+<span id="977">977</span>
+<span id="978">978</span>
+<span id="979">979</span>
+<span id="980">980</span>
+<span id="981">981</span>
+<span id="982">982</span>
+<span id="983">983</span>
+<span id="984">984</span>
+<span id="985">985</span>
+<span id="986">986</span>
+<span id="987">987</span>
+<span id="988">988</span>
+<span id="989">989</span>
+<span id="990">990</span>
+<span id="991">991</span>
+<span id="992">992</span>
+<span id="993">993</span>
+<span id="994">994</span>
+<span id="995">995</span>
+<span id="996">996</span>
+<span id="997">997</span>
+<span id="998">998</span>
+<span id="999">999</span>
+<span id="1000">1000</span>
+<span id="1001">1001</span>
+<span id="1002">1002</span>
+<span id="1003">1003</span>
+<span id="1004">1004</span>
+<span id="1005">1005</span>
+<span id="1006">1006</span>
+<span id="1007">1007</span>
+<span id="1008">1008</span>
+<span id="1009">1009</span>
+<span id="1010">1010</span>
+<span id="1011">1011</span>
+<span id="1012">1012</span>
+<span id="1013">1013</span>
+<span id="1014">1014</span>
+<span id="1015">1015</span>
+<span id="1016">1016</span>
+<span id="1017">1017</span>
+<span id="1018">1018</span>
+<span id="1019">1019</span>
+<span id="1020">1020</span>
+<span id="1021">1021</span>
+<span id="1022">1022</span>
+<span id="1023">1023</span>
+<span id="1024">1024</span>
+<span id="1025">1025</span>
+<span id="1026">1026</span>
+<span id="1027">1027</span>
+<span id="1028">1028</span>
+<span id="1029">1029</span>
+<span id="1030">1030</span>
+<span id="1031">1031</span>
+<span id="1032">1032</span>
+<span id="1033">1033</span>
+<span id="1034">1034</span>
+<span id="1035">1035</span>
+<span id="1036">1036</span>
+<span id="1037">1037</span>
+<span id="1038">1038</span>
+<span id="1039">1039</span>
+<span id="1040">1040</span>
+<span id="1041">1041</span>
+<span id="1042">1042</span>
+<span id="1043">1043</span>
+<span id="1044">1044</span>
+</pre><pre class="rust"><code><span class="comment">// Copyright (c) 2017-present PyO3 Project and Contributors
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::err</span>::{<span class="self">self</span>, <span class="ident">PyErr</span>, <span class="ident">PyResult</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::types</span>::{<span class="ident">PyAny</span>, <span class="ident">PyList</span>};
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">PyPy</span>))]</span>
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::IntoPyPointer</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">ffi</span>, <span class="ident">AsPyPointer</span>, <span class="ident">FromPyObject</span>, <span class="ident">IntoPy</span>, <span class="ident">PyObject</span>, <span class="ident">PyTryFrom</span>, <span class="ident">Python</span>, <span class="ident">ToBorrowedObject</span>,
-    <span class="ident">ToPyObject</span>,
-};
-<span class="kw">use</span> <span class="ident">std::collections</span>::{<span class="ident">BTreeMap</span>, <span class="ident">HashMap</span>};
-<span class="kw">use</span> <span class="ident">std::ptr::NonNull</span>;
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">cmp</span>, <span class="ident">collections</span>, <span class="ident">hash</span>};
+</span><span class="kw">use </span><span class="kw">super</span>::PyMapping;
+<span class="kw">use </span><span class="kw">crate</span>::err::{<span class="self">self</span>, PyErr, PyResult};
+<span class="kw">use </span><span class="kw">crate</span>::ffi::Py_ssize_t;
+<span class="kw">use </span><span class="kw">crate</span>::types::{PyAny, PyList};
+<span class="attribute">#[cfg(not(PyPy))]</span>
+<span class="kw">use </span><span class="kw">crate</span>::IntoPyPointer;
+<span class="kw">use crate</span>::{ffi, AsPyPointer, FromPyObject, IntoPy, PyObject, PyTryFrom, Python, ToPyObject};
+<span class="kw">use </span>std::collections::{BTreeMap, HashMap};
+<span class="kw">use </span>std::ptr::NonNull;
+<span class="kw">use </span>std::{cmp, collections, hash};
 
-<span class="doccomment">/// Represents a Python `dict`.</span>
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PyDict</span>(<span class="ident">PyAny</span>);
+<span class="doccomment">/// Represents a Python `dict`.
+</span><span class="attribute">#[repr(transparent)]</span>
+<span class="kw">pub struct </span>PyDict(PyAny);
 
 <span class="macro">pyobject_native_type!</span>(
-    <span class="ident">PyDict</span>,
-    <span class="ident">ffi::PyDictObject</span>,
-    <span class="ident">ffi::PyDict_Type</span>,
-    #<span class="ident">checkfunction</span><span class="op">=</span><span class="ident">ffi::PyDict_Check</span>
+    PyDict,
+    ffi::PyDictObject,
+    ffi::PyDict_Type,
+    #checkfunction=ffi::PyDict_Check
 );
 
-<span class="kw">impl</span> <span class="ident">PyDict</span> {
-    <span class="doccomment">/// Creates a new empty dictionary.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">py</span>: <span class="ident">Python</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">PyDict</span> {
-        <span class="kw">unsafe</span> { <span class="ident">py</span>.<span class="ident">from_owned_ptr</span>::<span class="op">&lt;</span><span class="ident">PyDict</span><span class="op">&gt;</span>(<span class="ident">ffi::PyDict_New</span>()) }
+<span class="doccomment">/// Represents a Python `dict_keys`.
+</span><span class="attribute">#[cfg(not(PyPy))]</span>
+<span class="attribute">#[repr(transparent)]</span>
+<span class="kw">pub struct </span>PyDictKeys(PyAny);
+
+<span class="attribute">#[cfg(not(PyPy))]</span>
+<span class="macro">pyobject_native_type_core!</span>(
+    PyDictKeys,
+    ffi::PyDictKeys_Type,
+    #checkfunction=ffi::PyDictKeys_Check
+);
+
+<span class="doccomment">/// Represents a Python `dict_values`.
+</span><span class="attribute">#[cfg(not(PyPy))]</span>
+<span class="attribute">#[repr(transparent)]</span>
+<span class="kw">pub struct </span>PyDictValues(PyAny);
+
+<span class="attribute">#[cfg(not(PyPy))]</span>
+<span class="macro">pyobject_native_type_core!</span>(
+    PyDictValues,
+    ffi::PyDictValues_Type,
+    #checkfunction=ffi::PyDictValues_Check
+);
+
+<span class="doccomment">/// Represents a Python `dict_items`.
+</span><span class="attribute">#[cfg(not(PyPy))]</span>
+<span class="attribute">#[repr(transparent)]</span>
+<span class="kw">pub struct </span>PyDictItems(PyAny);
+
+<span class="attribute">#[cfg(not(PyPy))]</span>
+<span class="macro">pyobject_native_type_core!</span>(
+    PyDictItems,
+    ffi::PyDictItems_Type,
+    #checkfunction=ffi::PyDictItems_Check
+);
+
+<span class="kw">impl </span>PyDict {
+    <span class="doccomment">/// Creates a new empty dictionary.
+    </span><span class="kw">pub fn </span>new(py: Python&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; <span class="kw-2">&amp;</span>PyDict {
+        <span class="kw">unsafe </span>{ py.from_owned_ptr::&lt;PyDict&gt;(ffi::PyDict_New()) }
     }
 
-    <span class="doccomment">/// Creates a new dictionary from the sequence given.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The sequence must consist of `(PyObject, PyObject)`. This is</span>
-    <span class="doccomment">/// equivalent to `dict([(&quot;a&quot;, 1), (&quot;b&quot;, 2)])`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns an error on invalid input. In the case of key collisions,</span>
-    <span class="doccomment">/// this keeps the last entry seen.</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">PyPy</span>))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">docsrs</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">PyPy</span>))))]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_sequence</span>(<span class="ident">py</span>: <span class="ident">Python</span>, <span class="ident">seq</span>: <span class="ident">PyObject</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">PyDict</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">dict</span> <span class="op">=</span> <span class="ident">py</span>.<span class="ident">from_owned_ptr</span>::<span class="op">&lt;</span><span class="ident">PyDict</span><span class="op">&gt;</span>(<span class="ident">ffi::PyDict_New</span>());
-            <span class="ident">err::error_on_minusone</span>(
-                <span class="ident">py</span>,
-                <span class="ident">ffi::PyDict_MergeFromSeq2</span>(<span class="ident">dict</span>.<span class="ident">into_ptr</span>(), <span class="ident">seq</span>.<span class="ident">into_ptr</span>(), <span class="number">1</span>),
+    <span class="doccomment">/// Creates a new dictionary from the sequence given.
+    ///
+    /// The sequence must consist of `(PyObject, PyObject)`. This is
+    /// equivalent to `dict([(&quot;a&quot;, 1), (&quot;b&quot;, 2)])`.
+    ///
+    /// Returns an error on invalid input. In the case of key collisions,
+    /// this keeps the last entry seen.
+    </span><span class="attribute">#[cfg(not(PyPy))]</span>
+    <span class="kw">pub fn </span>from_sequence(py: Python&lt;<span class="lifetime">&#39;_</span>&gt;, seq: PyObject) -&gt; PyResult&lt;<span class="kw-2">&amp;</span>PyDict&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>dict = py.from_owned_ptr::&lt;PyDict&gt;(ffi::PyDict_New());
+            err::error_on_minusone(
+                py,
+                ffi::PyDict_MergeFromSeq2(dict.into_ptr(), seq.into_ptr(), <span class="number">1</span>),
             )<span class="question-mark">?</span>;
-            <span class="prelude-val">Ok</span>(<span class="ident">dict</span>)
+            <span class="prelude-val">Ok</span>(dict)
         }
     }
 
-    <span class="doccomment">/// Returns a new dictionary that contains the same key-value pairs as self.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python expression `self.copy()`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">copy</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">PyDict</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">py</span>()
-                .<span class="ident">from_owned_ptr_or_err</span>::<span class="op">&lt;</span><span class="ident">PyDict</span><span class="op">&gt;</span>(<span class="ident">ffi::PyDict_Copy</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>()))
+    <span class="doccomment">/// Returns a new dictionary that contains the same key-value pairs as self.
+    ///
+    /// This is equivalent to the Python expression `self.copy()`.
+    </span><span class="kw">pub fn </span>copy(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PyResult&lt;<span class="kw-2">&amp;</span>PyDict&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.py()
+                .from_owned_ptr_or_err::&lt;PyDict&gt;(ffi::PyDict_Copy(<span class="self">self</span>.as_ptr()))
         }
     }
 
-    <span class="doccomment">/// Empties an existing dictionary of all key-value pairs.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clear</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">ffi::PyDict_Clear</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>()) }
+    <span class="doccomment">/// Empties an existing dictionary of all key-value pairs.
+    </span><span class="kw">pub fn </span>clear(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ ffi::PyDict_Clear(<span class="self">self</span>.as_ptr()) }
     }
 
-    <span class="doccomment">/// Return the number of items in the dictionary.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python expression `len(self)`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
-        <span class="kw">unsafe</span> { <span class="ident">ffi::PyDict_Size</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>()) <span class="kw">as</span> <span class="ident">usize</span> }
+    <span class="doccomment">/// Return the number of items in the dictionary.
+    ///
+    /// This is equivalent to the Python expression `len(self)`.
+    </span><span class="kw">pub fn </span>len(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="self">self</span>._len() <span class="kw">as </span>usize
     }
 
-    <span class="doccomment">/// Checks if the dict is empty, i.e. `len(self) == 0`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_empty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="number">0</span>
+    <span class="kw">fn </span>_len(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Py_ssize_t {
+        <span class="attribute">#[cfg(any(not(Py_3_8), PyPy, Py_LIMITED_API))]</span>
+        <span class="kw">unsafe </span>{
+            ffi::PyDict_Size(<span class="self">self</span>.as_ptr())
+        }
+
+        <span class="attribute">#[cfg(all(Py_3_8, not(PyPy), not(Py_LIMITED_API)))]</span>
+        <span class="kw">unsafe </span>{
+            (<span class="kw-2">*</span><span class="self">self</span>.as_ptr().cast::&lt;ffi::PyDictObject&gt;()).ma_used
+        }
     }
 
-    <span class="doccomment">/// Determines if the dictionary contains the specified key.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python expression `key in self`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contains</span><span class="op">&lt;</span><span class="ident">K</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="ident">K</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">K</span>: <span class="ident">ToBorrowedObject</span>,
+    <span class="doccomment">/// Checks if the dict is empty, i.e. `len(self) == 0`.
+    </span><span class="kw">pub fn </span>is_empty(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.len() == <span class="number">0
+    </span>}
+
+    <span class="doccomment">/// Determines if the dictionary contains the specified key.
+    ///
+    /// This is equivalent to the Python expression `key in self`.
+    </span><span class="kw">pub fn </span>contains&lt;K&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: K) -&gt; PyResult&lt;bool&gt;
+    <span class="kw">where
+        </span>K: ToPyObject,
     {
-        <span class="ident">key</span>.<span class="ident">with_borrowed_ptr</span>(<span class="self">self</span>.<span class="ident">py</span>(), <span class="op">|</span><span class="ident">key</span><span class="op">|</span> <span class="kw">unsafe</span> {
-            <span class="kw">match</span> <span class="ident">ffi::PyDict_Contains</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">key</span>) {
-                <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="bool-val">true</span>),
-                <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="bool-val">false</span>),
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">PyErr::api_call_failed</span>(<span class="self">self</span>.<span class="ident">py</span>())),
-            }
-        })
-    }
-
-    <span class="doccomment">/// Gets an item from the dictionary.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `None` if the item is not present, or if an error occurs.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// To get a `KeyError` for non-existing keys, use `PyAny::get_item`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_item</span><span class="op">&lt;</span><span class="ident">K</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="ident">K</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">PyAny</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">K</span>: <span class="ident">ToBorrowedObject</span>,
-    {
-        <span class="ident">key</span>.<span class="ident">with_borrowed_ptr</span>(<span class="self">self</span>.<span class="ident">py</span>(), <span class="op">|</span><span class="ident">key</span><span class="op">|</span> <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">ffi::PyDict_GetItem</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">key</span>);
-            <span class="ident">NonNull::new</span>(<span class="ident">ptr</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> {
-                <span class="comment">// PyDict_GetItem return s borrowed ptr, must make it owned for safety (see #890).</span>
-                <span class="ident">ffi::Py_INCREF</span>(<span class="ident">p</span>.<span class="ident">as_ptr</span>());
-                <span class="self">self</span>.<span class="ident">py</span>().<span class="ident">from_owned_ptr</span>(<span class="ident">p</span>.<span class="ident">as_ptr</span>())
-            })
-        })
-    }
-
-    <span class="doccomment">/// Sets an item value.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python statement `self[key] = value`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_item</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">V</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="ident">K</span>, <span class="ident">value</span>: <span class="ident">V</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">K</span>: <span class="ident">ToPyObject</span>,
-        <span class="ident">V</span>: <span class="ident">ToPyObject</span>,
-    {
-        <span class="ident">key</span>.<span class="ident">with_borrowed_ptr</span>(<span class="self">self</span>.<span class="ident">py</span>(), <span class="kw">move</span> <span class="op">|</span><span class="ident">key</span><span class="op">|</span> {
-            <span class="ident">value</span>.<span class="ident">with_borrowed_ptr</span>(<span class="self">self</span>.<span class="ident">py</span>(), <span class="op">|</span><span class="ident">value</span><span class="op">|</span> <span class="kw">unsafe</span> {
-                <span class="ident">err::error_on_minusone</span>(<span class="self">self</span>.<span class="ident">py</span>(), <span class="ident">ffi::PyDict_SetItem</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">key</span>, <span class="ident">value</span>))
-            })
-        })
-    }
-
-    <span class="doccomment">/// Deletes an item.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python statement `del self[key]`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">del_item</span><span class="op">&lt;</span><span class="ident">K</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="ident">K</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">K</span>: <span class="ident">ToBorrowedObject</span>,
-    {
-        <span class="ident">key</span>.<span class="ident">with_borrowed_ptr</span>(<span class="self">self</span>.<span class="ident">py</span>(), <span class="op">|</span><span class="ident">key</span><span class="op">|</span> <span class="kw">unsafe</span> {
-            <span class="ident">err::error_on_minusone</span>(<span class="self">self</span>.<span class="ident">py</span>(), <span class="ident">ffi::PyDict_DelItem</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">key</span>))
-        })
-    }
-
-    <span class="doccomment">/// Returns a list of dict keys.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python expression `list(dict.keys())`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">keys</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">PyList</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">py</span>()
-                .<span class="ident">from_owned_ptr</span>::<span class="op">&lt;</span><span class="ident">PyList</span><span class="op">&gt;</span>(<span class="ident">ffi::PyDict_Keys</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>()))
-        }
-    }
-
-    <span class="doccomment">/// Returns a list of dict values.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python expression `list(dict.values())`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">values</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">PyList</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">py</span>()
-                .<span class="ident">from_owned_ptr</span>::<span class="op">&lt;</span><span class="ident">PyList</span><span class="op">&gt;</span>(<span class="ident">ffi::PyDict_Values</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>()))
-        }
-    }
-
-    <span class="doccomment">/// Returns a list of dict items.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python expression `list(dict.items())`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">items</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">PyList</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">py</span>()
-                .<span class="ident">from_owned_ptr</span>::<span class="op">&lt;</span><span class="ident">PyList</span><span class="op">&gt;</span>(<span class="ident">ffi::PyDict_Items</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>()))
-        }
-    }
-
-    <span class="doccomment">/// Returns an iterator of `(key, value)` pairs in this dictionary.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Note that it&#39;s unsafe to use when the dictionary might be changed by</span>
-    <span class="doccomment">/// other code.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">iter</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyDictIterator</span> {
-        <span class="ident">PyDictIterator</span> {
-            <span class="ident">dict</span>: <span class="self">self</span>.<span class="ident">as_ref</span>(),
-            <span class="ident">pos</span>: <span class="number">0</span>,
-        }
-    }
-}
-
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PyDictIterator</span><span class="op">&lt;</span><span class="lifetime">&#39;py</span><span class="op">&gt;</span> {
-    <span class="ident">dict</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;py</span> <span class="ident">PyAny</span>,
-    <span class="ident">pos</span>: <span class="ident">isize</span>,
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;py</span><span class="op">&gt;</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">PyDictIterator</span><span class="op">&lt;</span><span class="lifetime">&#39;py</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> (<span class="kw-2">&amp;</span><span class="lifetime">&#39;py</span> <span class="ident">PyAny</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;py</span> <span class="ident">PyAny</span>);
-
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">key</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyObject</span> <span class="op">=</span> <span class="ident">std::ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">value</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyObject</span> <span class="op">=</span> <span class="ident">std::ptr::null_mut</span>();
-            <span class="kw">if</span> <span class="ident">ffi::PyDict_Next</span>(<span class="self">self</span>.<span class="ident">dict</span>.<span class="ident">as_ptr</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">pos</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">key</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">value</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-                <span class="kw">let</span> <span class="ident">py</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">dict</span>.<span class="ident">py</span>();
-                <span class="comment">// PyDict_Next returns borrowed values; for safety must make them owned (see #890)</span>
-                <span class="ident">ffi::Py_INCREF</span>(<span class="ident">key</span>);
-                <span class="ident">ffi::Py_INCREF</span>(<span class="ident">value</span>);
-                <span class="prelude-val">Some</span>((<span class="ident">py</span>.<span class="ident">from_owned_ptr</span>(<span class="ident">key</span>), <span class="ident">py</span>.<span class="ident">from_owned_ptr</span>(<span class="ident">value</span>)))
-            } <span class="kw">else</span> {
-                <span class="prelude-val">None</span>
+        <span class="kw">unsafe </span>{
+            <span class="kw">match </span>ffi::PyDict_Contains(<span class="self">self</span>.as_ptr(), key.to_object(<span class="self">self</span>.py()).as_ptr()) {
+                <span class="number">1 </span>=&gt; <span class="prelude-val">Ok</span>(<span class="bool-val">true</span>),
+                <span class="number">0 </span>=&gt; <span class="prelude-val">Ok</span>(<span class="bool-val">false</span>),
+                <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(PyErr::fetch(<span class="self">self</span>.py())),
             }
         }
     }
 
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
-        <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">dict</span>.<span class="ident">len</span>().<span class="ident">unwrap_or_default</span>();
-        (
-            <span class="ident">len</span>.<span class="ident">saturating_sub</span>(<span class="self">self</span>.<span class="ident">pos</span> <span class="kw">as</span> <span class="ident">usize</span>),
-            <span class="prelude-val">Some</span>(<span class="ident">len</span>.<span class="ident">saturating_sub</span>(<span class="self">self</span>.<span class="ident">pos</span> <span class="kw">as</span> <span class="ident">usize</span>)),
-        )
-    }
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">std::iter::IntoIterator</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">PyDict</span> {
-    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> (<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">PyAny</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">PyAny</span>);
-    <span class="kw">type</span> <span class="ident">IntoIter</span> <span class="op">=</span> <span class="ident">PyDictIterator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>;
-
-    <span class="kw">fn</span> <span class="ident">into_iter</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::IntoIter</span> {
-        <span class="self">self</span>.<span class="ident">iter</span>()
-    }
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">V</span>, <span class="ident">H</span><span class="op">&gt;</span> <span class="ident">ToPyObject</span> <span class="kw">for</span> <span class="ident">collections::HashMap</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">V</span>, <span class="ident">H</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">K</span>: <span class="ident">hash::Hash</span> <span class="op">+</span> <span class="ident">cmp::Eq</span> <span class="op">+</span> <span class="ident">ToPyObject</span>,
-    <span class="ident">V</span>: <span class="ident">ToPyObject</span>,
-    <span class="ident">H</span>: <span class="ident">hash::BuildHasher</span>,
-{
-    <span class="kw">fn</span> <span class="ident">to_object</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">py</span>: <span class="ident">Python</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyObject</span> {
-        <span class="ident">IntoPyDict::into_py_dict</span>(<span class="self">self</span>, <span class="ident">py</span>).<span class="ident">into</span>()
-    }
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">V</span><span class="op">&gt;</span> <span class="ident">ToPyObject</span> <span class="kw">for</span> <span class="ident">collections::BTreeMap</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">V</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">K</span>: <span class="ident">cmp::Eq</span> <span class="op">+</span> <span class="ident">ToPyObject</span>,
-    <span class="ident">V</span>: <span class="ident">ToPyObject</span>,
-{
-    <span class="kw">fn</span> <span class="ident">to_object</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">py</span>: <span class="ident">Python</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyObject</span> {
-        <span class="ident">IntoPyDict::into_py_dict</span>(<span class="self">self</span>, <span class="ident">py</span>).<span class="ident">into</span>()
-    }
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">V</span>, <span class="ident">H</span><span class="op">&gt;</span> <span class="ident">IntoPy</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">collections::HashMap</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">V</span>, <span class="ident">H</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">K</span>: <span class="ident">hash::Hash</span> <span class="op">+</span> <span class="ident">cmp::Eq</span> <span class="op">+</span> <span class="ident">IntoPy</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>,
-    <span class="ident">V</span>: <span class="ident">IntoPy</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>,
-    <span class="ident">H</span>: <span class="ident">hash::BuildHasher</span>,
-{
-    <span class="kw">fn</span> <span class="ident">into_py</span>(<span class="self">self</span>, <span class="ident">py</span>: <span class="ident">Python</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyObject</span> {
-        <span class="kw">let</span> <span class="ident">iter</span> <span class="op">=</span> <span class="self">self</span>
-            .<span class="ident">into_iter</span>()
-            .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">k</span>, <span class="ident">v</span>)<span class="op">|</span> (<span class="ident">k</span>.<span class="ident">into_py</span>(<span class="ident">py</span>), <span class="ident">v</span>.<span class="ident">into_py</span>(<span class="ident">py</span>)));
-        <span class="ident">IntoPyDict::into_py_dict</span>(<span class="ident">iter</span>, <span class="ident">py</span>).<span class="ident">into</span>()
-    }
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">V</span><span class="op">&gt;</span> <span class="ident">IntoPy</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">collections::BTreeMap</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">V</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">K</span>: <span class="ident">cmp::Eq</span> <span class="op">+</span> <span class="ident">IntoPy</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>,
-    <span class="ident">V</span>: <span class="ident">IntoPy</span><span class="op">&lt;</span><span class="ident">PyObject</span><span class="op">&gt;</span>,
-{
-    <span class="kw">fn</span> <span class="ident">into_py</span>(<span class="self">self</span>, <span class="ident">py</span>: <span class="ident">Python</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyObject</span> {
-        <span class="kw">let</span> <span class="ident">iter</span> <span class="op">=</span> <span class="self">self</span>
-            .<span class="ident">into_iter</span>()
-            .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">k</span>, <span class="ident">v</span>)<span class="op">|</span> (<span class="ident">k</span>.<span class="ident">into_py</span>(<span class="ident">py</span>), <span class="ident">v</span>.<span class="ident">into_py</span>(<span class="ident">py</span>)));
-        <span class="ident">IntoPyDict::into_py_dict</span>(<span class="ident">iter</span>, <span class="ident">py</span>).<span class="ident">into</span>()
-    }
-}
-
-<span class="doccomment">/// Conversion trait that allows a sequence of tuples to be converted into `PyDict`</span>
-<span class="doccomment">/// Primary use case for this trait is `call` and `call_method` methods as keywords argument.</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">IntoPyDict</span> {
-    <span class="doccomment">/// Converts self into a `PyDict` object pointer. Whether pointer owned or borrowed</span>
-    <span class="doccomment">/// depends on implementation.</span>
-    <span class="kw">fn</span> <span class="ident">into_py_dict</span>(<span class="self">self</span>, <span class="ident">py</span>: <span class="ident">Python</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">PyDict</span>;
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span> <span class="ident">IntoPyDict</span> <span class="kw">for</span> <span class="ident">I</span>
-<span class="kw">where</span>
-    <span class="ident">T</span>: <span class="ident">PyDictItem</span>,
-    <span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">T</span><span class="op">&gt;</span>,
-{
-    <span class="kw">fn</span> <span class="ident">into_py_dict</span>(<span class="self">self</span>, <span class="ident">py</span>: <span class="ident">Python</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">PyDict</span> {
-        <span class="kw">let</span> <span class="ident">dict</span> <span class="op">=</span> <span class="ident">PyDict::new</span>(<span class="ident">py</span>);
-        <span class="kw">for</span> <span class="ident">item</span> <span class="kw">in</span> <span class="self">self</span> {
-            <span class="ident">dict</span>.<span class="ident">set_item</span>(<span class="ident">item</span>.<span class="ident">key</span>(), <span class="ident">item</span>.<span class="ident">value</span>())
-                .<span class="ident">expect</span>(<span class="string">&quot;Failed to set_item on dict&quot;</span>);
+    <span class="doccomment">/// Gets an item from the dictionary.
+    ///
+    /// Returns `None` if the item is not present, or if an error occurs.
+    ///
+    /// To get a `KeyError` for non-existing keys, use `PyAny::get_item`.
+    </span><span class="kw">pub fn </span>get_item&lt;K&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: K) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>PyAny&gt;
+    <span class="kw">where
+        </span>K: ToPyObject,
+    {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>ptr = ffi::PyDict_GetItem(<span class="self">self</span>.as_ptr(), key.to_object(<span class="self">self</span>.py()).as_ptr());
+            NonNull::new(ptr).map(|p| {
+                <span class="comment">// PyDict_GetItem return s borrowed ptr, must make it owned for safety (see #890).
+                </span><span class="self">self</span>.py().from_owned_ptr(ffi::_Py_NewRef(p.as_ptr()))
+            })
         }
-        <span class="ident">dict</span>
     }
-}
 
-<span class="doccomment">/// Represents a tuple which can be used as a PyDict item.</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PyDictItem</span> {
-    <span class="kw">type</span> <span class="ident">K</span>: <span class="ident">ToPyObject</span>;
-    <span class="kw">type</span> <span class="ident">V</span>: <span class="ident">ToPyObject</span>;
-    <span class="kw">fn</span> <span class="ident">key</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::K</span>;
-    <span class="kw">fn</span> <span class="ident">value</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::V</span>;
-}
+    <span class="doccomment">/// Gets an item from the dictionary,
+    ///
+    /// returns `Ok(None)` if item is not present, or `Err(PyErr)` if an error occurs.
+    ///
+    /// To get a `KeyError` for non-existing keys, use `PyAny::get_item_with_error`.
+    </span><span class="attribute">#[cfg(not(PyPy))]</span>
+    <span class="kw">pub fn </span>get_item_with_error&lt;K&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: K) -&gt; PyResult&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>PyAny&gt;&gt;
+    <span class="kw">where
+        </span>K: ToPyObject,
+    {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>ptr =
+                ffi::PyDict_GetItemWithError(<span class="self">self</span>.as_ptr(), key.to_object(<span class="self">self</span>.py()).as_ptr());
+            <span class="kw">if </span>!ffi::PyErr_Occurred().is_null() {
+                <span class="kw">return </span><span class="prelude-val">Err</span>(PyErr::fetch(<span class="self">self</span>.py()));
+            }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">V</span><span class="op">&gt;</span> <span class="ident">PyDictItem</span> <span class="kw">for</span> (<span class="ident">K</span>, <span class="ident">V</span>)
-<span class="kw">where</span>
-    <span class="ident">K</span>: <span class="ident">ToPyObject</span>,
-    <span class="ident">V</span>: <span class="ident">ToPyObject</span>,
-{
-    <span class="kw">type</span> <span class="ident">K</span> <span class="op">=</span> <span class="ident">K</span>;
-    <span class="kw">type</span> <span class="ident">V</span> <span class="op">=</span> <span class="ident">V</span>;
-    <span class="kw">fn</span> <span class="ident">key</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::K</span> {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>
-    }
-    <span class="kw">fn</span> <span class="ident">value</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::V</span> {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">1</span>
-    }
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">V</span><span class="op">&gt;</span> <span class="ident">PyDictItem</span> <span class="kw">for</span> <span class="kw-2">&amp;</span>(<span class="ident">K</span>, <span class="ident">V</span>)
-<span class="kw">where</span>
-    <span class="ident">K</span>: <span class="ident">ToPyObject</span>,
-    <span class="ident">V</span>: <span class="ident">ToPyObject</span>,
-{
-    <span class="kw">type</span> <span class="ident">K</span> <span class="op">=</span> <span class="ident">K</span>;
-    <span class="kw">type</span> <span class="ident">V</span> <span class="op">=</span> <span class="ident">V</span>;
-    <span class="kw">fn</span> <span class="ident">key</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::K</span> {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>
-    }
-    <span class="kw">fn</span> <span class="ident">value</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::V</span> {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">1</span>
-    }
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;source</span>, <span class="ident">K</span>, <span class="ident">V</span>, <span class="ident">S</span><span class="op">&gt;</span> <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;source</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">V</span>, <span class="ident">S</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">K</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;source</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">cmp::Eq</span> <span class="op">+</span> <span class="ident">hash::Hash</span>,
-    <span class="ident">V</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;source</span><span class="op">&gt;</span>,
-    <span class="ident">S</span>: <span class="ident">hash::BuildHasher</span> <span class="op">+</span> <span class="ident">Default</span>,
-{
-    <span class="kw">fn</span> <span class="ident">extract</span>(<span class="ident">ob</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;source</span> <span class="ident">PyAny</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">PyErr</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">dict</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">PyDict</span> <span class="kw">as</span> <span class="ident">PyTryFrom</span><span class="op">&gt;</span><span class="ident">::try_from</span>(<span class="ident">ob</span>)<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">HashMap::with_capacity_and_hasher</span>(<span class="ident">dict</span>.<span class="ident">len</span>(), <span class="ident">S::default</span>());
-        <span class="kw">for</span> (<span class="ident">k</span>, <span class="ident">v</span>) <span class="kw">in</span> <span class="ident">dict</span>.<span class="ident">iter</span>() {
-            <span class="ident">ret</span>.<span class="ident">insert</span>(<span class="ident">K::extract</span>(<span class="ident">k</span>)<span class="question-mark">?</span>, <span class="ident">V::extract</span>(<span class="ident">v</span>)<span class="question-mark">?</span>);
+            <span class="prelude-val">Ok</span>(NonNull::new(ptr).map(|p| <span class="self">self</span>.py().from_owned_ptr(ffi::_Py_NewRef(p.as_ptr()))))
         }
-        <span class="prelude-val">Ok</span>(<span class="ident">ret</span>)
     }
-}
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;source</span>, <span class="ident">K</span>, <span class="ident">V</span><span class="op">&gt;</span> <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;source</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">BTreeMap</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">V</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">K</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;source</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">cmp::Ord</span>,
-    <span class="ident">V</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;source</span><span class="op">&gt;</span>,
-{
-    <span class="kw">fn</span> <span class="ident">extract</span>(<span class="ident">ob</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;source</span> <span class="ident">PyAny</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">PyErr</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">dict</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">PyDict</span> <span class="kw">as</span> <span class="ident">PyTryFrom</span><span class="op">&gt;</span><span class="ident">::try_from</span>(<span class="ident">ob</span>)<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">BTreeMap::new</span>();
-        <span class="kw">for</span> (<span class="ident">k</span>, <span class="ident">v</span>) <span class="kw">in</span> <span class="ident">dict</span>.<span class="ident">iter</span>() {
-            <span class="ident">ret</span>.<span class="ident">insert</span>(<span class="ident">K::extract</span>(<span class="ident">k</span>)<span class="question-mark">?</span>, <span class="ident">V::extract</span>(<span class="ident">v</span>)<span class="question-mark">?</span>);
+    <span class="doccomment">/// Sets an item value.
+    ///
+    /// This is equivalent to the Python statement `self[key] = value`.
+    </span><span class="kw">pub fn </span>set_item&lt;K, V&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: K, value: V) -&gt; PyResult&lt;()&gt;
+    <span class="kw">where
+        </span>K: ToPyObject,
+        V: ToPyObject,
+    {
+        <span class="kw">let </span>py = <span class="self">self</span>.py();
+        <span class="kw">unsafe </span>{
+            err::error_on_minusone(
+                py,
+                ffi::PyDict_SetItem(
+                    <span class="self">self</span>.as_ptr(),
+                    key.to_object(py).as_ptr(),
+                    value.to_object(py).as_ptr(),
+                ),
+            )
         }
-        <span class="prelude-val">Ok</span>(<span class="ident">ret</span>)
+    }
+
+    <span class="doccomment">/// Deletes an item.
+    ///
+    /// This is equivalent to the Python statement `del self[key]`.
+    </span><span class="kw">pub fn </span>del_item&lt;K&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: K) -&gt; PyResult&lt;()&gt;
+    <span class="kw">where
+        </span>K: ToPyObject,
+    {
+        <span class="kw">let </span>py = <span class="self">self</span>.py();
+        <span class="kw">unsafe </span>{
+            err::error_on_minusone(
+                py,
+                ffi::PyDict_DelItem(<span class="self">self</span>.as_ptr(), key.to_object(py).as_ptr()),
+            )
+        }
+    }
+
+    <span class="doccomment">/// Returns a list of dict keys.
+    ///
+    /// This is equivalent to the Python expression `list(dict.keys())`.
+    </span><span class="kw">pub fn </span>keys(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>PyList {
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.py()
+                .from_owned_ptr::&lt;PyList&gt;(ffi::PyDict_Keys(<span class="self">self</span>.as_ptr()))
+        }
+    }
+
+    <span class="doccomment">/// Returns a list of dict values.
+    ///
+    /// This is equivalent to the Python expression `list(dict.values())`.
+    </span><span class="kw">pub fn </span>values(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>PyList {
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.py()
+                .from_owned_ptr::&lt;PyList&gt;(ffi::PyDict_Values(<span class="self">self</span>.as_ptr()))
+        }
+    }
+
+    <span class="doccomment">/// Returns a list of dict items.
+    ///
+    /// This is equivalent to the Python expression `list(dict.items())`.
+    </span><span class="kw">pub fn </span>items(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>PyList {
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.py()
+                .from_owned_ptr::&lt;PyList&gt;(ffi::PyDict_Items(<span class="self">self</span>.as_ptr()))
+        }
+    }
+
+    <span class="doccomment">/// Returns an iterator of `(key, value)` pairs in this dictionary.
+    ///
+    /// # Panics
+    ///
+    /// If PyO3 detects that the dictionary is mutated during iteration, it will panic.
+    /// It is allowed to modify values as you iterate over the dictionary, but only
+    /// so long as the set of keys does not change.
+    </span><span class="kw">pub fn </span>iter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PyDictIterator&lt;<span class="lifetime">&#39;_</span>&gt; {
+        IntoIterator::into_iter(<span class="self">self</span>)
+    }
+
+    <span class="doccomment">/// Returns `self` cast as a `PyMapping`.
+    </span><span class="kw">pub fn </span>as_mapping(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>PyMapping {
+        <span class="kw">unsafe </span>{ PyMapping::try_from_unchecked(<span class="self">self</span>) }
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::conversion::IntoPy</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::types::dict::IntoPyDict</span>;
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">PyPy</span>))]</span>
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::types::PyList</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::types</span>::{<span class="ident">PyDict</span>, <span class="ident">PyTuple</span>};
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::PyObject</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::Python</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">PyTryFrom</span>, <span class="ident">ToPyObject</span>};
-    <span class="kw">use</span> <span class="ident">std::collections</span>::{<span class="ident">BTreeMap</span>, <span class="ident">HashMap</span>};
+<span class="kw">pub struct </span>PyDictIterator&lt;<span class="lifetime">&#39;py</span>&gt; {
+    dict: <span class="kw-2">&amp;</span><span class="lifetime">&#39;py </span>PyDict,
+    ppos: ffi::Py_ssize_t,
+    di_used: ffi::Py_ssize_t,
+    len: ffi::Py_ssize_t,
+}
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_new</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">dict</span> <span class="op">=</span> [(<span class="number">7</span>, <span class="number">32</span>)].<span class="ident">into_py_dict</span>(<span class="ident">py</span>);
-            <span class="macro">assert_eq!</span>(<span class="number">32</span>, <span class="ident">dict</span>.<span class="ident">get_item</span>(<span class="number">7i32</span>).<span class="ident">unwrap</span>().<span class="ident">extract</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>());
-            <span class="macro">assert_eq!</span>(<span class="prelude-val">None</span>, <span class="ident">dict</span>.<span class="ident">get_item</span>(<span class="number">8i32</span>));
-            <span class="kw">let</span> <span class="ident">map</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">i32</span>, <span class="ident">i32</span><span class="op">&gt;</span> <span class="op">=</span> [(<span class="number">7</span>, <span class="number">32</span>)].<span class="ident">iter</span>().<span class="ident">cloned</span>().<span class="ident">collect</span>();
-            <span class="macro">assert_eq!</span>(<span class="ident">map</span>, <span class="ident">dict</span>.<span class="ident">extract</span>().<span class="ident">unwrap</span>());
-            <span class="kw">let</span> <span class="ident">map</span>: <span class="ident">BTreeMap</span><span class="op">&lt;</span><span class="ident">i32</span>, <span class="ident">i32</span><span class="op">&gt;</span> <span class="op">=</span> [(<span class="number">7</span>, <span class="number">32</span>)].<span class="ident">iter</span>().<span class="ident">cloned</span>().<span class="ident">collect</span>();
-            <span class="macro">assert_eq!</span>(<span class="ident">map</span>, <span class="ident">dict</span>.<span class="ident">extract</span>().<span class="ident">unwrap</span>());
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;py</span>&gt; Iterator <span class="kw">for </span>PyDictIterator&lt;<span class="lifetime">&#39;py</span>&gt; {
+    <span class="kw">type </span>Item = (<span class="kw-2">&amp;</span><span class="lifetime">&#39;py </span>PyAny, <span class="kw-2">&amp;</span><span class="lifetime">&#39;py </span>PyAny);
+
+    <span class="attribute">#[inline]</span>
+    <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
+        <span class="kw">let </span>ma_used = <span class="self">self</span>.dict._len();
+
+        <span class="comment">// These checks are similar to what CPython does.
+        //
+        // If the dimension of the dict changes e.g. key-value pairs are removed
+        // or added during iteration, this will panic next time when `next` is called
+        </span><span class="kw">if </span><span class="self">self</span>.di_used != ma_used {
+            <span class="self">self</span>.di_used = -<span class="number">1</span>;
+            <span class="macro">panic!</span>(<span class="string">&quot;dictionary changed size during iteration&quot;</span>);
+        };
+
+        <span class="comment">// If the dict is changed in such a way that the length remains constant
+        // then this will panic at the end of iteration - similar to this:
+        //
+        // d = {&quot;a&quot;:1, &quot;b&quot;:2, &quot;c&quot;: 3}
+        //
+        // for k, v in d.items():
+        //     d[f&quot;{k}_&quot;] = 4
+        //     del d[k]
+        //     print(k)
+        //
+        </span><span class="kw">if </span><span class="self">self</span>.len == -<span class="number">1 </span>{
+            <span class="self">self</span>.di_used = -<span class="number">1</span>;
+            <span class="macro">panic!</span>(<span class="string">&quot;dictionary keys changed during iteration&quot;</span>);
+        };
+
+        <span class="kw">let </span>ret = <span class="kw">unsafe </span>{ <span class="self">self</span>.next_unchecked() };
+        <span class="kw">if </span>ret.is_some() {
+            <span class="self">self</span>.len -= <span class="number">1
+        </span>}
+        ret
+    }
+
+    <span class="attribute">#[inline]</span>
+    <span class="kw">fn </span>size_hint(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (usize, <span class="prelude-ty">Option</span>&lt;usize&gt;) {
+        <span class="kw">let </span>len = <span class="self">self</span>.len <span class="kw">as </span>usize;
+        (len, <span class="prelude-val">Some</span>(len))
+    }
+}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; std::iter::IntoIterator <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>PyDict {
+    <span class="kw">type </span>Item = (<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>PyAny, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>PyAny);
+    <span class="kw">type </span>IntoIter = PyDictIterator&lt;<span class="lifetime">&#39;a</span>&gt;;
+
+    <span class="kw">fn </span>into_iter(<span class="self">self</span>) -&gt; <span class="self">Self</span>::IntoIter {
+        PyDictIterator {
+            dict: <span class="self">self</span>,
+            ppos: <span class="number">0</span>,
+            di_used: <span class="self">self</span>._len(),
+            len: <span class="self">self</span>._len(),
+        }
+    }
+}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;py</span>&gt; PyDictIterator&lt;<span class="lifetime">&#39;py</span>&gt; {
+    <span class="doccomment">/// Advances the iterator without checking for concurrent modification.
+    ///
+    /// See [`PyDict_Next`](https://docs.python.org/3/c-api/dict.html#c.PyDict_Next)
+    /// for more information.
+    </span><span class="kw">unsafe fn </span>next_unchecked(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;py </span>PyAny, <span class="kw-2">&amp;</span><span class="lifetime">&#39;py </span>PyAny)&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>key: <span class="kw-2">*mut </span>ffi::PyObject = std::ptr::null_mut();
+        <span class="kw">let </span><span class="kw-2">mut </span>value: <span class="kw-2">*mut </span>ffi::PyObject = std::ptr::null_mut();
+
+        <span class="kw">if </span>ffi::PyDict_Next(<span class="self">self</span>.dict.as_ptr(), <span class="kw-2">&amp;mut </span><span class="self">self</span>.ppos, <span class="kw-2">&amp;mut </span>key, <span class="kw-2">&amp;mut </span>value) != <span class="number">0 </span>{
+            <span class="kw">let </span>py = <span class="self">self</span>.dict.py();
+            <span class="comment">// PyDict_Next returns borrowed values; for safety must make them owned (see #890)
+            </span><span class="prelude-val">Some</span>((
+                py.from_owned_ptr(ffi::_Py_NewRef(key)),
+                py.from_owned_ptr(ffi::_Py_NewRef(value)),
+            ))
+        } <span class="kw">else </span>{
+            <span class="prelude-val">None
+        </span>}
+    }
+}
+
+<span class="kw">impl</span>&lt;K, V, H&gt; ToPyObject <span class="kw">for </span>collections::HashMap&lt;K, V, H&gt;
+<span class="kw">where
+    </span>K: hash::Hash + cmp::Eq + ToPyObject,
+    V: ToPyObject,
+    H: hash::BuildHasher,
+{
+    <span class="kw">fn </span>to_object(<span class="kw-2">&amp;</span><span class="self">self</span>, py: Python&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; PyObject {
+        IntoPyDict::into_py_dict(<span class="self">self</span>, py).into()
+    }
+}
+
+<span class="kw">impl</span>&lt;K, V&gt; ToPyObject <span class="kw">for </span>collections::BTreeMap&lt;K, V&gt;
+<span class="kw">where
+    </span>K: cmp::Eq + ToPyObject,
+    V: ToPyObject,
+{
+    <span class="kw">fn </span>to_object(<span class="kw-2">&amp;</span><span class="self">self</span>, py: Python&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; PyObject {
+        IntoPyDict::into_py_dict(<span class="self">self</span>, py).into()
+    }
+}
+
+<span class="kw">impl</span>&lt;K, V, H&gt; IntoPy&lt;PyObject&gt; <span class="kw">for </span>collections::HashMap&lt;K, V, H&gt;
+<span class="kw">where
+    </span>K: hash::Hash + cmp::Eq + IntoPy&lt;PyObject&gt;,
+    V: IntoPy&lt;PyObject&gt;,
+    H: hash::BuildHasher,
+{
+    <span class="kw">fn </span>into_py(<span class="self">self</span>, py: Python&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; PyObject {
+        <span class="kw">let </span>iter = <span class="self">self
+            </span>.into_iter()
+            .map(|(k, v)| (k.into_py(py), v.into_py(py)));
+        IntoPyDict::into_py_dict(iter, py).into()
+    }
+}
+
+<span class="kw">impl</span>&lt;K, V&gt; IntoPy&lt;PyObject&gt; <span class="kw">for </span>collections::BTreeMap&lt;K, V&gt;
+<span class="kw">where
+    </span>K: cmp::Eq + IntoPy&lt;PyObject&gt;,
+    V: IntoPy&lt;PyObject&gt;,
+{
+    <span class="kw">fn </span>into_py(<span class="self">self</span>, py: Python&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; PyObject {
+        <span class="kw">let </span>iter = <span class="self">self
+            </span>.into_iter()
+            .map(|(k, v)| (k.into_py(py), v.into_py(py)));
+        IntoPyDict::into_py_dict(iter, py).into()
+    }
+}
+
+<span class="doccomment">/// Conversion trait that allows a sequence of tuples to be converted into `PyDict`
+/// Primary use case for this trait is `call` and `call_method` methods as keywords argument.
+</span><span class="kw">pub trait </span>IntoPyDict {
+    <span class="doccomment">/// Converts self into a `PyDict` object pointer. Whether pointer owned or borrowed
+    /// depends on implementation.
+    </span><span class="kw">fn </span>into_py_dict(<span class="self">self</span>, py: Python&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; <span class="kw-2">&amp;</span>PyDict;
+}
+
+<span class="kw">impl</span>&lt;T, I&gt; IntoPyDict <span class="kw">for </span>I
+<span class="kw">where
+    </span>T: PyDictItem,
+    I: IntoIterator&lt;Item = T&gt;,
+{
+    <span class="kw">fn </span>into_py_dict(<span class="self">self</span>, py: Python&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; <span class="kw-2">&amp;</span>PyDict {
+        <span class="kw">let </span>dict = PyDict::new(py);
+        <span class="kw">for </span>item <span class="kw">in </span><span class="self">self </span>{
+            dict.set_item(item.key(), item.value())
+                .expect(<span class="string">&quot;Failed to set_item on dict&quot;</span>);
+        }
+        dict
+    }
+}
+
+<span class="doccomment">/// Represents a tuple which can be used as a PyDict item.
+</span><span class="kw">pub trait </span>PyDictItem {
+    <span class="kw">type </span>K: ToPyObject;
+    <span class="kw">type </span>V: ToPyObject;
+    <span class="kw">fn </span>key(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::K;
+    <span class="kw">fn </span>value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::V;
+}
+
+<span class="kw">impl</span>&lt;K, V&gt; PyDictItem <span class="kw">for </span>(K, V)
+<span class="kw">where
+    </span>K: ToPyObject,
+    V: ToPyObject,
+{
+    <span class="kw">type </span>K = K;
+    <span class="kw">type </span>V = V;
+    <span class="kw">fn </span>key(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::K {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0
+    </span>}
+    <span class="kw">fn </span>value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::V {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">1
+    </span>}
+}
+
+<span class="kw">impl</span>&lt;K, V&gt; PyDictItem <span class="kw">for </span><span class="kw-2">&amp;</span>(K, V)
+<span class="kw">where
+    </span>K: ToPyObject,
+    V: ToPyObject,
+{
+    <span class="kw">type </span>K = K;
+    <span class="kw">type </span>V = V;
+    <span class="kw">fn </span>key(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::K {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0
+    </span>}
+    <span class="kw">fn </span>value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::V {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">1
+    </span>}
+}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;source</span>, K, V, S&gt; FromPyObject&lt;<span class="lifetime">&#39;source</span>&gt; <span class="kw">for </span>HashMap&lt;K, V, S&gt;
+<span class="kw">where
+    </span>K: FromPyObject&lt;<span class="lifetime">&#39;source</span>&gt; + cmp::Eq + hash::Hash,
+    V: FromPyObject&lt;<span class="lifetime">&#39;source</span>&gt;,
+    S: hash::BuildHasher + Default,
+{
+    <span class="kw">fn </span>extract(ob: <span class="kw-2">&amp;</span><span class="lifetime">&#39;source </span>PyAny) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, PyErr&gt; {
+        <span class="kw">let </span>dict = &lt;PyDict <span class="kw">as </span>PyTryFrom&gt;::try_from(ob)<span class="question-mark">?</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>ret = HashMap::with_capacity_and_hasher(dict.len(), S::default());
+        <span class="kw">for </span>(k, v) <span class="kw">in </span>dict.iter() {
+            ret.insert(K::extract(k)<span class="question-mark">?</span>, V::extract(v)<span class="question-mark">?</span>);
+        }
+        <span class="prelude-val">Ok</span>(ret)
+    }
+}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;source</span>, K, V&gt; FromPyObject&lt;<span class="lifetime">&#39;source</span>&gt; <span class="kw">for </span>BTreeMap&lt;K, V&gt;
+<span class="kw">where
+    </span>K: FromPyObject&lt;<span class="lifetime">&#39;source</span>&gt; + cmp::Ord,
+    V: FromPyObject&lt;<span class="lifetime">&#39;source</span>&gt;,
+{
+    <span class="kw">fn </span>extract(ob: <span class="kw-2">&amp;</span><span class="lifetime">&#39;source </span>PyAny) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, PyErr&gt; {
+        <span class="kw">let </span>dict = &lt;PyDict <span class="kw">as </span>PyTryFrom&gt;::try_from(ob)<span class="question-mark">?</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>ret = BTreeMap::new();
+        <span class="kw">for </span>(k, v) <span class="kw">in </span>dict.iter() {
+            ret.insert(K::extract(k)<span class="question-mark">?</span>, V::extract(v)<span class="question-mark">?</span>);
+        }
+        <span class="prelude-val">Ok</span>(ret)
+    }
+}
+
+<span class="attribute">#[cfg(test)]</span>
+<span class="kw">mod </span>tests {
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
+    <span class="attribute">#[cfg(not(PyPy))]</span>
+    <span class="kw">use </span><span class="kw">crate</span>::exceptions;
+    <span class="attribute">#[cfg(not(PyPy))]</span>
+    <span class="kw">use crate</span>::{types::PyList, PyTypeInfo};
+    <span class="kw">use crate</span>::{types::PyTuple, IntoPy, PyObject, PyTryFrom, Python, ToPyObject};
+    <span class="kw">use </span>std::collections::{BTreeMap, HashMap};
+
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_new() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span>dict = [(<span class="number">7</span>, <span class="number">32</span>)].into_py_dict(py);
+            <span class="macro">assert_eq!</span>(<span class="number">32</span>, dict.get_item(<span class="number">7i32</span>).unwrap().extract::&lt;i32&gt;().unwrap());
+            <span class="macro">assert!</span>(dict.get_item(<span class="number">8i32</span>).is_none());
+            <span class="kw">let </span>map: HashMap&lt;i32, i32&gt; = [(<span class="number">7</span>, <span class="number">32</span>)].iter().cloned().collect();
+            <span class="macro">assert_eq!</span>(map, dict.extract().unwrap());
+            <span class="kw">let </span>map: BTreeMap&lt;i32, i32&gt; = [(<span class="number">7</span>, <span class="number">32</span>)].iter().cloned().collect();
+            <span class="macro">assert_eq!</span>(map, dict.extract().unwrap());
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">PyPy</span>))]</span>
-    <span class="kw">fn</span> <span class="ident">test_from_sequence</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">items</span> <span class="op">=</span> <span class="ident">PyList::new</span>(<span class="ident">py</span>, <span class="kw-2">&amp;</span><span class="macro">vec!</span>[(<span class="string">&quot;a&quot;</span>, <span class="number">1</span>), (<span class="string">&quot;b&quot;</span>, <span class="number">2</span>)]);
-            <span class="kw">let</span> <span class="ident">dict</span> <span class="op">=</span> <span class="ident">PyDict::from_sequence</span>(<span class="ident">py</span>, <span class="ident">items</span>.<span class="ident">to_object</span>(<span class="ident">py</span>)).<span class="ident">unwrap</span>();
-            <span class="macro">assert_eq!</span>(<span class="number">1</span>, <span class="ident">dict</span>.<span class="ident">get_item</span>(<span class="string">&quot;a&quot;</span>).<span class="ident">unwrap</span>().<span class="ident">extract</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>());
-            <span class="macro">assert_eq!</span>(<span class="number">2</span>, <span class="ident">dict</span>.<span class="ident">get_item</span>(<span class="string">&quot;b&quot;</span>).<span class="ident">unwrap</span>().<span class="ident">extract</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>());
-            <span class="kw">let</span> <span class="ident">map</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">i32</span><span class="op">&gt;</span> <span class="op">=</span> [(<span class="string">&quot;a&quot;</span>, <span class="number">1</span>), (<span class="string">&quot;b&quot;</span>, <span class="number">2</span>)].<span class="ident">iter</span>().<span class="ident">cloned</span>().<span class="ident">collect</span>();
-            <span class="macro">assert_eq!</span>(<span class="ident">map</span>, <span class="ident">dict</span>.<span class="ident">extract</span>().<span class="ident">unwrap</span>());
-            <span class="kw">let</span> <span class="ident">map</span>: <span class="ident">BTreeMap</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">i32</span><span class="op">&gt;</span> <span class="op">=</span> [(<span class="string">&quot;a&quot;</span>, <span class="number">1</span>), (<span class="string">&quot;b&quot;</span>, <span class="number">2</span>)].<span class="ident">iter</span>().<span class="ident">cloned</span>().<span class="ident">collect</span>();
-            <span class="macro">assert_eq!</span>(<span class="ident">map</span>, <span class="ident">dict</span>.<span class="ident">extract</span>().<span class="ident">unwrap</span>());
+    <span class="attribute">#[test]</span>
+    <span class="attribute">#[cfg(not(PyPy))]</span>
+    <span class="kw">fn </span>test_from_sequence() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span>items = PyList::new(py, <span class="kw-2">&amp;</span><span class="macro">vec!</span>[(<span class="string">&quot;a&quot;</span>, <span class="number">1</span>), (<span class="string">&quot;b&quot;</span>, <span class="number">2</span>)]);
+            <span class="kw">let </span>dict = PyDict::from_sequence(py, items.to_object(py)).unwrap();
+            <span class="macro">assert_eq!</span>(<span class="number">1</span>, dict.get_item(<span class="string">&quot;a&quot;</span>).unwrap().extract::&lt;i32&gt;().unwrap());
+            <span class="macro">assert_eq!</span>(<span class="number">2</span>, dict.get_item(<span class="string">&quot;b&quot;</span>).unwrap().extract::&lt;i32&gt;().unwrap());
+            <span class="kw">let </span>map: HashMap&lt;<span class="kw-2">&amp;</span>str, i32&gt; = [(<span class="string">&quot;a&quot;</span>, <span class="number">1</span>), (<span class="string">&quot;b&quot;</span>, <span class="number">2</span>)].iter().cloned().collect();
+            <span class="macro">assert_eq!</span>(map, dict.extract().unwrap());
+            <span class="kw">let </span>map: BTreeMap&lt;<span class="kw-2">&amp;</span>str, i32&gt; = [(<span class="string">&quot;a&quot;</span>, <span class="number">1</span>), (<span class="string">&quot;b&quot;</span>, <span class="number">2</span>)].iter().cloned().collect();
+            <span class="macro">assert_eq!</span>(map, dict.extract().unwrap());
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">PyPy</span>))]</span>
-    <span class="kw">fn</span> <span class="ident">test_from_sequence_err</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">items</span> <span class="op">=</span> <span class="ident">PyList::new</span>(<span class="ident">py</span>, <span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>]);
-            <span class="macro">assert!</span>(<span class="ident">PyDict::from_sequence</span>(<span class="ident">py</span>, <span class="ident">items</span>.<span class="ident">to_object</span>(<span class="ident">py</span>)).<span class="ident">is_err</span>());
+    <span class="attribute">#[test]</span>
+    <span class="attribute">#[cfg(not(PyPy))]</span>
+    <span class="kw">fn </span>test_from_sequence_err() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span>items = PyList::new(py, <span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>]);
+            <span class="macro">assert!</span>(PyDict::from_sequence(py, items.to_object(py)).is_err());
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_copy</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">dict</span> <span class="op">=</span> [(<span class="number">7</span>, <span class="number">32</span>)].<span class="ident">into_py_dict</span>(<span class="ident">py</span>);
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_copy() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span>dict = [(<span class="number">7</span>, <span class="number">32</span>)].into_py_dict(py);
 
-            <span class="kw">let</span> <span class="ident">ndict</span> <span class="op">=</span> <span class="ident">dict</span>.<span class="ident">copy</span>().<span class="ident">unwrap</span>();
-            <span class="macro">assert_eq!</span>(<span class="number">32</span>, <span class="ident">ndict</span>.<span class="ident">get_item</span>(<span class="number">7i32</span>).<span class="ident">unwrap</span>().<span class="ident">extract</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>());
-            <span class="macro">assert_eq!</span>(<span class="prelude-val">None</span>, <span class="ident">ndict</span>.<span class="ident">get_item</span>(<span class="number">8i32</span>));
+            <span class="kw">let </span>ndict = dict.copy().unwrap();
+            <span class="macro">assert_eq!</span>(<span class="number">32</span>, ndict.get_item(<span class="number">7i32</span>).unwrap().extract::&lt;i32&gt;().unwrap());
+            <span class="macro">assert!</span>(ndict.get_item(<span class="number">8i32</span>).is_none());
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_len</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
-            <span class="kw">let</span> <span class="ident">ob</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">to_object</span>(<span class="ident">py</span>);
-            <span class="kw">let</span> <span class="ident">dict</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">PyDict</span> <span class="kw">as</span> <span class="ident">PyTryFrom</span><span class="op">&gt;</span><span class="ident">::try_from</span>(<span class="ident">ob</span>.<span class="ident">as_ref</span>(<span class="ident">py</span>)).<span class="ident">unwrap</span>();
-            <span class="macro">assert_eq!</span>(<span class="number">0</span>, <span class="ident">dict</span>.<span class="ident">len</span>());
-            <span class="ident">v</span>.<span class="ident">insert</span>(<span class="number">7</span>, <span class="number">32</span>);
-            <span class="kw">let</span> <span class="ident">ob</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">to_object</span>(<span class="ident">py</span>);
-            <span class="kw">let</span> <span class="ident">dict2</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">PyDict</span> <span class="kw">as</span> <span class="ident">PyTryFrom</span><span class="op">&gt;</span><span class="ident">::try_from</span>(<span class="ident">ob</span>.<span class="ident">as_ref</span>(<span class="ident">py</span>)).<span class="ident">unwrap</span>();
-            <span class="macro">assert_eq!</span>(<span class="number">1</span>, <span class="ident">dict2</span>.<span class="ident">len</span>());
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_len() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span><span class="kw-2">mut </span>v = HashMap::new();
+            <span class="kw">let </span>ob = v.to_object(py);
+            <span class="kw">let </span>dict = &lt;PyDict <span class="kw">as </span>PyTryFrom&gt;::try_from(ob.as_ref(py)).unwrap();
+            <span class="macro">assert_eq!</span>(<span class="number">0</span>, dict.len());
+            v.insert(<span class="number">7</span>, <span class="number">32</span>);
+            <span class="kw">let </span>ob = v.to_object(py);
+            <span class="kw">let </span>dict2 = &lt;PyDict <span class="kw">as </span>PyTryFrom&gt;::try_from(ob.as_ref(py)).unwrap();
+            <span class="macro">assert_eq!</span>(<span class="number">1</span>, dict2.len());
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_contains</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
-            <span class="ident">v</span>.<span class="ident">insert</span>(<span class="number">7</span>, <span class="number">32</span>);
-            <span class="kw">let</span> <span class="ident">ob</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">to_object</span>(<span class="ident">py</span>);
-            <span class="kw">let</span> <span class="ident">dict</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">PyDict</span> <span class="kw">as</span> <span class="ident">PyTryFrom</span><span class="op">&gt;</span><span class="ident">::try_from</span>(<span class="ident">ob</span>.<span class="ident">as_ref</span>(<span class="ident">py</span>)).<span class="ident">unwrap</span>();
-            <span class="macro">assert!</span>(<span class="ident">dict</span>.<span class="ident">contains</span>(<span class="number">7i32</span>).<span class="ident">unwrap</span>());
-            <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">dict</span>.<span class="ident">contains</span>(<span class="number">8i32</span>).<span class="ident">unwrap</span>());
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_contains() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span><span class="kw-2">mut </span>v = HashMap::new();
+            v.insert(<span class="number">7</span>, <span class="number">32</span>);
+            <span class="kw">let </span>ob = v.to_object(py);
+            <span class="kw">let </span>dict = &lt;PyDict <span class="kw">as </span>PyTryFrom&gt;::try_from(ob.as_ref(py)).unwrap();
+            <span class="macro">assert!</span>(dict.contains(<span class="number">7i32</span>).unwrap());
+            <span class="macro">assert!</span>(!dict.contains(<span class="number">8i32</span>).unwrap());
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_get_item</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
-            <span class="ident">v</span>.<span class="ident">insert</span>(<span class="number">7</span>, <span class="number">32</span>);
-            <span class="kw">let</span> <span class="ident">ob</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">to_object</span>(<span class="ident">py</span>);
-            <span class="kw">let</span> <span class="ident">dict</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">PyDict</span> <span class="kw">as</span> <span class="ident">PyTryFrom</span><span class="op">&gt;</span><span class="ident">::try_from</span>(<span class="ident">ob</span>.<span class="ident">as_ref</span>(<span class="ident">py</span>)).<span class="ident">unwrap</span>();
-            <span class="macro">assert_eq!</span>(<span class="number">32</span>, <span class="ident">dict</span>.<span class="ident">get_item</span>(<span class="number">7i32</span>).<span class="ident">unwrap</span>().<span class="ident">extract</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>());
-            <span class="macro">assert_eq!</span>(<span class="prelude-val">None</span>, <span class="ident">dict</span>.<span class="ident">get_item</span>(<span class="number">8i32</span>));
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_get_item() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span><span class="kw-2">mut </span>v = HashMap::new();
+            v.insert(<span class="number">7</span>, <span class="number">32</span>);
+            <span class="kw">let </span>ob = v.to_object(py);
+            <span class="kw">let </span>dict = &lt;PyDict <span class="kw">as </span>PyTryFrom&gt;::try_from(ob.as_ref(py)).unwrap();
+            <span class="macro">assert_eq!</span>(<span class="number">32</span>, dict.get_item(<span class="number">7i32</span>).unwrap().extract::&lt;i32&gt;().unwrap());
+            <span class="macro">assert!</span>(dict.get_item(<span class="number">8i32</span>).is_none());
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_set_item</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
-            <span class="ident">v</span>.<span class="ident">insert</span>(<span class="number">7</span>, <span class="number">32</span>);
-            <span class="kw">let</span> <span class="ident">ob</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">to_object</span>(<span class="ident">py</span>);
-            <span class="kw">let</span> <span class="ident">dict</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">PyDict</span> <span class="kw">as</span> <span class="ident">PyTryFrom</span><span class="op">&gt;</span><span class="ident">::try_from</span>(<span class="ident">ob</span>.<span class="ident">as_ref</span>(<span class="ident">py</span>)).<span class="ident">unwrap</span>();
-            <span class="macro">assert!</span>(<span class="ident">dict</span>.<span class="ident">set_item</span>(<span class="number">7i32</span>, <span class="number">42i32</span>).<span class="ident">is_ok</span>()); <span class="comment">// change</span>
-            <span class="macro">assert!</span>(<span class="ident">dict</span>.<span class="ident">set_item</span>(<span class="number">8i32</span>, <span class="number">123i32</span>).<span class="ident">is_ok</span>()); <span class="comment">// insert</span>
+    <span class="attribute">#[test]</span>
+    <span class="attribute">#[cfg(not(PyPy))]</span>
+    <span class="kw">fn </span>test_get_item_with_error() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span><span class="kw-2">mut </span>v = HashMap::new();
+            v.insert(<span class="number">7</span>, <span class="number">32</span>);
+            <span class="kw">let </span>ob = v.to_object(py);
+            <span class="kw">let </span>dict = &lt;PyDict <span class="kw">as </span>PyTryFrom&gt;::try_from(ob.as_ref(py)).unwrap();
             <span class="macro">assert_eq!</span>(
+                <span class="number">32</span>,
+                dict.get_item_with_error(<span class="number">7i32</span>)
+                    .unwrap()
+                    .unwrap()
+                    .extract::&lt;i32&gt;()
+                    .unwrap()
+            );
+            <span class="macro">assert!</span>(dict.get_item_with_error(<span class="number">8i32</span>).unwrap().is_none());
+            <span class="macro">assert!</span>(dict
+                .get_item_with_error(dict)
+                .unwrap_err()
+                .is_instance_of::&lt;exceptions::PyTypeError&gt;(py));
+        });
+    }
+
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_set_item() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span><span class="kw-2">mut </span>v = HashMap::new();
+            v.insert(<span class="number">7</span>, <span class="number">32</span>);
+            <span class="kw">let </span>ob = v.to_object(py);
+            <span class="kw">let </span>dict = &lt;PyDict <span class="kw">as </span>PyTryFrom&gt;::try_from(ob.as_ref(py)).unwrap();
+            <span class="macro">assert!</span>(dict.set_item(<span class="number">7i32</span>, <span class="number">42i32</span>).is_ok()); <span class="comment">// change
+            </span><span class="macro">assert!</span>(dict.set_item(<span class="number">8i32</span>, <span class="number">123i32</span>).is_ok()); <span class="comment">// insert
+            </span><span class="macro">assert_eq!</span>(
                 <span class="number">42i32</span>,
-                <span class="ident">dict</span>.<span class="ident">get_item</span>(<span class="number">7i32</span>).<span class="ident">unwrap</span>().<span class="ident">extract</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>()
+                dict.get_item(<span class="number">7i32</span>).unwrap().extract::&lt;i32&gt;().unwrap()
             );
             <span class="macro">assert_eq!</span>(
                 <span class="number">123i32</span>,
-                <span class="ident">dict</span>.<span class="ident">get_item</span>(<span class="number">8i32</span>).<span class="ident">unwrap</span>().<span class="ident">extract</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>()
+                dict.get_item(<span class="number">8i32</span>).unwrap().extract::&lt;i32&gt;().unwrap()
             );
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_set_item_refcnt</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">cnt</span>;
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_set_item_refcnt() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span>cnt;
             {
-                <span class="kw">let</span> <span class="ident">_pool</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident"><span class="kw">crate</span>::GILPool::new</span>() };
-                <span class="kw">let</span> <span class="ident">none</span> <span class="op">=</span> <span class="ident">py</span>.<span class="prelude-val">None</span>();
-                <span class="ident">cnt</span> <span class="op">=</span> <span class="ident">none</span>.<span class="ident">get_refcnt</span>(<span class="ident">py</span>);
-                <span class="kw">let</span> <span class="ident">_dict</span> <span class="op">=</span> [(<span class="number">10</span>, <span class="ident">none</span>)].<span class="ident">into_py_dict</span>(<span class="ident">py</span>);
+                <span class="kw">let </span>_pool = <span class="kw">unsafe </span>{ <span class="kw">crate</span>::GILPool::new() };
+                <span class="kw">let </span>none = py.<span class="prelude-val">None</span>();
+                cnt = none.get_refcnt(py);
+                <span class="kw">let </span>_dict = [(<span class="number">10</span>, none)].into_py_dict(py);
             }
             {
-                <span class="macro">assert_eq!</span>(<span class="ident">cnt</span>, <span class="ident">py</span>.<span class="prelude-val">None</span>().<span class="ident">get_refcnt</span>(<span class="ident">py</span>));
+                <span class="macro">assert_eq!</span>(cnt, py.<span class="prelude-val">None</span>().get_refcnt(py));
             }
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_set_item_does_not_update_original_object</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
-            <span class="ident">v</span>.<span class="ident">insert</span>(<span class="number">7</span>, <span class="number">32</span>);
-            <span class="kw">let</span> <span class="ident">ob</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">to_object</span>(<span class="ident">py</span>);
-            <span class="kw">let</span> <span class="ident">dict</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">PyDict</span> <span class="kw">as</span> <span class="ident">PyTryFrom</span><span class="op">&gt;</span><span class="ident">::try_from</span>(<span class="ident">ob</span>.<span class="ident">as_ref</span>(<span class="ident">py</span>)).<span class="ident">unwrap</span>();
-            <span class="macro">assert!</span>(<span class="ident">dict</span>.<span class="ident">set_item</span>(<span class="number">7i32</span>, <span class="number">42i32</span>).<span class="ident">is_ok</span>()); <span class="comment">// change</span>
-            <span class="macro">assert!</span>(<span class="ident">dict</span>.<span class="ident">set_item</span>(<span class="number">8i32</span>, <span class="number">123i32</span>).<span class="ident">is_ok</span>()); <span class="comment">// insert</span>
-            <span class="macro">assert_eq!</span>(<span class="number">32i32</span>, <span class="ident">v</span>[<span class="kw-2">&amp;</span><span class="number">7i32</span>]); <span class="comment">// not updated!</span>
-            <span class="macro">assert_eq!</span>(<span class="prelude-val">None</span>, <span class="ident">v</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="number">8i32</span>));
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_set_item_does_not_update_original_object() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span><span class="kw-2">mut </span>v = HashMap::new();
+            v.insert(<span class="number">7</span>, <span class="number">32</span>);
+            <span class="kw">let </span>ob = v.to_object(py);
+            <span class="kw">let </span>dict = &lt;PyDict <span class="kw">as </span>PyTryFrom&gt;::try_from(ob.as_ref(py)).unwrap();
+            <span class="macro">assert!</span>(dict.set_item(<span class="number">7i32</span>, <span class="number">42i32</span>).is_ok()); <span class="comment">// change
+            </span><span class="macro">assert!</span>(dict.set_item(<span class="number">8i32</span>, <span class="number">123i32</span>).is_ok()); <span class="comment">// insert
+            </span><span class="macro">assert_eq!</span>(<span class="number">32i32</span>, v[<span class="kw-2">&amp;</span><span class="number">7i32</span>]); <span class="comment">// not updated!
+            </span><span class="macro">assert_eq!</span>(<span class="prelude-val">None</span>, v.get(<span class="kw-2">&amp;</span><span class="number">8i32</span>));
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_del_item</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
-            <span class="ident">v</span>.<span class="ident">insert</span>(<span class="number">7</span>, <span class="number">32</span>);
-            <span class="kw">let</span> <span class="ident">ob</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">to_object</span>(<span class="ident">py</span>);
-            <span class="kw">let</span> <span class="ident">dict</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">PyDict</span> <span class="kw">as</span> <span class="ident">PyTryFrom</span><span class="op">&gt;</span><span class="ident">::try_from</span>(<span class="ident">ob</span>.<span class="ident">as_ref</span>(<span class="ident">py</span>)).<span class="ident">unwrap</span>();
-            <span class="macro">assert!</span>(<span class="ident">dict</span>.<span class="ident">del_item</span>(<span class="number">7i32</span>).<span class="ident">is_ok</span>());
-            <span class="macro">assert_eq!</span>(<span class="number">0</span>, <span class="ident">dict</span>.<span class="ident">len</span>());
-            <span class="macro">assert_eq!</span>(<span class="prelude-val">None</span>, <span class="ident">dict</span>.<span class="ident">get_item</span>(<span class="number">7i32</span>));
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_del_item() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span><span class="kw-2">mut </span>v = HashMap::new();
+            v.insert(<span class="number">7</span>, <span class="number">32</span>);
+            <span class="kw">let </span>ob = v.to_object(py);
+            <span class="kw">let </span>dict = &lt;PyDict <span class="kw">as </span>PyTryFrom&gt;::try_from(ob.as_ref(py)).unwrap();
+            <span class="macro">assert!</span>(dict.del_item(<span class="number">7i32</span>).is_ok());
+            <span class="macro">assert_eq!</span>(<span class="number">0</span>, dict.len());
+            <span class="macro">assert!</span>(dict.get_item(<span class="number">7i32</span>).is_none());
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_del_item_does_not_update_original_object</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
-            <span class="ident">v</span>.<span class="ident">insert</span>(<span class="number">7</span>, <span class="number">32</span>);
-            <span class="kw">let</span> <span class="ident">ob</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">to_object</span>(<span class="ident">py</span>);
-            <span class="kw">let</span> <span class="ident">dict</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">PyDict</span> <span class="kw">as</span> <span class="ident">PyTryFrom</span><span class="op">&gt;</span><span class="ident">::try_from</span>(<span class="ident">ob</span>.<span class="ident">as_ref</span>(<span class="ident">py</span>)).<span class="ident">unwrap</span>();
-            <span class="macro">assert!</span>(<span class="ident">dict</span>.<span class="ident">del_item</span>(<span class="number">7i32</span>).<span class="ident">is_ok</span>()); <span class="comment">// change</span>
-            <span class="macro">assert_eq!</span>(<span class="number">32i32</span>, <span class="kw-2">*</span><span class="ident">v</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="number">7i32</span>).<span class="ident">unwrap</span>()); <span class="comment">// not updated!</span>
-        });
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_del_item_does_not_update_original_object() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span><span class="kw-2">mut </span>v = HashMap::new();
+            v.insert(<span class="number">7</span>, <span class="number">32</span>);
+            <span class="kw">let </span>ob = v.to_object(py);
+            <span class="kw">let </span>dict = &lt;PyDict <span class="kw">as </span>PyTryFrom&gt;::try_from(ob.as_ref(py)).unwrap();
+            <span class="macro">assert!</span>(dict.del_item(<span class="number">7i32</span>).is_ok()); <span class="comment">// change
+            </span><span class="macro">assert_eq!</span>(<span class="number">32i32</span>, <span class="kw-2">*</span>v.get(<span class="kw-2">&amp;</span><span class="number">7i32</span>).unwrap()); <span class="comment">// not updated!
+        </span>});
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_items</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
-            <span class="ident">v</span>.<span class="ident">insert</span>(<span class="number">7</span>, <span class="number">32</span>);
-            <span class="ident">v</span>.<span class="ident">insert</span>(<span class="number">8</span>, <span class="number">42</span>);
-            <span class="ident">v</span>.<span class="ident">insert</span>(<span class="number">9</span>, <span class="number">123</span>);
-            <span class="kw">let</span> <span class="ident">ob</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">to_object</span>(<span class="ident">py</span>);
-            <span class="kw">let</span> <span class="ident">dict</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">PyDict</span> <span class="kw">as</span> <span class="ident">PyTryFrom</span><span class="op">&gt;</span><span class="ident">::try_from</span>(<span class="ident">ob</span>.<span class="ident">as_ref</span>(<span class="ident">py</span>)).<span class="ident">unwrap</span>();
-            <span class="comment">// Can&#39;t just compare against a vector of tuples since we don&#39;t have a guaranteed ordering.</span>
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">key_sum</span> <span class="op">=</span> <span class="number">0</span>;
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">value_sum</span> <span class="op">=</span> <span class="number">0</span>;
-            <span class="kw">for</span> <span class="ident">el</span> <span class="kw">in</span> <span class="ident">dict</span>.<span class="ident">items</span>().<span class="ident">iter</span>() {
-                <span class="kw">let</span> <span class="ident">tuple</span> <span class="op">=</span> <span class="ident">el</span>.<span class="ident">cast_as</span>::<span class="op">&lt;</span><span class="ident">PyTuple</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
-                <span class="ident">key_sum</span> <span class="op">+</span><span class="op">=</span> <span class="ident">tuple</span>.<span class="ident">get_item</span>(<span class="number">0</span>).<span class="ident">unwrap</span>().<span class="ident">extract</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
-                <span class="ident">value_sum</span> <span class="op">+</span><span class="op">=</span> <span class="ident">tuple</span>.<span class="ident">get_item</span>(<span class="number">1</span>).<span class="ident">unwrap</span>().<span class="ident">extract</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_items() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span><span class="kw-2">mut </span>v = HashMap::new();
+            v.insert(<span class="number">7</span>, <span class="number">32</span>);
+            v.insert(<span class="number">8</span>, <span class="number">42</span>);
+            v.insert(<span class="number">9</span>, <span class="number">123</span>);
+            <span class="kw">let </span>ob = v.to_object(py);
+            <span class="kw">let </span>dict = &lt;PyDict <span class="kw">as </span>PyTryFrom&gt;::try_from(ob.as_ref(py)).unwrap();
+            <span class="comment">// Can&#39;t just compare against a vector of tuples since we don&#39;t have a guaranteed ordering.
+            </span><span class="kw">let </span><span class="kw-2">mut </span>key_sum = <span class="number">0</span>;
+            <span class="kw">let </span><span class="kw-2">mut </span>value_sum = <span class="number">0</span>;
+            <span class="kw">for </span>el <span class="kw">in </span>dict.items().iter() {
+                <span class="kw">let </span>tuple = el.cast_as::&lt;PyTuple&gt;().unwrap();
+                key_sum += tuple.get_item(<span class="number">0</span>).unwrap().extract::&lt;i32&gt;().unwrap();
+                value_sum += tuple.get_item(<span class="number">1</span>).unwrap().extract::&lt;i32&gt;().unwrap();
             }
-            <span class="macro">assert_eq!</span>(<span class="number">7</span> <span class="op">+</span> <span class="number">8</span> <span class="op">+</span> <span class="number">9</span>, <span class="ident">key_sum</span>);
-            <span class="macro">assert_eq!</span>(<span class="number">32</span> <span class="op">+</span> <span class="number">42</span> <span class="op">+</span> <span class="number">123</span>, <span class="ident">value_sum</span>);
+            <span class="macro">assert_eq!</span>(<span class="number">7 </span>+ <span class="number">8 </span>+ <span class="number">9</span>, key_sum);
+            <span class="macro">assert_eq!</span>(<span class="number">32 </span>+ <span class="number">42 </span>+ <span class="number">123</span>, value_sum);
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_keys</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
-            <span class="ident">v</span>.<span class="ident">insert</span>(<span class="number">7</span>, <span class="number">32</span>);
-            <span class="ident">v</span>.<span class="ident">insert</span>(<span class="number">8</span>, <span class="number">42</span>);
-            <span class="ident">v</span>.<span class="ident">insert</span>(<span class="number">9</span>, <span class="number">123</span>);
-            <span class="kw">let</span> <span class="ident">ob</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">to_object</span>(<span class="ident">py</span>);
-            <span class="kw">let</span> <span class="ident">dict</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">PyDict</span> <span class="kw">as</span> <span class="ident">PyTryFrom</span><span class="op">&gt;</span><span class="ident">::try_from</span>(<span class="ident">ob</span>.<span class="ident">as_ref</span>(<span class="ident">py</span>)).<span class="ident">unwrap</span>();
-            <span class="comment">// Can&#39;t just compare against a vector of tuples since we don&#39;t have a guaranteed ordering.</span>
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">key_sum</span> <span class="op">=</span> <span class="number">0</span>;
-            <span class="kw">for</span> <span class="ident">el</span> <span class="kw">in</span> <span class="ident">dict</span>.<span class="ident">keys</span>().<span class="ident">iter</span>() {
-                <span class="ident">key_sum</span> <span class="op">+</span><span class="op">=</span> <span class="ident">el</span>.<span class="ident">extract</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_keys() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span><span class="kw-2">mut </span>v = HashMap::new();
+            v.insert(<span class="number">7</span>, <span class="number">32</span>);
+            v.insert(<span class="number">8</span>, <span class="number">42</span>);
+            v.insert(<span class="number">9</span>, <span class="number">123</span>);
+            <span class="kw">let </span>ob = v.to_object(py);
+            <span class="kw">let </span>dict = &lt;PyDict <span class="kw">as </span>PyTryFrom&gt;::try_from(ob.as_ref(py)).unwrap();
+            <span class="comment">// Can&#39;t just compare against a vector of tuples since we don&#39;t have a guaranteed ordering.
+            </span><span class="kw">let </span><span class="kw-2">mut </span>key_sum = <span class="number">0</span>;
+            <span class="kw">for </span>el <span class="kw">in </span>dict.keys().iter() {
+                key_sum += el.extract::&lt;i32&gt;().unwrap();
             }
-            <span class="macro">assert_eq!</span>(<span class="number">7</span> <span class="op">+</span> <span class="number">8</span> <span class="op">+</span> <span class="number">9</span>, <span class="ident">key_sum</span>);
+            <span class="macro">assert_eq!</span>(<span class="number">7 </span>+ <span class="number">8 </span>+ <span class="number">9</span>, key_sum);
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_values</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
-            <span class="ident">v</span>.<span class="ident">insert</span>(<span class="number">7</span>, <span class="number">32</span>);
-            <span class="ident">v</span>.<span class="ident">insert</span>(<span class="number">8</span>, <span class="number">42</span>);
-            <span class="ident">v</span>.<span class="ident">insert</span>(<span class="number">9</span>, <span class="number">123</span>);
-            <span class="kw">let</span> <span class="ident">ob</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">to_object</span>(<span class="ident">py</span>);
-            <span class="kw">let</span> <span class="ident">dict</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">PyDict</span> <span class="kw">as</span> <span class="ident">PyTryFrom</span><span class="op">&gt;</span><span class="ident">::try_from</span>(<span class="ident">ob</span>.<span class="ident">as_ref</span>(<span class="ident">py</span>)).<span class="ident">unwrap</span>();
-            <span class="comment">// Can&#39;t just compare against a vector of tuples since we don&#39;t have a guaranteed ordering.</span>
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">values_sum</span> <span class="op">=</span> <span class="number">0</span>;
-            <span class="kw">for</span> <span class="ident">el</span> <span class="kw">in</span> <span class="ident">dict</span>.<span class="ident">values</span>().<span class="ident">iter</span>() {
-                <span class="ident">values_sum</span> <span class="op">+</span><span class="op">=</span> <span class="ident">el</span>.<span class="ident">extract</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_values() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span><span class="kw-2">mut </span>v = HashMap::new();
+            v.insert(<span class="number">7</span>, <span class="number">32</span>);
+            v.insert(<span class="number">8</span>, <span class="number">42</span>);
+            v.insert(<span class="number">9</span>, <span class="number">123</span>);
+            <span class="kw">let </span>ob = v.to_object(py);
+            <span class="kw">let </span>dict = &lt;PyDict <span class="kw">as </span>PyTryFrom&gt;::try_from(ob.as_ref(py)).unwrap();
+            <span class="comment">// Can&#39;t just compare against a vector of tuples since we don&#39;t have a guaranteed ordering.
+            </span><span class="kw">let </span><span class="kw-2">mut </span>values_sum = <span class="number">0</span>;
+            <span class="kw">for </span>el <span class="kw">in </span>dict.values().iter() {
+                values_sum += el.extract::&lt;i32&gt;().unwrap();
             }
-            <span class="macro">assert_eq!</span>(<span class="number">32</span> <span class="op">+</span> <span class="number">42</span> <span class="op">+</span> <span class="number">123</span>, <span class="ident">values_sum</span>);
+            <span class="macro">assert_eq!</span>(<span class="number">32 </span>+ <span class="number">42 </span>+ <span class="number">123</span>, values_sum);
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_iter</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
-            <span class="ident">v</span>.<span class="ident">insert</span>(<span class="number">7</span>, <span class="number">32</span>);
-            <span class="ident">v</span>.<span class="ident">insert</span>(<span class="number">8</span>, <span class="number">42</span>);
-            <span class="ident">v</span>.<span class="ident">insert</span>(<span class="number">9</span>, <span class="number">123</span>);
-            <span class="kw">let</span> <span class="ident">ob</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">to_object</span>(<span class="ident">py</span>);
-            <span class="kw">let</span> <span class="ident">dict</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">PyDict</span> <span class="kw">as</span> <span class="ident">PyTryFrom</span><span class="op">&gt;</span><span class="ident">::try_from</span>(<span class="ident">ob</span>.<span class="ident">as_ref</span>(<span class="ident">py</span>)).<span class="ident">unwrap</span>();
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">key_sum</span> <span class="op">=</span> <span class="number">0</span>;
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">value_sum</span> <span class="op">=</span> <span class="number">0</span>;
-            <span class="kw">for</span> (<span class="ident">key</span>, <span class="ident">value</span>) <span class="kw">in</span> <span class="ident">dict</span>.<span class="ident">iter</span>() {
-                <span class="ident">key_sum</span> <span class="op">+</span><span class="op">=</span> <span class="ident">key</span>.<span class="ident">extract</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
-                <span class="ident">value_sum</span> <span class="op">+</span><span class="op">=</span> <span class="ident">value</span>.<span class="ident">extract</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_iter() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span><span class="kw-2">mut </span>v = HashMap::new();
+            v.insert(<span class="number">7</span>, <span class="number">32</span>);
+            v.insert(<span class="number">8</span>, <span class="number">42</span>);
+            v.insert(<span class="number">9</span>, <span class="number">123</span>);
+            <span class="kw">let </span>ob = v.to_object(py);
+            <span class="kw">let </span>dict = &lt;PyDict <span class="kw">as </span>PyTryFrom&gt;::try_from(ob.as_ref(py)).unwrap();
+            <span class="kw">let </span><span class="kw-2">mut </span>key_sum = <span class="number">0</span>;
+            <span class="kw">let </span><span class="kw-2">mut </span>value_sum = <span class="number">0</span>;
+            <span class="kw">for </span>(key, value) <span class="kw">in </span>dict.iter() {
+                key_sum += key.extract::&lt;i32&gt;().unwrap();
+                value_sum += value.extract::&lt;i32&gt;().unwrap();
             }
-            <span class="macro">assert_eq!</span>(<span class="number">7</span> <span class="op">+</span> <span class="number">8</span> <span class="op">+</span> <span class="number">9</span>, <span class="ident">key_sum</span>);
-            <span class="macro">assert_eq!</span>(<span class="number">32</span> <span class="op">+</span> <span class="number">42</span> <span class="op">+</span> <span class="number">123</span>, <span class="ident">value_sum</span>);
+            <span class="macro">assert_eq!</span>(<span class="number">7 </span>+ <span class="number">8 </span>+ <span class="number">9</span>, key_sum);
+            <span class="macro">assert_eq!</span>(<span class="number">32 </span>+ <span class="number">42 </span>+ <span class="number">123</span>, value_sum);
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_iter_size_hint</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
-            <span class="ident">v</span>.<span class="ident">insert</span>(<span class="number">7</span>, <span class="number">32</span>);
-            <span class="ident">v</span>.<span class="ident">insert</span>(<span class="number">8</span>, <span class="number">42</span>);
-            <span class="ident">v</span>.<span class="ident">insert</span>(<span class="number">9</span>, <span class="number">123</span>);
-            <span class="kw">let</span> <span class="ident">ob</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">to_object</span>(<span class="ident">py</span>);
-            <span class="kw">let</span> <span class="ident">dict</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">PyDict</span> <span class="kw">as</span> <span class="ident">PyTryFrom</span><span class="op">&gt;</span><span class="ident">::try_from</span>(<span class="ident">ob</span>.<span class="ident">as_ref</span>(<span class="ident">py</span>)).<span class="ident">unwrap</span>();
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_iter_value_mutated() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span><span class="kw-2">mut </span>v = HashMap::new();
+            v.insert(<span class="number">7</span>, <span class="number">32</span>);
+            v.insert(<span class="number">8</span>, <span class="number">42</span>);
+            v.insert(<span class="number">9</span>, <span class="number">123</span>);
 
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">iter</span> <span class="op">=</span> <span class="ident">dict</span>.<span class="ident">iter</span>();
-            <span class="macro">assert_eq!</span>(<span class="ident">iter</span>.<span class="ident">size_hint</span>(), (<span class="ident">v</span>.<span class="ident">len</span>(), <span class="prelude-val">Some</span>(<span class="ident">v</span>.<span class="ident">len</span>())));
-            <span class="ident">iter</span>.<span class="ident">next</span>();
-            <span class="macro">assert_eq!</span>(<span class="ident">iter</span>.<span class="ident">size_hint</span>(), (<span class="ident">v</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="number">1</span>, <span class="prelude-val">Some</span>(<span class="ident">v</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="number">1</span>)));
+            <span class="kw">let </span>ob = v.to_object(py);
+            <span class="kw">let </span>dict = &lt;PyDict <span class="kw">as </span>PyTryFrom&gt;::try_from(ob.as_ref(py)).unwrap();
 
-            <span class="comment">// Exhust iterator.</span>
-            <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">iter</span> {}
-
-            <span class="macro">assert_eq!</span>(<span class="ident">iter</span>.<span class="ident">size_hint</span>(), (<span class="number">0</span>, <span class="prelude-val">Some</span>(<span class="number">0</span>)));
-        });
-    }
-
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_into_iter</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
-            <span class="ident">v</span>.<span class="ident">insert</span>(<span class="number">7</span>, <span class="number">32</span>);
-            <span class="ident">v</span>.<span class="ident">insert</span>(<span class="number">8</span>, <span class="number">42</span>);
-            <span class="ident">v</span>.<span class="ident">insert</span>(<span class="number">9</span>, <span class="number">123</span>);
-            <span class="kw">let</span> <span class="ident">ob</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">to_object</span>(<span class="ident">py</span>);
-            <span class="kw">let</span> <span class="ident">dict</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">PyDict</span> <span class="kw">as</span> <span class="ident">PyTryFrom</span><span class="op">&gt;</span><span class="ident">::try_from</span>(<span class="ident">ob</span>.<span class="ident">as_ref</span>(<span class="ident">py</span>)).<span class="ident">unwrap</span>();
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">key_sum</span> <span class="op">=</span> <span class="number">0</span>;
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">value_sum</span> <span class="op">=</span> <span class="number">0</span>;
-            <span class="kw">for</span> (<span class="ident">key</span>, <span class="ident">value</span>) <span class="kw">in</span> <span class="ident">dict</span> {
-                <span class="ident">key_sum</span> <span class="op">+</span><span class="op">=</span> <span class="ident">key</span>.<span class="ident">extract</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
-                <span class="ident">value_sum</span> <span class="op">+</span><span class="op">=</span> <span class="ident">value</span>.<span class="ident">extract</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
+            <span class="kw">for </span>(key, value) <span class="kw">in </span>dict.iter() {
+                dict.set_item(key, value.extract::&lt;i32&gt;().unwrap() + <span class="number">7</span>)
+                    .unwrap();
             }
-            <span class="macro">assert_eq!</span>(<span class="number">7</span> <span class="op">+</span> <span class="number">8</span> <span class="op">+</span> <span class="number">9</span>, <span class="ident">key_sum</span>);
-            <span class="macro">assert_eq!</span>(<span class="number">32</span> <span class="op">+</span> <span class="number">42</span> <span class="op">+</span> <span class="number">123</span>, <span class="ident">value_sum</span>);
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_hashmap_to_python</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="op">&lt;</span><span class="ident">i32</span>, <span class="ident">i32</span><span class="op">&gt;</span><span class="ident">::new</span>();
-            <span class="ident">map</span>.<span class="ident">insert</span>(<span class="number">1</span>, <span class="number">1</span>);
+    <span class="attribute">#[test]</span>
+    <span class="attribute">#[should_panic]</span>
+    <span class="kw">fn </span>test_iter_key_mutated() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span><span class="kw-2">mut </span>v = HashMap::new();
+            <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..<span class="number">10 </span>{
+                v.insert(i * <span class="number">2</span>, i * <span class="number">2</span>);
+            }
+            <span class="kw">let </span>ob = v.to_object(py);
+            <span class="kw">let </span>dict = &lt;PyDict <span class="kw">as </span>PyTryFrom&gt;::try_from(ob.as_ref(py)).unwrap();
 
-            <span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">map</span>.<span class="ident">to_object</span>(<span class="ident">py</span>);
-            <span class="kw">let</span> <span class="ident">py_map</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">PyDict</span> <span class="kw">as</span> <span class="ident">PyTryFrom</span><span class="op">&gt;</span><span class="ident">::try_from</span>(<span class="ident">m</span>.<span class="ident">as_ref</span>(<span class="ident">py</span>)).<span class="ident">unwrap</span>();
+            <span class="kw">for </span>(i, (key, value)) <span class="kw">in </span>dict.iter().enumerate() {
+                <span class="kw">let </span>key = key.extract::&lt;i32&gt;().unwrap();
+                <span class="kw">let </span>value = value.extract::&lt;i32&gt;().unwrap();
 
-            <span class="macro">assert!</span>(<span class="ident">py_map</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="number">1</span>);
-            <span class="macro">assert!</span>(<span class="ident">py_map</span>.<span class="ident">get_item</span>(<span class="number">1</span>).<span class="ident">unwrap</span>().<span class="ident">extract</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>() <span class="op">=</span><span class="op">=</span> <span class="number">1</span>);
-            <span class="macro">assert_eq!</span>(<span class="ident">map</span>, <span class="ident">py_map</span>.<span class="ident">extract</span>().<span class="ident">unwrap</span>());
+                dict.set_item(key + <span class="number">1</span>, value + <span class="number">1</span>).unwrap();
+
+                <span class="kw">if </span>i &gt; <span class="number">1000 </span>{
+                    <span class="comment">// avoid this test just running out of memory if it fails
+                    </span><span class="kw">break</span>;
+                };
+            }
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_btreemap_to_python</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">BTreeMap</span>::<span class="op">&lt;</span><span class="ident">i32</span>, <span class="ident">i32</span><span class="op">&gt;</span><span class="ident">::new</span>();
-            <span class="ident">map</span>.<span class="ident">insert</span>(<span class="number">1</span>, <span class="number">1</span>);
+    <span class="attribute">#[test]</span>
+    <span class="attribute">#[should_panic]</span>
+    <span class="kw">fn </span>test_iter_key_mutated_constant_len() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span><span class="kw-2">mut </span>v = HashMap::new();
+            <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..<span class="number">10 </span>{
+                v.insert(i * <span class="number">2</span>, i * <span class="number">2</span>);
+            }
+            <span class="kw">let </span>ob = v.to_object(py);
+            <span class="kw">let </span>dict = &lt;PyDict <span class="kw">as </span>PyTryFrom&gt;::try_from(ob.as_ref(py)).unwrap();
 
-            <span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">map</span>.<span class="ident">to_object</span>(<span class="ident">py</span>);
-            <span class="kw">let</span> <span class="ident">py_map</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">PyDict</span> <span class="kw">as</span> <span class="ident">PyTryFrom</span><span class="op">&gt;</span><span class="ident">::try_from</span>(<span class="ident">m</span>.<span class="ident">as_ref</span>(<span class="ident">py</span>)).<span class="ident">unwrap</span>();
+            <span class="kw">for </span>(i, (key, value)) <span class="kw">in </span>dict.iter().enumerate() {
+                <span class="kw">let </span>key = key.extract::&lt;i32&gt;().unwrap();
+                <span class="kw">let </span>value = value.extract::&lt;i32&gt;().unwrap();
+                dict.del_item(key).unwrap();
+                dict.set_item(key + <span class="number">1</span>, value + <span class="number">1</span>).unwrap();
 
-            <span class="macro">assert!</span>(<span class="ident">py_map</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="number">1</span>);
-            <span class="macro">assert!</span>(<span class="ident">py_map</span>.<span class="ident">get_item</span>(<span class="number">1</span>).<span class="ident">unwrap</span>().<span class="ident">extract</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>() <span class="op">=</span><span class="op">=</span> <span class="number">1</span>);
-            <span class="macro">assert_eq!</span>(<span class="ident">map</span>, <span class="ident">py_map</span>.<span class="ident">extract</span>().<span class="ident">unwrap</span>());
+                <span class="kw">if </span>i &gt; <span class="number">1000 </span>{
+                    <span class="comment">// avoid this test just running out of memory if it fails
+                    </span><span class="kw">break</span>;
+                };
+            }
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_hashmap_into_python</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="op">&lt;</span><span class="ident">i32</span>, <span class="ident">i32</span><span class="op">&gt;</span><span class="ident">::new</span>();
-            <span class="ident">map</span>.<span class="ident">insert</span>(<span class="number">1</span>, <span class="number">1</span>);
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_iter_size_hint() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span><span class="kw-2">mut </span>v = HashMap::new();
+            v.insert(<span class="number">7</span>, <span class="number">32</span>);
+            v.insert(<span class="number">8</span>, <span class="number">42</span>);
+            v.insert(<span class="number">9</span>, <span class="number">123</span>);
+            <span class="kw">let </span>ob = v.to_object(py);
+            <span class="kw">let </span>dict = &lt;PyDict <span class="kw">as </span>PyTryFrom&gt;::try_from(ob.as_ref(py)).unwrap();
 
-            <span class="kw">let</span> <span class="ident">m</span>: <span class="ident">PyObject</span> <span class="op">=</span> <span class="ident">map</span>.<span class="ident">into_py</span>(<span class="ident">py</span>);
-            <span class="kw">let</span> <span class="ident">py_map</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">PyDict</span> <span class="kw">as</span> <span class="ident">PyTryFrom</span><span class="op">&gt;</span><span class="ident">::try_from</span>(<span class="ident">m</span>.<span class="ident">as_ref</span>(<span class="ident">py</span>)).<span class="ident">unwrap</span>();
+            <span class="kw">let </span><span class="kw-2">mut </span>iter = dict.iter();
+            <span class="macro">assert_eq!</span>(iter.size_hint(), (v.len(), <span class="prelude-val">Some</span>(v.len())));
+            iter.next();
+            <span class="macro">assert_eq!</span>(iter.size_hint(), (v.len() - <span class="number">1</span>, <span class="prelude-val">Some</span>(v.len() - <span class="number">1</span>)));
 
-            <span class="macro">assert!</span>(<span class="ident">py_map</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="number">1</span>);
-            <span class="macro">assert!</span>(<span class="ident">py_map</span>.<span class="ident">get_item</span>(<span class="number">1</span>).<span class="ident">unwrap</span>().<span class="ident">extract</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>() <span class="op">=</span><span class="op">=</span> <span class="number">1</span>);
+            <span class="comment">// Exhaust iterator.
+            </span><span class="kw">for _ in </span><span class="kw-2">&amp;mut </span>iter {}
+
+            <span class="macro">assert_eq!</span>(iter.size_hint(), (<span class="number">0</span>, <span class="prelude-val">Some</span>(<span class="number">0</span>)));
+
+            <span class="macro">assert!</span>(iter.next().is_none());
+
+            <span class="macro">assert_eq!</span>(iter.size_hint(), (<span class="number">0</span>, <span class="prelude-val">Some</span>(<span class="number">0</span>)));
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_hashmap_into_dict</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="op">&lt;</span><span class="ident">i32</span>, <span class="ident">i32</span><span class="op">&gt;</span><span class="ident">::new</span>();
-            <span class="ident">map</span>.<span class="ident">insert</span>(<span class="number">1</span>, <span class="number">1</span>);
-
-            <span class="kw">let</span> <span class="ident">py_map</span> <span class="op">=</span> <span class="ident">map</span>.<span class="ident">into_py_dict</span>(<span class="ident">py</span>);
-
-            <span class="macro">assert_eq!</span>(<span class="ident">py_map</span>.<span class="ident">len</span>(), <span class="number">1</span>);
-            <span class="macro">assert_eq!</span>(<span class="ident">py_map</span>.<span class="ident">get_item</span>(<span class="number">1</span>).<span class="ident">unwrap</span>().<span class="ident">extract</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>(), <span class="number">1</span>);
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_into_iter() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span><span class="kw-2">mut </span>v = HashMap::new();
+            v.insert(<span class="number">7</span>, <span class="number">32</span>);
+            v.insert(<span class="number">8</span>, <span class="number">42</span>);
+            v.insert(<span class="number">9</span>, <span class="number">123</span>);
+            <span class="kw">let </span>ob = v.to_object(py);
+            <span class="kw">let </span>dict = &lt;PyDict <span class="kw">as </span>PyTryFrom&gt;::try_from(ob.as_ref(py)).unwrap();
+            <span class="kw">let </span><span class="kw-2">mut </span>key_sum = <span class="number">0</span>;
+            <span class="kw">let </span><span class="kw-2">mut </span>value_sum = <span class="number">0</span>;
+            <span class="kw">for </span>(key, value) <span class="kw">in </span>dict {
+                key_sum += key.extract::&lt;i32&gt;().unwrap();
+                value_sum += value.extract::&lt;i32&gt;().unwrap();
+            }
+            <span class="macro">assert_eq!</span>(<span class="number">7 </span>+ <span class="number">8 </span>+ <span class="number">9</span>, key_sum);
+            <span class="macro">assert_eq!</span>(<span class="number">32 </span>+ <span class="number">42 </span>+ <span class="number">123</span>, value_sum);
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_btreemap_into_py</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">BTreeMap</span>::<span class="op">&lt;</span><span class="ident">i32</span>, <span class="ident">i32</span><span class="op">&gt;</span><span class="ident">::new</span>();
-            <span class="ident">map</span>.<span class="ident">insert</span>(<span class="number">1</span>, <span class="number">1</span>);
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_hashmap_to_python() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span><span class="kw-2">mut </span>map = HashMap::&lt;i32, i32&gt;::new();
+            map.insert(<span class="number">1</span>, <span class="number">1</span>);
 
-            <span class="kw">let</span> <span class="ident">m</span>: <span class="ident">PyObject</span> <span class="op">=</span> <span class="ident">map</span>.<span class="ident">into_py</span>(<span class="ident">py</span>);
-            <span class="kw">let</span> <span class="ident">py_map</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">PyDict</span> <span class="kw">as</span> <span class="ident">PyTryFrom</span><span class="op">&gt;</span><span class="ident">::try_from</span>(<span class="ident">m</span>.<span class="ident">as_ref</span>(<span class="ident">py</span>)).<span class="ident">unwrap</span>();
+            <span class="kw">let </span>m = map.to_object(py);
+            <span class="kw">let </span>py_map = &lt;PyDict <span class="kw">as </span>PyTryFrom&gt;::try_from(m.as_ref(py)).unwrap();
 
-            <span class="macro">assert!</span>(<span class="ident">py_map</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="number">1</span>);
-            <span class="macro">assert!</span>(<span class="ident">py_map</span>.<span class="ident">get_item</span>(<span class="number">1</span>).<span class="ident">unwrap</span>().<span class="ident">extract</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>() <span class="op">=</span><span class="op">=</span> <span class="number">1</span>);
+            <span class="macro">assert!</span>(py_map.len() == <span class="number">1</span>);
+            <span class="macro">assert!</span>(py_map.get_item(<span class="number">1</span>).unwrap().extract::&lt;i32&gt;().unwrap() == <span class="number">1</span>);
+            <span class="macro">assert_eq!</span>(map, py_map.extract().unwrap());
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_btreemap_into_dict</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">BTreeMap</span>::<span class="op">&lt;</span><span class="ident">i32</span>, <span class="ident">i32</span><span class="op">&gt;</span><span class="ident">::new</span>();
-            <span class="ident">map</span>.<span class="ident">insert</span>(<span class="number">1</span>, <span class="number">1</span>);
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_btreemap_to_python() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span><span class="kw-2">mut </span>map = BTreeMap::&lt;i32, i32&gt;::new();
+            map.insert(<span class="number">1</span>, <span class="number">1</span>);
 
-            <span class="kw">let</span> <span class="ident">py_map</span> <span class="op">=</span> <span class="ident">map</span>.<span class="ident">into_py_dict</span>(<span class="ident">py</span>);
+            <span class="kw">let </span>m = map.to_object(py);
+            <span class="kw">let </span>py_map = &lt;PyDict <span class="kw">as </span>PyTryFrom&gt;::try_from(m.as_ref(py)).unwrap();
 
-            <span class="macro">assert_eq!</span>(<span class="ident">py_map</span>.<span class="ident">len</span>(), <span class="number">1</span>);
-            <span class="macro">assert_eq!</span>(<span class="ident">py_map</span>.<span class="ident">get_item</span>(<span class="number">1</span>).<span class="ident">unwrap</span>().<span class="ident">extract</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>(), <span class="number">1</span>);
+            <span class="macro">assert!</span>(py_map.len() == <span class="number">1</span>);
+            <span class="macro">assert!</span>(py_map.get_item(<span class="number">1</span>).unwrap().extract::&lt;i32&gt;().unwrap() == <span class="number">1</span>);
+            <span class="macro">assert_eq!</span>(map, py_map.extract().unwrap());
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_vec_into_dict</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">vec</span> <span class="op">=</span> <span class="macro">vec!</span>[(<span class="string">&quot;a&quot;</span>, <span class="number">1</span>), (<span class="string">&quot;b&quot;</span>, <span class="number">2</span>), (<span class="string">&quot;c&quot;</span>, <span class="number">3</span>)];
-            <span class="kw">let</span> <span class="ident">py_map</span> <span class="op">=</span> <span class="ident">vec</span>.<span class="ident">into_py_dict</span>(<span class="ident">py</span>);
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_hashmap_into_python() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span><span class="kw-2">mut </span>map = HashMap::&lt;i32, i32&gt;::new();
+            map.insert(<span class="number">1</span>, <span class="number">1</span>);
 
-            <span class="macro">assert_eq!</span>(<span class="ident">py_map</span>.<span class="ident">len</span>(), <span class="number">3</span>);
-            <span class="macro">assert_eq!</span>(<span class="ident">py_map</span>.<span class="ident">get_item</span>(<span class="string">&quot;b&quot;</span>).<span class="ident">unwrap</span>().<span class="ident">extract</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>(), <span class="number">2</span>);
+            <span class="kw">let </span>m: PyObject = map.into_py(py);
+            <span class="kw">let </span>py_map = &lt;PyDict <span class="kw">as </span>PyTryFrom&gt;::try_from(m.as_ref(py)).unwrap();
+
+            <span class="macro">assert!</span>(py_map.len() == <span class="number">1</span>);
+            <span class="macro">assert!</span>(py_map.get_item(<span class="number">1</span>).unwrap().extract::&lt;i32&gt;().unwrap() == <span class="number">1</span>);
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_slice_into_dict</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">arr</span> <span class="op">=</span> [(<span class="string">&quot;a&quot;</span>, <span class="number">1</span>), (<span class="string">&quot;b&quot;</span>, <span class="number">2</span>), (<span class="string">&quot;c&quot;</span>, <span class="number">3</span>)];
-            <span class="kw">let</span> <span class="ident">py_map</span> <span class="op">=</span> <span class="ident">arr</span>.<span class="ident">into_py_dict</span>(<span class="ident">py</span>);
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_hashmap_into_dict() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span><span class="kw-2">mut </span>map = HashMap::&lt;i32, i32&gt;::new();
+            map.insert(<span class="number">1</span>, <span class="number">1</span>);
 
-            <span class="macro">assert_eq!</span>(<span class="ident">py_map</span>.<span class="ident">len</span>(), <span class="number">3</span>);
-            <span class="macro">assert_eq!</span>(<span class="ident">py_map</span>.<span class="ident">get_item</span>(<span class="string">&quot;b&quot;</span>).<span class="ident">unwrap</span>().<span class="ident">extract</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>(), <span class="number">2</span>);
+            <span class="kw">let </span>py_map = map.into_py_dict(py);
+
+            <span class="macro">assert_eq!</span>(py_map.len(), <span class="number">1</span>);
+            <span class="macro">assert_eq!</span>(py_map.get_item(<span class="number">1</span>).unwrap().extract::&lt;i32&gt;().unwrap(), <span class="number">1</span>);
         });
+    }
+
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_btreemap_into_py() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span><span class="kw-2">mut </span>map = BTreeMap::&lt;i32, i32&gt;::new();
+            map.insert(<span class="number">1</span>, <span class="number">1</span>);
+
+            <span class="kw">let </span>m: PyObject = map.into_py(py);
+            <span class="kw">let </span>py_map = &lt;PyDict <span class="kw">as </span>PyTryFrom&gt;::try_from(m.as_ref(py)).unwrap();
+
+            <span class="macro">assert!</span>(py_map.len() == <span class="number">1</span>);
+            <span class="macro">assert!</span>(py_map.get_item(<span class="number">1</span>).unwrap().extract::&lt;i32&gt;().unwrap() == <span class="number">1</span>);
+        });
+    }
+
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_btreemap_into_dict() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span><span class="kw-2">mut </span>map = BTreeMap::&lt;i32, i32&gt;::new();
+            map.insert(<span class="number">1</span>, <span class="number">1</span>);
+
+            <span class="kw">let </span>py_map = map.into_py_dict(py);
+
+            <span class="macro">assert_eq!</span>(py_map.len(), <span class="number">1</span>);
+            <span class="macro">assert_eq!</span>(py_map.get_item(<span class="number">1</span>).unwrap().extract::&lt;i32&gt;().unwrap(), <span class="number">1</span>);
+        });
+    }
+
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_vec_into_dict() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span>vec = <span class="macro">vec!</span>[(<span class="string">&quot;a&quot;</span>, <span class="number">1</span>), (<span class="string">&quot;b&quot;</span>, <span class="number">2</span>), (<span class="string">&quot;c&quot;</span>, <span class="number">3</span>)];
+            <span class="kw">let </span>py_map = vec.into_py_dict(py);
+
+            <span class="macro">assert_eq!</span>(py_map.len(), <span class="number">3</span>);
+            <span class="macro">assert_eq!</span>(py_map.get_item(<span class="string">&quot;b&quot;</span>).unwrap().extract::&lt;i32&gt;().unwrap(), <span class="number">2</span>);
+        });
+    }
+
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_slice_into_dict() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span>arr = [(<span class="string">&quot;a&quot;</span>, <span class="number">1</span>), (<span class="string">&quot;b&quot;</span>, <span class="number">2</span>), (<span class="string">&quot;c&quot;</span>, <span class="number">3</span>)];
+            <span class="kw">let </span>py_map = arr.into_py_dict(py);
+
+            <span class="macro">assert_eq!</span>(py_map.len(), <span class="number">3</span>);
+            <span class="macro">assert_eq!</span>(py_map.get_item(<span class="string">&quot;b&quot;</span>).unwrap().extract::&lt;i32&gt;().unwrap(), <span class="number">2</span>);
+        });
+    }
+
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>dict_as_mapping() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span><span class="kw-2">mut </span>map = HashMap::&lt;i32, i32&gt;::new();
+            map.insert(<span class="number">1</span>, <span class="number">1</span>);
+
+            <span class="kw">let </span>py_map = map.into_py_dict(py);
+
+            <span class="macro">assert_eq!</span>(py_map.as_mapping().len().unwrap(), <span class="number">1</span>);
+            <span class="macro">assert_eq!</span>(
+                py_map
+                    .as_mapping()
+                    .get_item(<span class="number">1</span>)
+                    .unwrap()
+                    .extract::&lt;i32&gt;()
+                    .unwrap(),
+                <span class="number">1
+            </span>);
+        });
+    }
+
+    <span class="attribute">#[cfg(not(PyPy))]</span>
+    <span class="kw">fn </span>abc_dict(py: Python&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; <span class="kw-2">&amp;</span>PyDict {
+        <span class="kw">let </span><span class="kw-2">mut </span>map = HashMap::&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, i32&gt;::new();
+        map.insert(<span class="string">&quot;a&quot;</span>, <span class="number">1</span>);
+        map.insert(<span class="string">&quot;b&quot;</span>, <span class="number">2</span>);
+        map.insert(<span class="string">&quot;c&quot;</span>, <span class="number">3</span>);
+        map.into_py_dict(py)
+    }
+
+    <span class="attribute">#[test]</span>
+    <span class="attribute">#[cfg(not(PyPy))]</span>
+    <span class="kw">fn </span>dict_keys_view() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span>dict = abc_dict(py);
+            <span class="kw">let </span>keys = dict.call_method0(<span class="string">&quot;keys&quot;</span>).unwrap();
+            <span class="macro">assert!</span>(keys.is_instance(PyDictKeys::type_object(py)).unwrap());
+        })
+    }
+
+    <span class="attribute">#[test]</span>
+    <span class="attribute">#[cfg(not(PyPy))]</span>
+    <span class="kw">fn </span>dict_values_view() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span>dict = abc_dict(py);
+            <span class="kw">let </span>values = dict.call_method0(<span class="string">&quot;values&quot;</span>).unwrap();
+            <span class="macro">assert!</span>(values.is_instance(PyDictValues::type_object(py)).unwrap());
+        })
+    }
+
+    <span class="attribute">#[test]</span>
+    <span class="attribute">#[cfg(not(PyPy))]</span>
+    <span class="kw">fn </span>dict_items_view() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span>dict = abc_dict(py);
+            <span class="kw">let </span>items = dict.call_method0(<span class="string">&quot;items&quot;</span>).unwrap();
+            <span class="macro">assert!</span>(items.is_instance(PyDictItems::type_object(py)).unwrap());
+        })
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="pyo3" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
-    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="pyo3" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0-nightly (40336865f 2022-08-15)" ></div></body></html>

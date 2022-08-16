@@ -1,102 +1,102 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src&#x2F;types&#x2F;any.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>any.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../pyo3/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/types/any.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>any.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><script defer src="../../../scrape-examples.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../pyo3/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../pyo3/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../pyo3/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -788,797 +788,1463 @@
 <span id="788">788</span>
 <span id="789">789</span>
 <span id="790">790</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::class::basic::CompareOp</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::conversion</span>::{
-    <span class="ident">AsPyPointer</span>, <span class="ident">FromPyObject</span>, <span class="ident">IntoPy</span>, <span class="ident">IntoPyPointer</span>, <span class="ident">PyTryFrom</span>, <span class="ident">ToBorrowedObject</span>, <span class="ident">ToPyObject</span>,
-};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::err</span>::{<span class="ident">PyDowncastError</span>, <span class="ident">PyErr</span>, <span class="ident">PyResult</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::exceptions::PyTypeError</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::type_object::PyTypeObject</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::types</span>::{<span class="ident">PyDict</span>, <span class="ident">PyIterator</span>, <span class="ident">PyList</span>, <span class="ident">PyString</span>, <span class="ident">PyTuple</span>, <span class="ident">PyType</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">err</span>, <span class="ident">ffi</span>, <span class="ident">Py</span>, <span class="ident">PyNativeType</span>, <span class="ident">PyObject</span>, <span class="ident">Python</span>};
-<span class="kw">use</span> <span class="ident">std::cell::UnsafeCell</span>;
-<span class="kw">use</span> <span class="ident">std::cmp::Ordering</span>;
-<span class="kw">use</span> <span class="ident">std::os::raw::c_int</span>;
+<span id="791">791</span>
+<span id="792">792</span>
+<span id="793">793</span>
+<span id="794">794</span>
+<span id="795">795</span>
+<span id="796">796</span>
+<span id="797">797</span>
+<span id="798">798</span>
+<span id="799">799</span>
+<span id="800">800</span>
+<span id="801">801</span>
+<span id="802">802</span>
+<span id="803">803</span>
+<span id="804">804</span>
+<span id="805">805</span>
+<span id="806">806</span>
+<span id="807">807</span>
+<span id="808">808</span>
+<span id="809">809</span>
+<span id="810">810</span>
+<span id="811">811</span>
+<span id="812">812</span>
+<span id="813">813</span>
+<span id="814">814</span>
+<span id="815">815</span>
+<span id="816">816</span>
+<span id="817">817</span>
+<span id="818">818</span>
+<span id="819">819</span>
+<span id="820">820</span>
+<span id="821">821</span>
+<span id="822">822</span>
+<span id="823">823</span>
+<span id="824">824</span>
+<span id="825">825</span>
+<span id="826">826</span>
+<span id="827">827</span>
+<span id="828">828</span>
+<span id="829">829</span>
+<span id="830">830</span>
+<span id="831">831</span>
+<span id="832">832</span>
+<span id="833">833</span>
+<span id="834">834</span>
+<span id="835">835</span>
+<span id="836">836</span>
+<span id="837">837</span>
+<span id="838">838</span>
+<span id="839">839</span>
+<span id="840">840</span>
+<span id="841">841</span>
+<span id="842">842</span>
+<span id="843">843</span>
+<span id="844">844</span>
+<span id="845">845</span>
+<span id="846">846</span>
+<span id="847">847</span>
+<span id="848">848</span>
+<span id="849">849</span>
+<span id="850">850</span>
+<span id="851">851</span>
+<span id="852">852</span>
+<span id="853">853</span>
+<span id="854">854</span>
+<span id="855">855</span>
+<span id="856">856</span>
+<span id="857">857</span>
+<span id="858">858</span>
+<span id="859">859</span>
+<span id="860">860</span>
+<span id="861">861</span>
+<span id="862">862</span>
+<span id="863">863</span>
+<span id="864">864</span>
+<span id="865">865</span>
+<span id="866">866</span>
+<span id="867">867</span>
+<span id="868">868</span>
+<span id="869">869</span>
+<span id="870">870</span>
+<span id="871">871</span>
+<span id="872">872</span>
+<span id="873">873</span>
+<span id="874">874</span>
+<span id="875">875</span>
+<span id="876">876</span>
+<span id="877">877</span>
+<span id="878">878</span>
+<span id="879">879</span>
+<span id="880">880</span>
+<span id="881">881</span>
+<span id="882">882</span>
+<span id="883">883</span>
+<span id="884">884</span>
+<span id="885">885</span>
+<span id="886">886</span>
+<span id="887">887</span>
+<span id="888">888</span>
+<span id="889">889</span>
+<span id="890">890</span>
+<span id="891">891</span>
+<span id="892">892</span>
+<span id="893">893</span>
+<span id="894">894</span>
+<span id="895">895</span>
+<span id="896">896</span>
+<span id="897">897</span>
+<span id="898">898</span>
+<span id="899">899</span>
+<span id="900">900</span>
+<span id="901">901</span>
+<span id="902">902</span>
+<span id="903">903</span>
+<span id="904">904</span>
+<span id="905">905</span>
+<span id="906">906</span>
+<span id="907">907</span>
+<span id="908">908</span>
+<span id="909">909</span>
+<span id="910">910</span>
+<span id="911">911</span>
+<span id="912">912</span>
+<span id="913">913</span>
+<span id="914">914</span>
+<span id="915">915</span>
+<span id="916">916</span>
+<span id="917">917</span>
+<span id="918">918</span>
+<span id="919">919</span>
+<span id="920">920</span>
+<span id="921">921</span>
+<span id="922">922</span>
+<span id="923">923</span>
+<span id="924">924</span>
+<span id="925">925</span>
+<span id="926">926</span>
+<span id="927">927</span>
+<span id="928">928</span>
+<span id="929">929</span>
+<span id="930">930</span>
+<span id="931">931</span>
+<span id="932">932</span>
+<span id="933">933</span>
+<span id="934">934</span>
+<span id="935">935</span>
+<span id="936">936</span>
+<span id="937">937</span>
+<span id="938">938</span>
+<span id="939">939</span>
+<span id="940">940</span>
+<span id="941">941</span>
+<span id="942">942</span>
+<span id="943">943</span>
+<span id="944">944</span>
+<span id="945">945</span>
+<span id="946">946</span>
+<span id="947">947</span>
+<span id="948">948</span>
+<span id="949">949</span>
+<span id="950">950</span>
+<span id="951">951</span>
+<span id="952">952</span>
+<span id="953">953</span>
+<span id="954">954</span>
+<span id="955">955</span>
+<span id="956">956</span>
+<span id="957">957</span>
+<span id="958">958</span>
+<span id="959">959</span>
+<span id="960">960</span>
+<span id="961">961</span>
+<span id="962">962</span>
+<span id="963">963</span>
+<span id="964">964</span>
+<span id="965">965</span>
+<span id="966">966</span>
+<span id="967">967</span>
+<span id="968">968</span>
+<span id="969">969</span>
+<span id="970">970</span>
+<span id="971">971</span>
+<span id="972">972</span>
+<span id="973">973</span>
+<span id="974">974</span>
+<span id="975">975</span>
+<span id="976">976</span>
+<span id="977">977</span>
+<span id="978">978</span>
+<span id="979">979</span>
+<span id="980">980</span>
+<span id="981">981</span>
+<span id="982">982</span>
+<span id="983">983</span>
+<span id="984">984</span>
+<span id="985">985</span>
+<span id="986">986</span>
+<span id="987">987</span>
+<span id="988">988</span>
+<span id="989">989</span>
+<span id="990">990</span>
+<span id="991">991</span>
+<span id="992">992</span>
+<span id="993">993</span>
+<span id="994">994</span>
+<span id="995">995</span>
+<span id="996">996</span>
+<span id="997">997</span>
+<span id="998">998</span>
+<span id="999">999</span>
+<span id="1000">1000</span>
+<span id="1001">1001</span>
+<span id="1002">1002</span>
+<span id="1003">1003</span>
+<span id="1004">1004</span>
+<span id="1005">1005</span>
+<span id="1006">1006</span>
+<span id="1007">1007</span>
+<span id="1008">1008</span>
+<span id="1009">1009</span>
+<span id="1010">1010</span>
+<span id="1011">1011</span>
+<span id="1012">1012</span>
+<span id="1013">1013</span>
+<span id="1014">1014</span>
+<span id="1015">1015</span>
+<span id="1016">1016</span>
+<span id="1017">1017</span>
+<span id="1018">1018</span>
+<span id="1019">1019</span>
+<span id="1020">1020</span>
+<span id="1021">1021</span>
+<span id="1022">1022</span>
+<span id="1023">1023</span>
+<span id="1024">1024</span>
+<span id="1025">1025</span>
+<span id="1026">1026</span>
+<span id="1027">1027</span>
+<span id="1028">1028</span>
+<span id="1029">1029</span>
+<span id="1030">1030</span>
+<span id="1031">1031</span>
+<span id="1032">1032</span>
+<span id="1033">1033</span>
+<span id="1034">1034</span>
+<span id="1035">1035</span>
+<span id="1036">1036</span>
+<span id="1037">1037</span>
+<span id="1038">1038</span>
+<span id="1039">1039</span>
+<span id="1040">1040</span>
+<span id="1041">1041</span>
+<span id="1042">1042</span>
+<span id="1043">1043</span>
+<span id="1044">1044</span>
+<span id="1045">1045</span>
+<span id="1046">1046</span>
+<span id="1047">1047</span>
+<span id="1048">1048</span>
+<span id="1049">1049</span>
+<span id="1050">1050</span>
+<span id="1051">1051</span>
+<span id="1052">1052</span>
+<span id="1053">1053</span>
+<span id="1054">1054</span>
+<span id="1055">1055</span>
+<span id="1056">1056</span>
+<span id="1057">1057</span>
+<span id="1058">1058</span>
+<span id="1059">1059</span>
+<span id="1060">1060</span>
+<span id="1061">1061</span>
+<span id="1062">1062</span>
+<span id="1063">1063</span>
+<span id="1064">1064</span>
+<span id="1065">1065</span>
+<span id="1066">1066</span>
+<span id="1067">1067</span>
+<span id="1068">1068</span>
+<span id="1069">1069</span>
+<span id="1070">1070</span>
+<span id="1071">1071</span>
+<span id="1072">1072</span>
+<span id="1073">1073</span>
+<span id="1074">1074</span>
+<span id="1075">1075</span>
+<span id="1076">1076</span>
+<span id="1077">1077</span>
+<span id="1078">1078</span>
+<span id="1079">1079</span>
+<span id="1080">1080</span>
+<span id="1081">1081</span>
+<span id="1082">1082</span>
+<span id="1083">1083</span>
+<span id="1084">1084</span>
+<span id="1085">1085</span>
+<span id="1086">1086</span>
+<span id="1087">1087</span>
+<span id="1088">1088</span>
+<span id="1089">1089</span>
+<span id="1090">1090</span>
+<span id="1091">1091</span>
+<span id="1092">1092</span>
+<span id="1093">1093</span>
+<span id="1094">1094</span>
+<span id="1095">1095</span>
+<span id="1096">1096</span>
+<span id="1097">1097</span>
+<span id="1098">1098</span>
+<span id="1099">1099</span>
+<span id="1100">1100</span>
+<span id="1101">1101</span>
+<span id="1102">1102</span>
+<span id="1103">1103</span>
+<span id="1104">1104</span>
+<span id="1105">1105</span>
+<span id="1106">1106</span>
+<span id="1107">1107</span>
+<span id="1108">1108</span>
+<span id="1109">1109</span>
+<span id="1110">1110</span>
+<span id="1111">1111</span>
+<span id="1112">1112</span>
+<span id="1113">1113</span>
+<span id="1114">1114</span>
+<span id="1115">1115</span>
+<span id="1116">1116</span>
+<span id="1117">1117</span>
+<span id="1118">1118</span>
+<span id="1119">1119</span>
+<span id="1120">1120</span>
+<span id="1121">1121</span>
+<span id="1122">1122</span>
+<span id="1123">1123</span>
+<span id="1124">1124</span>
+</pre><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::class::basic::CompareOp;
+<span class="kw">use </span><span class="kw">crate</span>::conversion::{AsPyPointer, FromPyObject, IntoPy, IntoPyPointer, PyTryFrom, ToPyObject};
+<span class="kw">use </span><span class="kw">crate</span>::err::{PyDowncastError, PyErr, PyResult};
+<span class="kw">use </span><span class="kw">crate</span>::exceptions::PyTypeError;
+<span class="kw">use </span><span class="kw">crate</span>::type_object::PyTypeInfo;
+<span class="attribute">#[cfg(not(PyPy))]</span>
+<span class="kw">use </span><span class="kw">crate</span>::types::PySuper;
+<span class="kw">use </span><span class="kw">crate</span>::types::{PyDict, PyIterator, PyList, PyString, PyTuple, PyType};
+<span class="kw">use crate</span>::{err, ffi, Py, PyNativeType, PyObject, Python};
+<span class="kw">use </span>std::cell::UnsafeCell;
+<span class="kw">use </span>std::cmp::Ordering;
+<span class="kw">use </span>std::os::raw::c_int;
 
-<span class="doccomment">/// Represents any Python object.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// It currently only appears as a *reference*, `&amp;PyAny`,</span>
-<span class="doccomment">/// with a lifetime that represents the scope during which the GIL is held.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// `PyAny` has some interesting properties, which it shares</span>
-<span class="doccomment">/// with the other [native Python types](crate::types):</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// - It can only be obtained and used while the GIL is held,</span>
-<span class="doccomment">/// therefore its API does not require a [`Python&lt;&#39;py&gt;`](crate::Python) token.</span>
-<span class="doccomment">/// - It can&#39;t be used in situations where the GIL is temporarily released,</span>
-<span class="doccomment">/// such as [`Python::allow_threads`](crate::Python::allow_threads)&#39;s closure.</span>
-<span class="doccomment">/// - The underlying Python object, if mutable, can be mutated through any reference.</span>
-<span class="doccomment">/// - It can be converted to the GIL-independent [`Py`]`&lt;`[`PyAny`]`&gt;`,</span>
-<span class="doccomment">/// allowing it to outlive the GIL scope. However, using [`Py`]`&lt;`[`PyAny`]`&gt;`&#39;s API</span>
-<span class="doccomment">/// *does* require a [`Python&lt;&#39;py&gt;`](crate::Python) token.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// It can be cast to a concrete type with PyAny::downcast (for native Python types only)</span>
-<span class="doccomment">/// and FromPyObject::extract. See their documentation for more information.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// See [the guide](https://pyo3.rs/latest/types.html) for an explanation</span>
-<span class="doccomment">/// of the different Python object types.</span>
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PyAny</span>(<span class="ident">UnsafeCell</span><span class="op">&lt;</span><span class="ident">ffi::PyObject</span><span class="op">&gt;</span>);
+<span class="doccomment">/// Represents any Python object.
+///
+/// It currently only appears as a *reference*, `&amp;PyAny`,
+/// with a lifetime that represents the scope during which the GIL is held.
+///
+/// `PyAny` has some interesting properties, which it shares
+/// with the other [native Python types](crate::types):
+///
+/// - It can only be obtained and used while the GIL is held,
+/// therefore its API does not require a [`Python&lt;&#39;py&gt;`](crate::Python) token.
+/// - It can&#39;t be used in situations where the GIL is temporarily released,
+/// such as [`Python::allow_threads`](crate::Python::allow_threads)&#39;s closure.
+/// - The underlying Python object, if mutable, can be mutated through any reference.
+/// - It can be converted to the GIL-independent [`Py`]`&lt;`[`PyAny`]`&gt;`,
+/// allowing it to outlive the GIL scope. However, using [`Py`]`&lt;`[`PyAny`]`&gt;`&#39;s API
+/// *does* require a [`Python&lt;&#39;py&gt;`](crate::Python) token.
+///
+/// It can be cast to a concrete type with PyAny::downcast (for native Python types only)
+/// and FromPyObject::extract. See their documentation for more information.
+///
+/// See [the guide](https://pyo3.rs/latest/types.html) for an explanation
+/// of the different Python object types.
+</span><span class="attribute">#[repr(transparent)]</span>
+<span class="kw">pub struct </span>PyAny(UnsafeCell&lt;ffi::PyObject&gt;);
 
-<span class="kw">impl</span> <span class="ident"><span class="kw">crate</span>::AsPyPointer</span> <span class="kw">for</span> <span class="ident">PyAny</span> {
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyObject</span> {
-        <span class="self">self</span>.<span class="number">0</span>.<span class="ident">get</span>()
+<span class="kw">impl </span><span class="kw">crate</span>::AsPyPointer <span class="kw">for </span>PyAny {
+    <span class="attribute">#[inline]</span>
+    <span class="kw">fn </span>as_ptr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>ffi::PyObject {
+        <span class="self">self</span>.<span class="number">0</span>.get()
     }
 }
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_snake_case</span>)]</span>
-<span class="comment">// Copied here as the macro does not accept deprecated functions.</span>
-<span class="comment">// Originally ffi::object::PyObject_Check, but this is not in the Python C API.</span>
-<span class="kw">fn</span> <span class="ident">PyObject_Check</span>(<span class="kw">_</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyObject</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span> {
-    <span class="number">1</span>
-}
+<span class="attribute">#[allow(non_snake_case)]</span>
+<span class="comment">// Copied here as the macro does not accept deprecated functions.
+// Originally ffi::object::PyObject_Check, but this is not in the Python C API.
+</span><span class="kw">fn </span>PyObject_Check(<span class="kw">_</span>: <span class="kw-2">*mut </span>ffi::PyObject) -&gt; c_int {
+    <span class="number">1
+</span>}
 
-<span class="macro">pyobject_native_type_base!</span>(<span class="ident">PyAny</span>);
+<span class="macro">pyobject_native_type_base!</span>(PyAny);
 
 <span class="macro">pyobject_native_type_info!</span>(
-    <span class="ident">PyAny</span>,
-    <span class="ident">ffi::PyBaseObject_Type</span>,
+    PyAny,
+    ffi::PyBaseObject_Type,
     <span class="prelude-val">Some</span>(<span class="string">&quot;builtins&quot;</span>),
-    #<span class="ident">checkfunction</span><span class="op">=</span><span class="ident">PyObject_Check</span>
+    #checkfunction=PyObject_Check
 );
 
-<span class="macro">pyobject_native_type_extract!</span>(<span class="ident">PyAny</span>);
+<span class="macro">pyobject_native_type_extract!</span>(PyAny);
 
-<span class="macro">pyobject_native_type_sized!</span>(<span class="ident">PyAny</span>, <span class="ident">ffi::PyObject</span>);
+<span class="macro">pyobject_native_type_sized!</span>(PyAny, ffi::PyObject);
 
-<span class="kw">impl</span> <span class="ident">PyAny</span> {
-    <span class="doccomment">/// Converts this `PyAny` to a concrete Python type.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// use pyo3::prelude::*;</span>
-    <span class="doccomment">/// use pyo3::types::{PyAny, PyDict, PyList};</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Python::with_gil(|py| {</span>
-    <span class="doccomment">///     let dict = PyDict::new(py);</span>
-    <span class="doccomment">///     assert!(dict.is_instance::&lt;PyAny&gt;().unwrap());</span>
-    <span class="doccomment">///     let any: &amp;PyAny = dict.as_ref();</span>
-    <span class="doccomment">///     assert!(any.downcast::&lt;PyDict&gt;().is_ok());</span>
-    <span class="doccomment">///     assert!(any.downcast::&lt;PyList&gt;().is_err());</span>
-    <span class="doccomment">/// });</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">downcast</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">T</span>, <span class="ident">PyDowncastError</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="kw">for</span><span class="op">&lt;</span><span class="lifetime">&#39;py</span><span class="op">&gt;</span> <span class="ident">T</span>: <span class="ident">PyTryFrom</span><span class="op">&lt;</span><span class="lifetime">&#39;py</span><span class="op">&gt;</span>,
+<span class="kw">impl </span>PyAny {
+    <span class="doccomment">/// Converts this `PyAny` to a concrete Python type.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use pyo3::prelude::*;
+    /// use pyo3::types::{PyAny, PyDict, PyList};
+    ///
+    /// Python::with_gil(|py| {
+    ///     let dict = PyDict::new(py);
+    ///     assert!(dict.is_instance_of::&lt;PyAny&gt;().unwrap());
+    ///     let any: &amp;PyAny = dict.as_ref();
+    ///     assert!(any.downcast::&lt;PyDict&gt;().is_ok());
+    ///     assert!(any.downcast::&lt;PyList&gt;().is_err());
+    /// });
+    /// ```
+    </span><span class="kw">pub fn </span>downcast&lt;T&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span>T, PyDowncastError&lt;<span class="lifetime">&#39;_</span>&gt;&gt;
+    <span class="kw">where
+        for</span>&lt;<span class="lifetime">&#39;py</span>&gt; T: PyTryFrom&lt;<span class="lifetime">&#39;py</span>&gt;,
     {
-        <span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">PyTryFrom</span><span class="op">&gt;</span><span class="ident">::try_from</span>(<span class="self">self</span>)
+        &lt;T <span class="kw">as </span>PyTryFrom&gt;::try_from(<span class="self">self</span>)
     }
 
-    <span class="doccomment">/// Determines whether this object has the given attribute.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python expression `hasattr(self, attr_name)`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">hasattr</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">attr_name</span>: <span class="ident">N</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">N</span>: <span class="ident">ToPyObject</span>,
-    {
-        <span class="ident">attr_name</span>.<span class="ident">with_borrowed_ptr</span>(<span class="self">self</span>.<span class="ident">py</span>(), <span class="op">|</span><span class="ident">attr_name</span><span class="op">|</span> <span class="kw">unsafe</span> {
-            <span class="prelude-val">Ok</span>(<span class="ident">ffi::PyObject_HasAttr</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">attr_name</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span>)
-        })
+    <span class="doccomment">/// Returns whether `self` and `other` point to the same object. To compare
+    /// the equality of two objects (the `==` operator), use [`eq`](PyAny::eq).
+    ///
+    /// This is equivalent to the Python expression `self is other`.
+    </span><span class="attribute">#[inline]</span>
+    <span class="kw">pub fn </span>is&lt;T: AsPyPointer&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>T) -&gt; bool {
+        <span class="self">self</span>.as_ptr() == other.as_ptr()
     }
 
-    <span class="doccomment">/// Retrieves an attribute value.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python expression `self.attr_name`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">getattr</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">attr_name</span>: <span class="ident">N</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">PyAny</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">N</span>: <span class="ident">ToPyObject</span>,
+    <span class="doccomment">/// Determines whether this object has the given attribute.
+    ///
+    /// This is equivalent to the Python expression `hasattr(self, attr_name)`.
+    ///
+    /// To avoid repeated temporary allocations of Python strings, the [`intern!`] macro can be used
+    /// to intern `attr_name`.
+    </span><span class="kw">pub fn </span>hasattr&lt;N&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, attr_name: N) -&gt; PyResult&lt;bool&gt;
+    <span class="kw">where
+        </span>N: IntoPy&lt;Py&lt;PyString&gt;&gt;,
     {
-        <span class="ident">attr_name</span>.<span class="ident">with_borrowed_ptr</span>(<span class="self">self</span>.<span class="ident">py</span>(), <span class="op">|</span><span class="ident">attr_name</span><span class="op">|</span> <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">py</span>()
-                .<span class="ident">from_owned_ptr_or_err</span>(<span class="ident">ffi::PyObject_GetAttr</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">attr_name</span>))
-        })
+        <span class="kw">let </span>py = <span class="self">self</span>.py();
+        <span class="kw">let </span>attr_name = attr_name.into_py(py);
+
+        <span class="kw">unsafe </span>{ <span class="prelude-val">Ok</span>(ffi::PyObject_HasAttr(<span class="self">self</span>.as_ptr(), attr_name.as_ptr()) != <span class="number">0</span>) }
     }
 
-    <span class="doccomment">/// Sets an attribute value.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python expression `self.attr_name = value`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">setattr</span><span class="op">&lt;</span><span class="ident">N</span>, <span class="ident">V</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">attr_name</span>: <span class="ident">N</span>, <span class="ident">value</span>: <span class="ident">V</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">N</span>: <span class="ident">ToBorrowedObject</span>,
-        <span class="ident">V</span>: <span class="ident">ToBorrowedObject</span>,
+    <span class="doccomment">/// Retrieves an attribute value.
+    ///
+    /// This is equivalent to the Python expression `self.attr_name`.
+    ///
+    /// To avoid repeated temporary allocations of Python strings, the [`intern!`] macro can be used
+    /// to intern `attr_name`.
+    ///
+    /// # Example: `intern!`ing the attribute name
+    ///
+    /// ```
+    /// # use pyo3::{intern, pyfunction, types::PyModule, PyAny, Python, PyResult};
+    /// #
+    /// #[pyfunction]
+    /// fn version(sys: &amp;PyModule) -&gt; PyResult&lt;&amp;PyAny&gt; {
+    ///     sys.getattr(intern!(sys.py(), &quot;version&quot;))
+    /// }
+    /// #
+    /// # Python::with_gil(|py| {
+    /// #    let sys = py.import(&quot;sys&quot;).unwrap();
+    /// #    version(sys).unwrap();
+    /// # });
+    /// ```
+    </span><span class="kw">pub fn </span>getattr&lt;N&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, attr_name: N) -&gt; PyResult&lt;<span class="kw-2">&amp;</span>PyAny&gt;
+    <span class="kw">where
+        </span>N: IntoPy&lt;Py&lt;PyString&gt;&gt;,
     {
-        <span class="ident">attr_name</span>.<span class="ident">with_borrowed_ptr</span>(<span class="self">self</span>.<span class="ident">py</span>(), <span class="kw">move</span> <span class="op">|</span><span class="ident">attr_name</span><span class="op">|</span> {
-            <span class="ident">value</span>.<span class="ident">with_borrowed_ptr</span>(<span class="self">self</span>.<span class="ident">py</span>(), <span class="op">|</span><span class="ident">value</span><span class="op">|</span> <span class="kw">unsafe</span> {
-                <span class="ident">err::error_on_minusone</span>(
-                    <span class="self">self</span>.<span class="ident">py</span>(),
-                    <span class="ident">ffi::PyObject_SetAttr</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">attr_name</span>, <span class="ident">value</span>),
-                )
-            })
-        })
+        <span class="kw">let </span>py = <span class="self">self</span>.py();
+        <span class="kw">let </span>attr_name = attr_name.into_py(py);
+
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>ret = ffi::PyObject_GetAttr(<span class="self">self</span>.as_ptr(), attr_name.as_ptr());
+            py.from_owned_ptr_or_err(ret)
+        }
     }
 
-    <span class="doccomment">/// Deletes an attribute.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python statement `del self.attr_name`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">delattr</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">attr_name</span>: <span class="ident">N</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">N</span>: <span class="ident">ToPyObject</span>,
+    <span class="doccomment">/// Sets an attribute value.
+    ///
+    /// This is equivalent to the Python expression `self.attr_name = value`.
+    ///
+    /// To avoid repeated temporary allocations of Python strings, the [`intern!`] macro can be used
+    /// to intern `name`.
+    ///
+    /// # Example: `intern!`ing the attribute name
+    ///
+    /// ```
+    /// # use pyo3::{intern, pyfunction, types::PyModule, PyAny, Python, PyResult};
+    /// #
+    /// #[pyfunction]
+    /// fn set_answer(ob: &amp;PyAny) -&gt; PyResult&lt;()&gt; {
+    ///     ob.setattr(intern!(ob.py(), &quot;answer&quot;), 42)
+    /// }
+    /// #
+    /// # Python::with_gil(|py| {
+    /// #    let ob = PyModule::new(py, &quot;empty&quot;).unwrap();
+    /// #    set_answer(ob).unwrap();
+    /// # });
+    /// ```
+    </span><span class="kw">pub fn </span>setattr&lt;N, V&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, attr_name: N, value: V) -&gt; PyResult&lt;()&gt;
+    <span class="kw">where
+        </span>N: IntoPy&lt;Py&lt;PyString&gt;&gt;,
+        V: ToPyObject,
     {
-        <span class="ident">attr_name</span>.<span class="ident">with_borrowed_ptr</span>(<span class="self">self</span>.<span class="ident">py</span>(), <span class="op">|</span><span class="ident">attr_name</span><span class="op">|</span> <span class="kw">unsafe</span> {
-            <span class="ident">err::error_on_minusone</span>(<span class="self">self</span>.<span class="ident">py</span>(), <span class="ident">ffi::PyObject_DelAttr</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">attr_name</span>))
-        })
+        <span class="kw">let </span>py = <span class="self">self</span>.py();
+        <span class="kw">let </span>attr_name = attr_name.into_py(py);
+        <span class="kw">let </span>value = value.to_object(py);
+
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>ret = ffi::PyObject_SetAttr(<span class="self">self</span>.as_ptr(), attr_name.as_ptr(), value.as_ptr());
+            err::error_on_minusone(py, ret)
+        }
     }
 
-    <span class="doccomment">/// Returns an [`Ordering`] between `self` and `other`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the following Python code:</span>
-    <span class="doccomment">/// ```python</span>
-    <span class="doccomment">/// if self == other:</span>
-    <span class="doccomment">///     return Equal</span>
-    <span class="doccomment">/// elif a &lt; b:</span>
-    <span class="doccomment">///     return Less</span>
-    <span class="doccomment">/// elif a &gt; b:</span>
-    <span class="doccomment">///     return Greater</span>
-    <span class="doccomment">/// else:</span>
-    <span class="doccomment">///     raise TypeError(&quot;PyAny::compare(): All comparisons returned false&quot;)</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// use pyo3::prelude::*;</span>
-    <span class="doccomment">/// use pyo3::types::PyFloat;</span>
-    <span class="doccomment">/// use std::cmp::Ordering;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # fn main() -&gt; PyResult&lt;()&gt; {</span>
-    <span class="doccomment">/// Python::with_gil(|py| -&gt; PyResult&lt;()&gt; {</span>
-    <span class="doccomment">///     let a = PyFloat::new(py, 0_f64);</span>
-    <span class="doccomment">///     let b = PyFloat::new(py, 42_f64);</span>
-    <span class="doccomment">///     assert_eq!(a.compare(b)?, Ordering::Less);</span>
-    <span class="doccomment">///     Ok(())</span>
-    <span class="doccomment">/// })?;</span>
-    <span class="doccomment">/// # Ok(())}</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// It will return `PyErr` for values that cannot be compared:</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// use pyo3::prelude::*;</span>
-    <span class="doccomment">/// use pyo3::types::{PyFloat, PyString};</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # fn main() -&gt; PyResult&lt;()&gt; {</span>
-    <span class="doccomment">/// Python::with_gil(|py| -&gt; PyResult&lt;()&gt; {</span>
-    <span class="doccomment">///     let a = PyFloat::new(py, 0_f64);</span>
-    <span class="doccomment">///     let b = PyString::new(py, &quot;zero&quot;);</span>
-    <span class="doccomment">///     assert!(a.compare(b).is_err());</span>
-    <span class="doccomment">///     Ok(())</span>
-    <span class="doccomment">/// })?;</span>
-    <span class="doccomment">/// # Ok(())}</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compare</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="ident">O</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="ident">Ordering</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">O</span>: <span class="ident">ToPyObject</span>,
+    <span class="doccomment">/// Deletes an attribute.
+    ///
+    /// This is equivalent to the Python statement `del self.attr_name`.
+    ///
+    /// To avoid repeated temporary allocations of Python strings, the [`intern!`] macro can be used
+    /// to intern `attr_name`.
+    </span><span class="kw">pub fn </span>delattr&lt;N&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, attr_name: N) -&gt; PyResult&lt;()&gt;
+    <span class="kw">where
+        </span>N: IntoPy&lt;Py&lt;PyString&gt;&gt;,
     {
-        <span class="kw">let</span> <span class="ident">py</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">py</span>();
-        <span class="comment">// Almost the same as ffi::PyObject_RichCompareBool, but this one doesn&#39;t try self == other.</span>
-        <span class="comment">// See https://github.com/PyO3/pyo3/issues/985 for more.</span>
-        <span class="kw">let</span> <span class="ident">do_compare</span> <span class="op">=</span> <span class="op">|</span><span class="ident">other</span>, <span class="ident">op</span><span class="op">|</span> <span class="kw">unsafe</span> {
-            <span class="ident">PyObject::from_owned_ptr_or_err</span>(<span class="ident">py</span>, <span class="ident">ffi::PyObject_RichCompare</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">other</span>, <span class="ident">op</span>))
-                .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">obj</span><span class="op">|</span> <span class="ident">obj</span>.<span class="ident">is_true</span>(<span class="ident">py</span>))
+        <span class="kw">let </span>py = <span class="self">self</span>.py();
+        <span class="kw">let </span>attr_name = attr_name.into_py(py);
+
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>ret = ffi::PyObject_DelAttr(<span class="self">self</span>.as_ptr(), attr_name.as_ptr());
+            err::error_on_minusone(py, ret)
+        }
+    }
+
+    <span class="doccomment">/// Returns an [`Ordering`] between `self` and `other`.
+    ///
+    /// This is equivalent to the following Python code:
+    /// ```python
+    /// if self == other:
+    ///     return Equal
+    /// elif a &lt; b:
+    ///     return Less
+    /// elif a &gt; b:
+    ///     return Greater
+    /// else:
+    ///     raise TypeError(&quot;PyAny::compare(): All comparisons returned false&quot;)
+    /// ```
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use pyo3::prelude::*;
+    /// use pyo3::types::PyFloat;
+    /// use std::cmp::Ordering;
+    ///
+    /// # fn main() -&gt; PyResult&lt;()&gt; {
+    /// Python::with_gil(|py| -&gt; PyResult&lt;()&gt; {
+    ///     let a = PyFloat::new(py, 0_f64);
+    ///     let b = PyFloat::new(py, 42_f64);
+    ///     assert_eq!(a.compare(b)?, Ordering::Less);
+    ///     Ok(())
+    /// })?;
+    /// # Ok(())}
+    /// ```
+    ///
+    /// It will return `PyErr` for values that cannot be compared:
+    ///
+    /// ```rust
+    /// use pyo3::prelude::*;
+    /// use pyo3::types::{PyFloat, PyString};
+    ///
+    /// # fn main() -&gt; PyResult&lt;()&gt; {
+    /// Python::with_gil(|py| -&gt; PyResult&lt;()&gt; {
+    ///     let a = PyFloat::new(py, 0_f64);
+    ///     let b = PyString::new(py, &quot;zero&quot;);
+    ///     assert!(a.compare(b).is_err());
+    ///     Ok(())
+    /// })?;
+    /// # Ok(())}
+    /// ```
+    </span><span class="kw">pub fn </span>compare&lt;O&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, other: O) -&gt; PyResult&lt;Ordering&gt;
+    <span class="kw">where
+        </span>O: ToPyObject,
+    {
+        <span class="self">self</span>._compare(other.to_object(<span class="self">self</span>.py()))
+    }
+
+    <span class="kw">fn </span>_compare(<span class="kw-2">&amp;</span><span class="self">self</span>, other: PyObject) -&gt; PyResult&lt;Ordering&gt; {
+        <span class="kw">let </span>py = <span class="self">self</span>.py();
+        <span class="kw">let </span>other = other.as_ptr();
+        <span class="comment">// Almost the same as ffi::PyObject_RichCompareBool, but this one doesn&#39;t try self == other.
+        // See https://github.com/PyO3/pyo3/issues/985 for more.
+        </span><span class="kw">let </span>do_compare = |other, op| <span class="kw">unsafe </span>{
+            PyObject::from_owned_ptr_or_err(py, ffi::PyObject_RichCompare(<span class="self">self</span>.as_ptr(), other, op))
+                .and_then(|obj| obj.is_true(py))
         };
-        <span class="ident">other</span>.<span class="ident">with_borrowed_ptr</span>(<span class="ident">py</span>, <span class="op">|</span><span class="ident">other</span><span class="op">|</span> {
-            <span class="kw">if</span> <span class="ident">do_compare</span>(<span class="ident">other</span>, <span class="ident">ffi::Py_EQ</span>)<span class="question-mark">?</span> {
-                <span class="prelude-val">Ok</span>(<span class="ident">Ordering::Equal</span>)
-            } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">do_compare</span>(<span class="ident">other</span>, <span class="ident">ffi::Py_LT</span>)<span class="question-mark">?</span> {
-                <span class="prelude-val">Ok</span>(<span class="ident">Ordering::Less</span>)
-            } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">do_compare</span>(<span class="ident">other</span>, <span class="ident">ffi::Py_GT</span>)<span class="question-mark">?</span> {
-                <span class="prelude-val">Ok</span>(<span class="ident">Ordering::Greater</span>)
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">PyTypeError::new_err</span>(
-                    <span class="string">&quot;PyAny::compare(): All comparisons returned false&quot;</span>,
-                ))
-            }
-        })
-    }
-
-    <span class="doccomment">/// Tests whether two Python objects obey a given [`CompareOp`].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Depending on the value of `compare_op`, this is equivalent to one of the</span>
-    <span class="doccomment">/// following Python expressions:</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// &lt;div style=&quot;width:1px&quot;&gt;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// | `compare_op` | &lt;span style=&quot;white-space: pre&quot;&gt;Python expression&lt;/span&gt; |</span>
-    <span class="doccomment">/// | :---: | :----: |</span>
-    <span class="doccomment">/// | [`CompareOp::Eq`] | &lt;span style=&quot;white-space: pre&quot;&gt;`self == other`&lt;/span&gt; |</span>
-    <span class="doccomment">/// | [`CompareOp::Ne`] | &lt;span style=&quot;white-space: pre&quot;&gt;`self != other`&lt;/span&gt; |</span>
-    <span class="doccomment">/// | [`CompareOp::Lt`] | &lt;span style=&quot;white-space: pre&quot;&gt;`self &lt; other`&lt;/span&gt; |</span>
-    <span class="doccomment">/// | [`CompareOp::Le`] | &lt;span style=&quot;white-space: pre&quot;&gt;`self &lt;= other`&lt;/span&gt; |</span>
-    <span class="doccomment">/// | [`CompareOp::Gt`] | &lt;span style=&quot;white-space: pre&quot;&gt;`self &gt; other`&lt;/span&gt; |</span>
-    <span class="doccomment">/// | [`CompareOp::Ge`] | &lt;span style=&quot;white-space: pre&quot;&gt;`self &gt;= other`&lt;/span&gt; |</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// &lt;/div&gt;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// use pyo3::prelude::*;</span>
-    <span class="doccomment">/// use pyo3::types::PyInt;</span>
-    <span class="doccomment">/// use pyo3::class::basic::CompareOp;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # fn main() -&gt; PyResult&lt;()&gt; {</span>
-    <span class="doccomment">/// Python::with_gil(|py| -&gt; PyResult&lt;()&gt; {</span>
-    <span class="doccomment">///     let a: &amp;PyInt = 0_u8.into_py(py).into_ref(py).downcast()?;</span>
-    <span class="doccomment">///     let b: &amp;PyInt = 42_u8.into_py(py).into_ref(py).downcast()?;</span>
-    <span class="doccomment">///     assert!(a.rich_compare(b, CompareOp::Le)?.is_true()?);</span>
-    <span class="doccomment">///     Ok(())</span>
-    <span class="doccomment">///   })?;</span>
-    <span class="doccomment">/// # Ok(())}</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rich_compare</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="ident">O</span>, <span class="ident">compare_op</span>: <span class="ident">CompareOp</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">PyAny</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">O</span>: <span class="ident">ToPyObject</span>,
-    {
-        <span class="kw">unsafe</span> {
-            <span class="ident">other</span>.<span class="ident">with_borrowed_ptr</span>(<span class="self">self</span>.<span class="ident">py</span>(), <span class="op">|</span><span class="ident">other</span><span class="op">|</span> {
-                <span class="self">self</span>.<span class="ident">py</span>().<span class="ident">from_owned_ptr_or_err</span>(<span class="ident">ffi::PyObject_RichCompare</span>(
-                    <span class="self">self</span>.<span class="ident">as_ptr</span>(),
-                    <span class="ident">other</span>,
-                    <span class="ident">compare_op</span> <span class="kw">as</span> <span class="ident">c_int</span>,
-                ))
-            })
+        <span class="kw">if </span>do_compare(other, ffi::Py_EQ)<span class="question-mark">? </span>{
+            <span class="prelude-val">Ok</span>(Ordering::Equal)
+        } <span class="kw">else if </span>do_compare(other, ffi::Py_LT)<span class="question-mark">? </span>{
+            <span class="prelude-val">Ok</span>(Ordering::Less)
+        } <span class="kw">else if </span>do_compare(other, ffi::Py_GT)<span class="question-mark">? </span>{
+            <span class="prelude-val">Ok</span>(Ordering::Greater)
+        } <span class="kw">else </span>{
+            <span class="prelude-val">Err</span>(PyTypeError::new_err(
+                <span class="string">&quot;PyAny::compare(): All comparisons returned false&quot;</span>,
+            ))
         }
     }
 
-    <span class="doccomment">/// Determines whether this object appears callable.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to Python&#39;s [`callable()`][1] function.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// use pyo3::prelude::*;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # fn main() -&gt; PyResult&lt;()&gt; {</span>
-    <span class="doccomment">/// Python::with_gil(|py| -&gt; PyResult&lt;()&gt; {</span>
-    <span class="doccomment">///        let builtins = PyModule::import(py, &quot;builtins&quot;)?;</span>
-    <span class="doccomment">///        let print = builtins.getattr(&quot;print&quot;)?;</span>
-    <span class="doccomment">///        assert!(print.is_callable());</span>
-    <span class="doccomment">///        Ok(())</span>
-    <span class="doccomment">/// })?;</span>
-    <span class="doccomment">/// # Ok(())}</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python statement `assert callable(print)`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Note that unless an API needs to distinguish between callable and</span>
-    <span class="doccomment">/// non-callable objects, there is no point in checking for callability.</span>
-    <span class="doccomment">/// Instead, it is better to just do the call and handle potential</span>
-    <span class="doccomment">/// exceptions.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [1]: https://docs.python.org/3/library/functions.html#callable</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_callable</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">ffi::PyCallable_Check</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>()) <span class="op">!</span><span class="op">=</span> <span class="number">0</span> }
+    <span class="doccomment">/// Tests whether two Python objects obey a given [`CompareOp`].
+    ///
+    /// [`lt`](Self::lt), [`le`](Self::le), [`eq`](Self::eq), [`ne`](Self::ne),
+    /// [`gt`](Self::gt) and [`ge`](Self::ge) are the specialized versions
+    /// of this function.
+    ///
+    /// Depending on the value of `compare_op`, this is equivalent to one of the
+    /// following Python expressions:
+    ///
+    /// | `compare_op` | Python expression |
+    /// | :---: | :----: |
+    /// | [`CompareOp::Eq`] | `self == other` |
+    /// | [`CompareOp::Ne`] | `self != other` |
+    /// | [`CompareOp::Lt`] | `self &lt; other` |
+    /// | [`CompareOp::Le`] | `self &lt;= other` |
+    /// | [`CompareOp::Gt`] | `self &gt; other` |
+    /// | [`CompareOp::Ge`] | `self &gt;= other` |
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use pyo3::class::basic::CompareOp;
+    /// use pyo3::prelude::*;
+    /// use pyo3::types::PyInt;
+    ///
+    /// # fn main() -&gt; PyResult&lt;()&gt; {
+    /// Python::with_gil(|py| -&gt; PyResult&lt;()&gt; {
+    ///     let a: &amp;PyInt = 0_u8.into_py(py).into_ref(py).downcast()?;
+    ///     let b: &amp;PyInt = 42_u8.into_py(py).into_ref(py).downcast()?;
+    ///     assert!(a.rich_compare(b, CompareOp::Le)?.is_true()?);
+    ///     Ok(())
+    /// })?;
+    /// # Ok(())}
+    /// ```
+    </span><span class="kw">pub fn </span>rich_compare&lt;O&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, other: O, compare_op: CompareOp) -&gt; PyResult&lt;<span class="kw-2">&amp;</span>PyAny&gt;
+    <span class="kw">where
+        </span>O: ToPyObject,
+    {
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.py().from_owned_ptr_or_err(ffi::PyObject_RichCompare(
+                <span class="self">self</span>.as_ptr(),
+                other.to_object(<span class="self">self</span>.py()).as_ptr(),
+                compare_op <span class="kw">as </span>c_int,
+            ))
+        }
     }
 
-    <span class="doccomment">/// Calls the object.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python expression `self(*args, **kwargs)`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">call</span>(
+    <span class="doccomment">/// Tests whether this object is less than another.
+    ///
+    /// This is equivalent to the Python expression `self &lt; other`.
+    </span><span class="kw">pub fn </span>lt&lt;O&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, other: O) -&gt; PyResult&lt;bool&gt;
+    <span class="kw">where
+        </span>O: ToPyObject,
+    {
+        <span class="self">self</span>.rich_compare(other, CompareOp::Lt)<span class="question-mark">?</span>.is_true()
+    }
+
+    <span class="doccomment">/// Tests whether this object is less than or equal to another.
+    ///
+    /// This is equivalent to the Python expression `self &lt;= other`.
+    </span><span class="kw">pub fn </span>le&lt;O&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, other: O) -&gt; PyResult&lt;bool&gt;
+    <span class="kw">where
+        </span>O: ToPyObject,
+    {
+        <span class="self">self</span>.rich_compare(other, CompareOp::Le)<span class="question-mark">?</span>.is_true()
+    }
+
+    <span class="doccomment">/// Tests whether this object is equal to another.
+    ///
+    /// This is equivalent to the Python expression `self == other`.
+    </span><span class="kw">pub fn </span>eq&lt;O&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, other: O) -&gt; PyResult&lt;bool&gt;
+    <span class="kw">where
+        </span>O: ToPyObject,
+    {
+        <span class="self">self</span>.rich_compare(other, CompareOp::Eq)<span class="question-mark">?</span>.is_true()
+    }
+
+    <span class="doccomment">/// Tests whether this object is not equal to another.
+    ///
+    /// This is equivalent to the Python expression `self != other`.
+    </span><span class="kw">pub fn </span>ne&lt;O&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, other: O) -&gt; PyResult&lt;bool&gt;
+    <span class="kw">where
+        </span>O: ToPyObject,
+    {
+        <span class="self">self</span>.rich_compare(other, CompareOp::Ne)<span class="question-mark">?</span>.is_true()
+    }
+
+    <span class="doccomment">/// Tests whether this object is greater than another.
+    ///
+    /// This is equivalent to the Python expression `self &gt; other`.
+    </span><span class="kw">pub fn </span>gt&lt;O&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, other: O) -&gt; PyResult&lt;bool&gt;
+    <span class="kw">where
+        </span>O: ToPyObject,
+    {
+        <span class="self">self</span>.rich_compare(other, CompareOp::Gt)<span class="question-mark">?</span>.is_true()
+    }
+
+    <span class="doccomment">/// Tests whether this object is greater than or equal to another.
+    ///
+    /// This is equivalent to the Python expression `self &gt;= other`.
+    </span><span class="kw">pub fn </span>ge&lt;O&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, other: O) -&gt; PyResult&lt;bool&gt;
+    <span class="kw">where
+        </span>O: ToPyObject,
+    {
+        <span class="self">self</span>.rich_compare(other, CompareOp::Ge)<span class="question-mark">?</span>.is_true()
+    }
+
+    <span class="doccomment">/// Determines whether this object appears callable.
+    ///
+    /// This is equivalent to Python&#39;s [`callable()`][1] function.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use pyo3::prelude::*;
+    ///
+    /// # fn main() -&gt; PyResult&lt;()&gt; {
+    /// Python::with_gil(|py| -&gt; PyResult&lt;()&gt; {
+    ///     let builtins = PyModule::import(py, &quot;builtins&quot;)?;
+    ///     let print = builtins.getattr(&quot;print&quot;)?;
+    ///     assert!(print.is_callable());
+    ///     Ok(())
+    /// })?;
+    /// # Ok(())}
+    /// ```
+    ///
+    /// This is equivalent to the Python statement `assert callable(print)`.
+    ///
+    /// Note that unless an API needs to distinguish between callable and
+    /// non-callable objects, there is no point in checking for callability.
+    /// Instead, it is better to just do the call and handle potential
+    /// exceptions.
+    ///
+    /// [1]: https://docs.python.org/3/library/functions.html#callable
+    </span><span class="kw">pub fn </span>is_callable(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ ffi::PyCallable_Check(<span class="self">self</span>.as_ptr()) != <span class="number">0 </span>}
+    }
+
+    <span class="doccomment">/// Calls the object.
+    ///
+    /// This is equivalent to the Python expression `self(*args, **kwargs)`.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use pyo3::prelude::*;
+    /// use pyo3::types::PyDict;
+    ///
+    /// const CODE: &amp;str = r#&quot;
+    /// def function(*args, **kwargs):
+    ///     assert args == (&quot;hello&quot;,)
+    ///     assert kwargs == {&quot;cruel&quot;: &quot;world&quot;}
+    ///     return &quot;called with args and kwargs&quot;
+    /// &quot;#;
+    ///
+    /// # fn main() -&gt; PyResult&lt;()&gt; {
+    /// Python::with_gil(|py| {
+    ///     let module = PyModule::from_code(py, CODE, &quot;&quot;, &quot;&quot;)?;
+    ///     let fun = module.getattr(&quot;function&quot;)?;
+    ///     let args = (&quot;hello&quot;,);
+    ///     let kwargs = PyDict::new(py);
+    ///     kwargs.set_item(&quot;cruel&quot;, &quot;world&quot;)?;
+    ///     let result = fun.call(args, Some(kwargs))?;
+    ///     assert_eq!(result.extract::&lt;&amp;str&gt;()?, &quot;called with args and kwargs&quot;);
+    ///     Ok(())
+    /// })
+    /// # }
+    /// ```
+    </span><span class="kw">pub fn </span>call(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">args</span>: <span class="kw">impl</span> <span class="ident">IntoPy</span><span class="op">&lt;</span><span class="ident">Py</span><span class="op">&lt;</span><span class="ident">PyTuple</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">kwargs</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">PyDict</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">PyAny</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">args</span> <span class="op">=</span> <span class="ident">args</span>.<span class="ident">into_py</span>(<span class="self">self</span>.<span class="ident">py</span>()).<span class="ident">into_ptr</span>();
-        <span class="kw">let</span> <span class="ident">kwargs</span> <span class="op">=</span> <span class="ident">kwargs</span>.<span class="ident">into_ptr</span>();
-        <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">return_value</span> <span class="op">=</span> <span class="ident">ffi::PyObject_Call</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">args</span>, <span class="ident">kwargs</span>);
-            <span class="self">self</span>.<span class="ident">py</span>().<span class="ident">from_owned_ptr_or_err</span>(<span class="ident">return_value</span>)
-        };
-        <span class="kw">unsafe</span> {
-            <span class="ident">ffi::Py_XDECREF</span>(<span class="ident">args</span>);
-            <span class="ident">ffi::Py_XDECREF</span>(<span class="ident">kwargs</span>);
+        args: <span class="kw">impl </span>IntoPy&lt;Py&lt;PyTuple&gt;&gt;,
+        kwargs: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>PyDict&gt;,
+    ) -&gt; PyResult&lt;<span class="kw-2">&amp;</span>PyAny&gt; {
+        <span class="kw">let </span>py = <span class="self">self</span>.py();
+
+        <span class="kw">let </span>args = args.into_py(py);
+        <span class="kw">let </span>kwargs = kwargs.into_ptr();
+
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>return_value = ffi::PyObject_Call(<span class="self">self</span>.as_ptr(), args.as_ptr(), kwargs);
+            <span class="kw">let </span>ret = py.from_owned_ptr_or_err(return_value);
+            ffi::Py_XDECREF(kwargs);
+            ret
         }
-        <span class="ident">result</span>
     }
 
-    <span class="doccomment">/// Calls the object without arguments.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python expression `self()`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```no_run</span>
-    <span class="doccomment">/// use pyo3::prelude::*;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # fn main() -&gt; PyResult&lt;()&gt; {</span>
-    <span class="doccomment">/// Python::with_gil(|py| -&gt; PyResult&lt;()&gt; {</span>
-    <span class="doccomment">///     let module = PyModule::import(py, &quot;builtins&quot;)?;</span>
-    <span class="doccomment">///     let help = module.getattr(&quot;help&quot;)?;</span>
-    <span class="doccomment">///     help.call0()?;</span>
-    <span class="doccomment">///     Ok(())</span>
-    <span class="doccomment">/// })?;</span>
-    <span class="doccomment">/// # Ok(())}</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python expression `help()`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">call0</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">PyAny</span><span class="op">&gt;</span> {
+    <span class="doccomment">/// Calls the object without arguments.
+    ///
+    /// This is equivalent to the Python expression `self()`.
+    ///
+    /// # Examples
+    ///
+    /// ```no_run
+    /// use pyo3::prelude::*;
+    ///
+    /// # fn main() -&gt; PyResult&lt;()&gt; {
+    /// Python::with_gil(|py| -&gt; PyResult&lt;()&gt; {
+    ///     let module = PyModule::import(py, &quot;builtins&quot;)?;
+    ///     let help = module.getattr(&quot;help&quot;)?;
+    ///     help.call0()?;
+    ///     Ok(())
+    /// })?;
+    /// # Ok(())}
+    /// ```
+    ///
+    /// This is equivalent to the Python expression `help()`.
+    </span><span class="kw">pub fn </span>call0(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PyResult&lt;<span class="kw-2">&amp;</span>PyAny&gt; {
         <span class="macro">cfg_if::cfg_if!</span> {
-            <span class="comment">// TODO: Use PyObject_CallNoArgs instead after https://bugs.python.org/issue42415.</span>
-            <span class="comment">// Once the issue is resolved, we can enable this optimization for limited API.</span>
-            <span class="kw">if</span> <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">Py_3_9</span>, <span class="ident">not</span>(<span class="ident">Py_LIMITED_API</span>)))]</span> {
-                <span class="comment">// Optimized path on python 3.9+</span>
-                <span class="kw">unsafe</span> {
-                    <span class="self">self</span>.<span class="ident">py</span>().<span class="ident">from_owned_ptr_or_err</span>(<span class="ident">ffi::_PyObject_CallNoArg</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>()))
+            <span class="kw">if </span><span class="attribute">#[cfg(all(
+                not(PyPy),
+                any(Py_3_10, all(not(Py_LIMITED_API), Py_3_9)) <span class="comment">// PyObject_CallNoArgs was added to python in 3.9 but to limited API in 3.10
+            </span>))]</span> {
+                <span class="comment">// Optimized path on python 3.9+
+                </span><span class="kw">unsafe </span>{
+                    <span class="self">self</span>.py().from_owned_ptr_or_err(ffi::PyObject_CallNoArgs(<span class="self">self</span>.as_ptr()))
                 }
-            } <span class="kw">else</span> {
-                <span class="self">self</span>.<span class="ident">call</span>((), <span class="prelude-val">None</span>)
+            } <span class="kw">else </span>{
+                <span class="self">self</span>.call((), <span class="prelude-val">None</span>)
             }
         }
     }
 
-    <span class="doccomment">/// Calls the object with only positional arguments.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python expression `self(*args)`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// use pyo3::prelude::*;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # fn main() -&gt; PyResult&lt;()&gt; {</span>
-    <span class="doccomment">/// Python::with_gil(|py| -&gt; PyResult&lt;()&gt; {</span>
-    <span class="doccomment">///     let module = PyModule::import(py, &quot;operator&quot;)?;</span>
-    <span class="doccomment">///     let add = module.getattr(&quot;add&quot;)?;</span>
-    <span class="doccomment">///     let args = (1,2);</span>
-    <span class="doccomment">///     let value = add.call1(args)?;</span>
-    <span class="doccomment">///     assert_eq!(value.extract::&lt;i32&gt;()?, 3);</span>
-    <span class="doccomment">///     Ok(())</span>
-    <span class="doccomment">/// })?;</span>
-    <span class="doccomment">/// # Ok(())}</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the following Python code:</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```python</span>
-    <span class="doccomment">/// from operator import add</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// value = add(1,2)</span>
-    <span class="doccomment">/// assert value == 3</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">call1</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">args</span>: <span class="kw">impl</span> <span class="ident">IntoPy</span><span class="op">&lt;</span><span class="ident">Py</span><span class="op">&lt;</span><span class="ident">PyTuple</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">PyAny</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">call</span>(<span class="ident">args</span>, <span class="prelude-val">None</span>)
+    <span class="doccomment">/// Calls the object with only positional arguments.
+    ///
+    /// This is equivalent to the Python expression `self(*args)`.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use pyo3::prelude::*;
+    ///
+    /// const CODE: &amp;str = r#&quot;
+    /// def function(*args, **kwargs):
+    ///     assert args == (&quot;hello&quot;,)
+    ///     assert kwargs == {}
+    ///     return &quot;called with args&quot;
+    /// &quot;#;
+    ///
+    /// # fn main() -&gt; PyResult&lt;()&gt; {
+    /// Python::with_gil(|py| {
+    ///     let module = PyModule::from_code(py, CODE, &quot;&quot;, &quot;&quot;)?;
+    ///     let fun = module.getattr(&quot;function&quot;)?;
+    ///     let args = (&quot;hello&quot;,);
+    ///     let result = fun.call1(args)?;
+    ///     assert_eq!(result.extract::&lt;&amp;str&gt;()?, &quot;called with args&quot;);
+    ///     Ok(())
+    /// })
+    /// # }
+    /// ```
+    </span><span class="kw">pub fn </span>call1(<span class="kw-2">&amp;</span><span class="self">self</span>, args: <span class="kw">impl </span>IntoPy&lt;Py&lt;PyTuple&gt;&gt;) -&gt; PyResult&lt;<span class="kw-2">&amp;</span>PyAny&gt; {
+        <span class="self">self</span>.call(args, <span class="prelude-val">None</span>)
     }
 
-    <span class="doccomment">/// Calls a method on the object.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python expression `self.name(*args, **kwargs)`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// use pyo3::prelude::*;</span>
-    <span class="doccomment">/// use pyo3::types::{PyDict, PyList};</span>
-    <span class="doccomment">/// use crate::pyo3::types::IntoPyDict;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # fn main() -&gt; PyResult&lt;()&gt; {</span>
-    <span class="doccomment">/// Python::with_gil(|py| -&gt; PyResult&lt;()&gt; {</span>
-    <span class="doccomment">///     let list = PyList::new(py, vec![3, 6, 5, 4, 7]);</span>
-    <span class="doccomment">///     let kwargs = vec![(&quot;reverse&quot;, true)].into_py_dict(py);</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///     list.call_method(&quot;sort&quot;, (), Some(kwargs))?;</span>
-    <span class="doccomment">///     assert_eq!(list.extract::&lt;Vec&lt;i32&gt;&gt;()?, vec![7, 6, 5, 4, 3]);</span>
-    <span class="doccomment">///     Ok(())</span>
-    <span class="doccomment">/// })?;</span>
-    <span class="doccomment">/// # Ok(())}</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the following Python code:</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```python</span>
-    <span class="doccomment">/// my_list = [3, 6, 5, 4, 7]</span>
-    <span class="doccomment">/// my_list.sort(reverse = True)</span>
-    <span class="doccomment">/// assert my_list == [7, 6, 5, 4, 3]</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">call_method</span>(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">args</span>: <span class="kw">impl</span> <span class="ident">IntoPy</span><span class="op">&lt;</span><span class="ident">Py</span><span class="op">&lt;</span><span class="ident">PyTuple</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">kwargs</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">PyDict</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">PyAny</span><span class="op">&gt;</span> {
-        <span class="ident">name</span>.<span class="ident">with_borrowed_ptr</span>(<span class="self">self</span>.<span class="ident">py</span>(), <span class="op">|</span><span class="ident">name</span><span class="op">|</span> <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">py</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">py</span>();
-            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">ffi::PyObject_GetAttr</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">name</span>);
-            <span class="kw">if</span> <span class="ident">ptr</span>.<span class="ident">is_null</span>() {
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">PyErr::api_call_failed</span>(<span class="ident">py</span>));
-            }
-            <span class="kw">let</span> <span class="ident">args</span> <span class="op">=</span> <span class="ident">args</span>.<span class="ident">into_py</span>(<span class="ident">py</span>).<span class="ident">into_ptr</span>();
-            <span class="kw">let</span> <span class="ident">kwargs</span> <span class="op">=</span> <span class="ident">kwargs</span>.<span class="ident">into_ptr</span>();
-            <span class="kw">let</span> <span class="ident">result_ptr</span> <span class="op">=</span> <span class="ident">ffi::PyObject_Call</span>(<span class="ident">ptr</span>, <span class="ident">args</span>, <span class="ident">kwargs</span>);
-            <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">py</span>.<span class="ident">from_owned_ptr_or_err</span>(<span class="ident">result_ptr</span>);
-            <span class="ident">ffi::Py_DECREF</span>(<span class="ident">ptr</span>);
-            <span class="ident">ffi::Py_XDECREF</span>(<span class="ident">args</span>);
-            <span class="ident">ffi::Py_XDECREF</span>(<span class="ident">kwargs</span>);
-            <span class="ident">result</span>
-        })
+    <span class="doccomment">/// Calls a method on the object.
+    ///
+    /// This is equivalent to the Python expression `self.name(*args, **kwargs)`.
+    ///
+    /// To avoid repeated temporary allocations of Python strings, the [`intern!`] macro can be used
+    /// to intern `name`.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use pyo3::prelude::*;
+    /// use pyo3::types::PyDict;
+    ///
+    /// const CODE: &amp;str = r#&quot;
+    /// class A:
+    ///     def method(self, *args, **kwargs):
+    ///         assert args == (&quot;hello&quot;,)
+    ///         assert kwargs == {&quot;cruel&quot;: &quot;world&quot;}
+    ///         return &quot;called with args and kwargs&quot;
+    /// a = A()
+    /// &quot;#;
+    ///
+    /// # fn main() -&gt; PyResult&lt;()&gt; {
+    /// Python::with_gil(|py| {
+    ///     let module = PyModule::from_code(py, CODE, &quot;&quot;, &quot;&quot;)?;
+    ///     let instance = module.getattr(&quot;a&quot;)?;
+    ///     let args = (&quot;hello&quot;,);
+    ///     let kwargs = PyDict::new(py);
+    ///     kwargs.set_item(&quot;cruel&quot;, &quot;world&quot;)?;
+    ///     let result = instance.call_method(&quot;method&quot;, args, Some(kwargs))?;
+    ///     assert_eq!(result.extract::&lt;&amp;str&gt;()?, &quot;called with args and kwargs&quot;);
+    ///     Ok(())
+    /// })
+    /// # }
+    /// ```
+    </span><span class="kw">pub fn </span>call_method&lt;N, A&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, name: N, args: A, kwargs: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>PyDict&gt;) -&gt; PyResult&lt;<span class="kw-2">&amp;</span>PyAny&gt;
+    <span class="kw">where
+        </span>N: IntoPy&lt;Py&lt;PyString&gt;&gt;,
+        A: IntoPy&lt;Py&lt;PyTuple&gt;&gt;,
+    {
+        <span class="kw">let </span>py = <span class="self">self</span>.py();
+
+        <span class="kw">let </span>callee = <span class="self">self</span>.getattr(name)<span class="question-mark">?</span>;
+        <span class="kw">let </span>args: Py&lt;PyTuple&gt; = args.into_py(py);
+        <span class="kw">let </span>kwargs = kwargs.into_ptr();
+
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>result_ptr = ffi::PyObject_Call(callee.as_ptr(), args.as_ptr(), kwargs);
+            <span class="kw">let </span>result = py.from_owned_ptr_or_err(result_ptr);
+            ffi::Py_XDECREF(kwargs);
+            result
+        }
     }
 
-    <span class="doccomment">/// Calls a method on the object without arguments.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python expression `self.name()`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// use pyo3::prelude::*;</span>
-    <span class="doccomment">/// use pyo3::types::PyFloat;</span>
-    <span class="doccomment">/// use std::f64::consts::PI;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # fn main() -&gt; PyResult&lt;()&gt; {</span>
-    <span class="doccomment">/// Python::with_gil(|py| -&gt; PyResult&lt;()&gt; {</span>
-    <span class="doccomment">///     let pi = PyFloat::new(py, PI);</span>
-    <span class="doccomment">///     let ratio = pi.call_method0(&quot;as_integer_ratio&quot;)?;</span>
-    <span class="doccomment">///     let (a, b) = ratio.extract::&lt;(u64, u64)&gt;()?;</span>
-    <span class="doccomment">///     assert_eq!(a, 884_279_719_003_555);</span>
-    <span class="doccomment">///     assert_eq!(b, 281_474_976_710_656);</span>
-    <span class="doccomment">///     Ok(())</span>
-    <span class="doccomment">/// })?;</span>
-    <span class="doccomment">/// # Ok(())}</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the following Python code:</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```python</span>
-    <span class="doccomment">/// import math</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// a, b = math.pi.as_integer_ratio()</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">call_method0</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">PyAny</span><span class="op">&gt;</span> {
+    <span class="doccomment">/// Calls a method on the object without arguments.
+    ///
+    /// This is equivalent to the Python expression `self.name()`.
+    ///
+    /// To avoid repeated temporary allocations of Python strings, the [`intern!`] macro can be used
+    /// to intern `name`.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use pyo3::prelude::*;
+    ///
+    /// const CODE: &amp;str = r#&quot;
+    /// class A:
+    ///     def method(self, *args, **kwargs):
+    ///         assert args == ()
+    ///         assert kwargs == {}
+    ///         return &quot;called with no arguments&quot;
+    /// a = A()
+    /// &quot;#;
+    ///
+    /// # fn main() -&gt; PyResult&lt;()&gt; {
+    /// Python::with_gil(|py| {
+    ///     let module = PyModule::from_code(py, CODE, &quot;&quot;, &quot;&quot;)?;
+    ///     let instance = module.getattr(&quot;a&quot;)?;
+    ///     let result = instance.call_method0(&quot;method&quot;)?;
+    ///     assert_eq!(result.extract::&lt;&amp;str&gt;()?, &quot;called with no arguments&quot;);
+    ///     Ok(())
+    /// })
+    /// # }
+    /// ```
+    </span><span class="kw">pub fn </span>call_method0&lt;N&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, name: N) -&gt; PyResult&lt;<span class="kw-2">&amp;</span>PyAny&gt;
+    <span class="kw">where
+        </span>N: IntoPy&lt;Py&lt;PyString&gt;&gt;,
+    {
         <span class="macro">cfg_if::cfg_if!</span> {
-            <span class="kw">if</span> <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">Py_3_9</span>, <span class="ident">not</span>(<span class="ident">Py_LIMITED_API</span>)))]</span> {
-                <span class="comment">// Optimized path on python 3.9+</span>
-                <span class="kw">unsafe</span> {
-                    <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">name</span>.<span class="ident">into_py</span>(<span class="self">self</span>.<span class="ident">py</span>());
-            <span class="self">self</span>.<span class="ident">py</span>().<span class="ident">from_owned_ptr_or_err</span>(<span class="ident">ffi::PyObject_CallMethodNoArgs</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">name</span>.<span class="ident">as_ptr</span>()))
+            <span class="kw">if </span><span class="attribute">#[cfg(all(Py_3_9, not(any(Py_LIMITED_API, PyPy))))]</span> {
+                <span class="kw">let </span>py = <span class="self">self</span>.py();
+
+                <span class="comment">// Optimized path on python 3.9+
+                </span><span class="kw">unsafe </span>{
+                    <span class="kw">let </span>name: Py&lt;PyString&gt; = name.into_py(py);
+                    <span class="kw">let </span>ptr = ffi::PyObject_CallMethodNoArgs(<span class="self">self</span>.as_ptr(), name.as_ptr());
+                    py.from_owned_ptr_or_err(ptr)
                 }
-            } <span class="kw">else</span> {
-                <span class="self">self</span>.<span class="ident">call_method</span>(<span class="ident">name</span>, (), <span class="prelude-val">None</span>)
+            } <span class="kw">else </span>{
+                <span class="self">self</span>.call_method(name, (), <span class="prelude-val">None</span>)
             }
         }
     }
 
-    <span class="doccomment">/// Calls a method on the object with only positional arguments.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python expression `self.name(*args)`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// use pyo3::prelude::*;</span>
-    <span class="doccomment">/// use pyo3::types::PyList;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # fn main() -&gt; PyResult&lt;()&gt; {</span>
-    <span class="doccomment">/// Python::with_gil(|py| -&gt; PyResult&lt;()&gt; {</span>
-    <span class="doccomment">///     let list = PyList::new(py, vec![1, 3, 4]);</span>
-    <span class="doccomment">///     list.call_method1(&quot;insert&quot;, (1, 2))?;</span>
-    <span class="doccomment">///     assert_eq!(list.extract::&lt;Vec&lt;u8&gt;&gt;()?, [1, 2, 3, 4]);</span>
-    <span class="doccomment">///     Ok(())</span>
-    <span class="doccomment">/// })?;</span>
-    <span class="doccomment">/// # Ok(()) }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the following Python code:</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```python</span>
-    <span class="doccomment">/// list_ = [1,3,4]</span>
-    <span class="doccomment">/// list_.insert(1,2)</span>
-    <span class="doccomment">/// assert list_ == [1,2,3,4]</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">call_method1</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">args</span>: <span class="kw">impl</span> <span class="ident">IntoPy</span><span class="op">&lt;</span><span class="ident">Py</span><span class="op">&lt;</span><span class="ident">PyTuple</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">PyAny</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">call_method</span>(<span class="ident">name</span>, <span class="ident">args</span>, <span class="prelude-val">None</span>)
-    }
-
-    <span class="doccomment">/// Returns whether the object is considered to be true.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python expression `bool(self)`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_true</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">ffi::PyObject_IsTrue</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>()) };
-        <span class="ident">err::error_on_minusone</span>(<span class="self">self</span>.<span class="ident">py</span>(), <span class="ident">v</span>)<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(<span class="ident">v</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>)
-    }
-
-    <span class="doccomment">/// Returns whether the object is considered to be None.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python expression `self is None`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_none</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">ffi::Py_None</span>() <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">as_ptr</span>() }
-    }
-
-    <span class="doccomment">/// Returns true if the sequence or mapping has a length of 0.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python expression `len(self) == 0`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_empty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">len</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">l</span><span class="op">|</span> <span class="ident">l</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span>)
-    }
-
-    <span class="doccomment">/// Gets an item from the collection.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python expression `self[key]`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_item</span><span class="op">&lt;</span><span class="ident">K</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="ident">K</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">PyAny</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">K</span>: <span class="ident">ToBorrowedObject</span>,
+    <span class="doccomment">/// Calls a method on the object with only positional arguments.
+    ///
+    /// This is equivalent to the Python expression `self.name(*args)`.
+    ///
+    /// To avoid repeated temporary allocations of Python strings, the [`intern!`] macro can be used
+    /// to intern `name`.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use pyo3::prelude::*;
+    ///
+    /// const CODE: &amp;str = r#&quot;
+    /// class A:
+    ///     def method(self, *args, **kwargs):
+    ///         assert args == (&quot;hello&quot;,)
+    ///         assert kwargs == {}
+    ///         return &quot;called with args&quot;
+    /// a = A()
+    /// &quot;#;
+    ///
+    /// # fn main() -&gt; PyResult&lt;()&gt; {
+    /// Python::with_gil(|py| {
+    ///     let module = PyModule::from_code(py, CODE, &quot;&quot;, &quot;&quot;)?;
+    ///     let instance = module.getattr(&quot;a&quot;)?;
+    ///     let args = (&quot;hello&quot;,);
+    ///     let result = instance.call_method1(&quot;method&quot;, args)?;
+    ///     assert_eq!(result.extract::&lt;&amp;str&gt;()?, &quot;called with args&quot;);
+    ///     Ok(())
+    /// })
+    /// # }
+    /// ```
+    </span><span class="kw">pub fn </span>call_method1&lt;N, A&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, name: N, args: A) -&gt; PyResult&lt;<span class="kw-2">&amp;</span>PyAny&gt;
+    <span class="kw">where
+        </span>N: IntoPy&lt;Py&lt;PyString&gt;&gt;,
+        A: IntoPy&lt;Py&lt;PyTuple&gt;&gt;,
     {
-        <span class="ident">key</span>.<span class="ident">with_borrowed_ptr</span>(<span class="self">self</span>.<span class="ident">py</span>(), <span class="op">|</span><span class="ident">key</span><span class="op">|</span> <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">py</span>()
-                .<span class="ident">from_owned_ptr_or_err</span>(<span class="ident">ffi::PyObject_GetItem</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">key</span>))
-        })
+        <span class="self">self</span>.call_method(name, args, <span class="prelude-val">None</span>)
     }
 
-    <span class="doccomment">/// Sets a collection item value.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python expression `self[key] = value`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_item</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">V</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="ident">K</span>, <span class="ident">value</span>: <span class="ident">V</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">K</span>: <span class="ident">ToBorrowedObject</span>,
-        <span class="ident">V</span>: <span class="ident">ToBorrowedObject</span>,
+    <span class="doccomment">/// Returns whether the object is considered to be true.
+    ///
+    /// This is equivalent to the Python expression `bool(self)`.
+    </span><span class="kw">pub fn </span>is_true(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PyResult&lt;bool&gt; {
+        <span class="kw">let </span>v = <span class="kw">unsafe </span>{ ffi::PyObject_IsTrue(<span class="self">self</span>.as_ptr()) };
+        err::error_on_minusone(<span class="self">self</span>.py(), v)<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(v != <span class="number">0</span>)
+    }
+
+    <span class="doccomment">/// Returns whether the object is considered to be None.
+    ///
+    /// This is equivalent to the Python expression `self is None`.
+    </span><span class="kw">pub fn </span>is_none(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ ffi::Py_None() == <span class="self">self</span>.as_ptr() }
+    }
+
+    <span class="doccomment">/// Returns true if the sequence or mapping has a length of 0.
+    ///
+    /// This is equivalent to the Python expression `len(self) == 0`.
+    </span><span class="kw">pub fn </span>is_empty(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PyResult&lt;bool&gt; {
+        <span class="self">self</span>.len().map(|l| l == <span class="number">0</span>)
+    }
+
+    <span class="doccomment">/// Gets an item from the collection.
+    ///
+    /// This is equivalent to the Python expression `self[key]`.
+    </span><span class="kw">pub fn </span>get_item&lt;K&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: K) -&gt; PyResult&lt;<span class="kw-2">&amp;</span>PyAny&gt;
+    <span class="kw">where
+        </span>K: ToPyObject,
     {
-        <span class="ident">key</span>.<span class="ident">with_borrowed_ptr</span>(<span class="self">self</span>.<span class="ident">py</span>(), <span class="kw">move</span> <span class="op">|</span><span class="ident">key</span><span class="op">|</span> {
-            <span class="ident">value</span>.<span class="ident">with_borrowed_ptr</span>(<span class="self">self</span>.<span class="ident">py</span>(), <span class="op">|</span><span class="ident">value</span><span class="op">|</span> <span class="kw">unsafe</span> {
-                <span class="ident">err::error_on_minusone</span>(<span class="self">self</span>.<span class="ident">py</span>(), <span class="ident">ffi::PyObject_SetItem</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">key</span>, <span class="ident">value</span>))
-            })
-        })
-    }
-
-    <span class="doccomment">/// Deletes an item from the collection.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python expression `del self[key]`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">del_item</span><span class="op">&lt;</span><span class="ident">K</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="ident">K</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">K</span>: <span class="ident">ToBorrowedObject</span>,
-    {
-        <span class="ident">key</span>.<span class="ident">with_borrowed_ptr</span>(<span class="self">self</span>.<span class="ident">py</span>(), <span class="op">|</span><span class="ident">key</span><span class="op">|</span> <span class="kw">unsafe</span> {
-            <span class="ident">err::error_on_minusone</span>(<span class="self">self</span>.<span class="ident">py</span>(), <span class="ident">ffi::PyObject_DelItem</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">key</span>))
-        })
-    }
-
-    <span class="doccomment">/// Takes an object and returns an iterator for it.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is typically a new iterator but if the argument is an iterator,</span>
-    <span class="doccomment">/// this returns itself.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">iter</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">PyIterator</span><span class="op">&gt;</span> {
-        <span class="ident">PyIterator::from_object</span>(<span class="self">self</span>.<span class="ident">py</span>(), <span class="self">self</span>)
-    }
-
-    <span class="doccomment">/// Returns the Python type object for this object&#39;s type.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">PyType</span> {
-        <span class="kw">unsafe</span> { <span class="ident">PyType::from_type_ptr</span>(<span class="self">self</span>.<span class="ident">py</span>(), <span class="ident">ffi::Py_TYPE</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>())) }
-    }
-
-    <span class="doccomment">/// Returns the Python type pointer for this object.</span>
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_type_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyTypeObject</span> {
-        <span class="kw">unsafe</span> { <span class="ident">ffi::Py_TYPE</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>()) }
-    }
-
-    <span class="doccomment">/// Casts the PyObject to a concrete Python object type.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This can cast only to native Python types, not types implemented in Rust.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cast_as</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">D</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">D</span>, <span class="ident">PyDowncastError</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">D</span>: <span class="ident">PyTryFrom</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
-    {
-        <span class="ident">D::try_from</span>(<span class="self">self</span>)
-    }
-
-    <span class="doccomment">/// Extracts some type from the Python object.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is a wrapper function around `FromPyObject::extract()`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extract</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">D</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="ident">D</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">D</span>: <span class="ident">FromPyObject</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
-    {
-        <span class="ident">FromPyObject::extract</span>(<span class="self">self</span>)
-    }
-
-    <span class="doccomment">/// Returns the reference count for the Python object.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_refcnt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">isize</span> {
-        <span class="kw">unsafe</span> { <span class="ident">ffi::Py_REFCNT</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>()) }
-    }
-
-    <span class="doccomment">/// Computes the &quot;repr&quot; representation of self.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python expression `repr(self)`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">repr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">PyString</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">py</span>()
-                .<span class="ident">from_owned_ptr_or_err</span>(<span class="ident">ffi::PyObject_Repr</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>()))
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.py().from_owned_ptr_or_err(ffi::PyObject_GetItem(
+                <span class="self">self</span>.as_ptr(),
+                key.to_object(<span class="self">self</span>.py()).as_ptr(),
+            ))
         }
     }
 
-    <span class="doccomment">/// Computes the &quot;str&quot; representation of self.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python expression `str(self)`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">str</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">PyString</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">py</span>()
-                .<span class="ident">from_owned_ptr_or_err</span>(<span class="ident">ffi::PyObject_Str</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>()))
+    <span class="doccomment">/// Sets a collection item value.
+    ///
+    /// This is equivalent to the Python expression `self[key] = value`.
+    </span><span class="kw">pub fn </span>set_item&lt;K, V&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: K, value: V) -&gt; PyResult&lt;()&gt;
+    <span class="kw">where
+        </span>K: ToPyObject,
+        V: ToPyObject,
+    {
+        <span class="kw">let </span>py = <span class="self">self</span>.py();
+        <span class="kw">unsafe </span>{
+            err::error_on_minusone(
+                py,
+                ffi::PyObject_SetItem(
+                    <span class="self">self</span>.as_ptr(),
+                    key.to_object(py).as_ptr(),
+                    value.to_object(py).as_ptr(),
+                ),
+            )
         }
     }
 
-    <span class="doccomment">/// Retrieves the hash code of self.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python expression `hash(self)`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">hash</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="ident">isize</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">ffi::PyObject_Hash</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>()) };
-        <span class="kw">if</span> <span class="ident">v</span> <span class="op">=</span><span class="op">=</span> <span class="op">-</span><span class="number">1</span> {
-            <span class="prelude-val">Err</span>(<span class="ident">PyErr::api_call_failed</span>(<span class="self">self</span>.<span class="ident">py</span>()))
-        } <span class="kw">else</span> {
-            <span class="prelude-val">Ok</span>(<span class="ident">v</span>)
+    <span class="doccomment">/// Deletes an item from the collection.
+    ///
+    /// This is equivalent to the Python expression `del self[key]`.
+    </span><span class="kw">pub fn </span>del_item&lt;K&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: K) -&gt; PyResult&lt;()&gt;
+    <span class="kw">where
+        </span>K: ToPyObject,
+    {
+        <span class="kw">unsafe </span>{
+            err::error_on_minusone(
+                <span class="self">self</span>.py(),
+                ffi::PyObject_DelItem(<span class="self">self</span>.as_ptr(), key.to_object(<span class="self">self</span>.py()).as_ptr()),
+            )
         }
     }
 
-    <span class="doccomment">/// Returns the length of the sequence or mapping.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python expression `len(self)`.</span>
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::len_without_is_empty</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">ffi::PyObject_Size</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>()) };
-        <span class="kw">if</span> <span class="ident">v</span> <span class="op">=</span><span class="op">=</span> <span class="op">-</span><span class="number">1</span> {
-            <span class="prelude-val">Err</span>(<span class="ident">PyErr::api_call_failed</span>(<span class="self">self</span>.<span class="ident">py</span>()))
-        } <span class="kw">else</span> {
-            <span class="prelude-val">Ok</span>(<span class="ident">v</span> <span class="kw">as</span> <span class="ident">usize</span>)
+    <span class="doccomment">/// Takes an object and returns an iterator for it.
+    ///
+    /// This is typically a new iterator but if the argument is an iterator,
+    /// this returns itself.
+    </span><span class="kw">pub fn </span>iter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PyResult&lt;<span class="kw-2">&amp;</span>PyIterator&gt; {
+        PyIterator::from_object(<span class="self">self</span>.py(), <span class="self">self</span>)
+    }
+
+    <span class="doccomment">/// Returns the Python type object for this object&#39;s type.
+    </span><span class="kw">pub fn </span>get_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>PyType {
+        <span class="kw">unsafe </span>{ PyType::from_type_ptr(<span class="self">self</span>.py(), ffi::Py_TYPE(<span class="self">self</span>.as_ptr())) }
+    }
+
+    <span class="doccomment">/// Returns the Python type pointer for this object.
+    </span><span class="attribute">#[inline]</span>
+    <span class="kw">pub fn </span>get_type_ptr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>ffi::PyTypeObject {
+        <span class="kw">unsafe </span>{ ffi::Py_TYPE(<span class="self">self</span>.as_ptr()) }
+    }
+
+    <span class="doccomment">/// Casts `self` to a concrete Python object type.
+    ///
+    /// This can cast only to native Python types, not types implemented in Rust.
+    </span><span class="kw">pub fn </span>cast_as&lt;<span class="lifetime">&#39;a</span>, D&gt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>D, PyDowncastError&lt;<span class="lifetime">&#39;_</span>&gt;&gt;
+    <span class="kw">where
+        </span>D: PyTryFrom&lt;<span class="lifetime">&#39;a</span>&gt;,
+    {
+        &lt;D <span class="kw">as </span>PyTryFrom&lt;<span class="lifetime">&#39;_</span>&gt;&gt;::try_from(<span class="self">self</span>)
+    }
+
+    <span class="doccomment">/// Extracts some type from the Python object.
+    ///
+    /// This is a wrapper function around [`FromPyObject::extract()`].
+    </span><span class="kw">pub fn </span>extract&lt;<span class="lifetime">&#39;a</span>, D&gt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>) -&gt; PyResult&lt;D&gt;
+    <span class="kw">where
+        </span>D: FromPyObject&lt;<span class="lifetime">&#39;a</span>&gt;,
+    {
+        FromPyObject::extract(<span class="self">self</span>)
+    }
+
+    <span class="doccomment">/// Returns the reference count for the Python object.
+    </span><span class="kw">pub fn </span>get_refcnt(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; isize {
+        <span class="kw">unsafe </span>{ ffi::Py_REFCNT(<span class="self">self</span>.as_ptr()) }
+    }
+
+    <span class="doccomment">/// Computes the &quot;repr&quot; representation of self.
+    ///
+    /// This is equivalent to the Python expression `repr(self)`.
+    </span><span class="kw">pub fn </span>repr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PyResult&lt;<span class="kw-2">&amp;</span>PyString&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.py()
+                .from_owned_ptr_or_err(ffi::PyObject_Repr(<span class="self">self</span>.as_ptr()))
         }
     }
 
-    <span class="doccomment">/// Returns the list of attributes of this object.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python expression `dir(self)`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dir</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">PyList</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">py</span>().<span class="ident">from_owned_ptr</span>(<span class="ident">ffi::PyObject_Dir</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>())) }
+    <span class="doccomment">/// Computes the &quot;str&quot; representation of self.
+    ///
+    /// This is equivalent to the Python expression `str(self)`.
+    </span><span class="kw">pub fn </span>str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PyResult&lt;<span class="kw-2">&amp;</span>PyString&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="self">self</span>.py()
+                .from_owned_ptr_or_err(ffi::PyObject_Str(<span class="self">self</span>.as_ptr()))
+        }
     }
 
-    <span class="doccomment">/// Checks whether this object is an instance of type `T`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Python expression `isinstance(self, T)`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_instance</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">PyTypeObject</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> {
-        <span class="ident">T::type_object</span>(<span class="self">self</span>.<span class="ident">py</span>()).<span class="ident">is_instance</span>(<span class="self">self</span>)
+    <span class="doccomment">/// Retrieves the hash code of self.
+    ///
+    /// This is equivalent to the Python expression `hash(self)`.
+    </span><span class="kw">pub fn </span>hash(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PyResult&lt;isize&gt; {
+        <span class="kw">let </span>v = <span class="kw">unsafe </span>{ ffi::PyObject_Hash(<span class="self">self</span>.as_ptr()) };
+        <span class="kw">if </span>v == -<span class="number">1 </span>{
+            <span class="prelude-val">Err</span>(PyErr::fetch(<span class="self">self</span>.py()))
+        } <span class="kw">else </span>{
+            <span class="prelude-val">Ok</span>(v)
+        }
     }
 
-    <span class="doccomment">/// Returns a GIL marker constrained to the lifetime of this type.</span>
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">py</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Python</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-        <span class="ident">PyNativeType::py</span>(<span class="self">self</span>)
+    <span class="doccomment">/// Returns the length of the sequence or mapping.
+    ///
+    /// This is equivalent to the Python expression `len(self)`.
+    </span><span class="kw">pub fn </span>len(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PyResult&lt;usize&gt; {
+        <span class="kw">let </span>v = <span class="kw">unsafe </span>{ ffi::PyObject_Size(<span class="self">self</span>.as_ptr()) };
+        <span class="kw">if </span>v == -<span class="number">1 </span>{
+            <span class="prelude-val">Err</span>(PyErr::fetch(<span class="self">self</span>.py()))
+        } <span class="kw">else </span>{
+            <span class="prelude-val">Ok</span>(v <span class="kw">as </span>usize)
+        }
+    }
+
+    <span class="doccomment">/// Returns the list of attributes of this object.
+    ///
+    /// This is equivalent to the Python expression `dir(self)`.
+    </span><span class="kw">pub fn </span>dir(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>PyList {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.py().from_owned_ptr(ffi::PyObject_Dir(<span class="self">self</span>.as_ptr())) }
+    }
+
+    <span class="doccomment">/// Checks whether this object is an instance of type `ty`.
+    ///
+    /// This is equivalent to the Python expression `isinstance(self, ty)`.
+    </span><span class="kw">pub fn </span>is_instance(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: <span class="kw-2">&amp;</span>PyType) -&gt; PyResult&lt;bool&gt; {
+        <span class="kw">let </span>result = <span class="kw">unsafe </span>{ ffi::PyObject_IsInstance(<span class="self">self</span>.as_ptr(), ty.as_ptr()) };
+        err::error_on_minusone(<span class="self">self</span>.py(), result)<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(result == <span class="number">1</span>)
+    }
+
+    <span class="doccomment">/// Checks whether this object is an instance of type `T`.
+    ///
+    /// This is equivalent to the Python expression `isinstance(self, T)`,
+    /// if the type `T` is known at compile time.
+    </span><span class="kw">pub fn </span>is_instance_of&lt;T: PyTypeInfo&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PyResult&lt;bool&gt; {
+        <span class="self">self</span>.is_instance(T::type_object(<span class="self">self</span>.py()))
+    }
+
+    <span class="doccomment">/// Determines if self contains `value`.
+    ///
+    /// This is equivalent to the Python expression `value in self`.
+    </span><span class="kw">pub fn </span>contains&lt;V&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, value: V) -&gt; PyResult&lt;bool&gt;
+    <span class="kw">where
+        </span>V: ToPyObject,
+    {
+        <span class="self">self</span>._contains(value.to_object(<span class="self">self</span>.py()))
+    }
+
+    <span class="kw">fn </span>_contains(<span class="kw-2">&amp;</span><span class="self">self</span>, value: PyObject) -&gt; PyResult&lt;bool&gt; {
+        <span class="kw">match unsafe </span>{ ffi::PySequence_Contains(<span class="self">self</span>.as_ptr(), value.as_ptr()) } {
+            <span class="number">0 </span>=&gt; <span class="prelude-val">Ok</span>(<span class="bool-val">false</span>),
+            <span class="number">1 </span>=&gt; <span class="prelude-val">Ok</span>(<span class="bool-val">true</span>),
+            <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(PyErr::fetch(<span class="self">self</span>.py())),
+        }
+    }
+
+    <span class="doccomment">/// Returns a GIL marker constrained to the lifetime of this type.
+    </span><span class="attribute">#[inline]</span>
+    <span class="kw">pub fn </span>py(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Python&lt;<span class="lifetime">&#39;_</span>&gt; {
+        PyNativeType::py(<span class="self">self</span>)
+    }
+
+    <span class="doccomment">/// Return a proxy object that delegates method calls to a parent or sibling class of type.
+    ///
+    /// This is equivalent to the Python expression `super()`
+    </span><span class="attribute">#[cfg(not(PyPy))]</span>
+    <span class="kw">pub fn </span>py_super(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PyResult&lt;<span class="kw-2">&amp;</span>PySuper&gt; {
+        PySuper::new(<span class="self">self</span>.get_type(), <span class="self">self</span>)
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="kw">crate</span>::{
-        <span class="ident">types</span>::{<span class="ident">IntoPyDict</span>, <span class="ident">PyList</span>, <span class="ident">PyLong</span>, <span class="ident">PyModule</span>},
-        <span class="ident">Python</span>, <span class="ident">ToPyObject</span>,
+<span class="attribute">#[cfg(test)]</span>
+<span class="kw">mod </span>tests {
+    <span class="kw">use crate</span>::{
+        type_object::PyTypeInfo,
+        types::{IntoPyDict, PyList, PyLong, PyModule},
+        Python, ToPyObject,
     };
-
-    <span class="macro">macro_rules!</span> <span class="ident">test_module</span> {
-        (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">py</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>:<span class="ident">literal</span>) <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="ident">PyModule::from_code</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">py</span>, <span class="macro">indoc::indoc!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>), <span class="macro">file!</span>(), <span class="string">&quot;test_module&quot;</span>)
-                .<span class="ident">expect</span>(<span class="string">&quot;module creation failed&quot;</span>)
-        };
-    }
-
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_call_for_non_existing_method</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">py</span>.<span class="ident">eval</span>(<span class="string">&quot;42&quot;</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>).<span class="ident">unwrap</span>();
-            <span class="ident">a</span>.<span class="ident">call_method0</span>(<span class="string">&quot;__str__&quot;</span>).<span class="ident">unwrap</span>(); <span class="comment">// ok</span>
-            <span class="macro">assert!</span>(<span class="ident">a</span>.<span class="ident">call_method</span>(<span class="string">&quot;nonexistent_method&quot;</span>, (<span class="number">1</span>,), <span class="prelude-val">None</span>).<span class="ident">is_err</span>());
-            <span class="macro">assert!</span>(<span class="ident">a</span>.<span class="ident">call_method0</span>(<span class="string">&quot;nonexistent_method&quot;</span>).<span class="ident">is_err</span>());
-            <span class="macro">assert!</span>(<span class="ident">a</span>.<span class="ident">call_method1</span>(<span class="string">&quot;nonexistent_method&quot;</span>, (<span class="number">1</span>,)).<span class="ident">is_err</span>());
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_call_for_non_existing_method() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span>a = py.eval(<span class="string">&quot;42&quot;</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>).unwrap();
+            a.call_method0(<span class="string">&quot;__str__&quot;</span>).unwrap(); <span class="comment">// ok
+            </span><span class="macro">assert!</span>(a.call_method(<span class="string">&quot;nonexistent_method&quot;</span>, (<span class="number">1</span>,), <span class="prelude-val">None</span>).is_err());
+            <span class="macro">assert!</span>(a.call_method0(<span class="string">&quot;nonexistent_method&quot;</span>).is_err());
+            <span class="macro">assert!</span>(a.call_method1(<span class="string">&quot;nonexistent_method&quot;</span>, (<span class="number">1</span>,)).is_err());
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_call_with_kwargs</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">list</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">3</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">7</span>].<span class="ident">to_object</span>(<span class="ident">py</span>);
-            <span class="kw">let</span> <span class="ident">dict</span> <span class="op">=</span> <span class="macro">vec!</span>[(<span class="string">&quot;reverse&quot;</span>, <span class="bool-val">true</span>)].<span class="ident">into_py_dict</span>(<span class="ident">py</span>);
-            <span class="ident">list</span>.<span class="ident">call_method</span>(<span class="ident">py</span>, <span class="string">&quot;sort&quot;</span>, (), <span class="prelude-val">Some</span>(<span class="ident">dict</span>)).<span class="ident">unwrap</span>();
-            <span class="macro">assert_eq!</span>(<span class="ident">list</span>.<span class="ident">extract</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">py</span>).<span class="ident">unwrap</span>(), <span class="macro">vec!</span>[<span class="number">7</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>]);
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_call_with_kwargs() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span>list = <span class="macro">vec!</span>[<span class="number">3</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">7</span>].to_object(py);
+            <span class="kw">let </span>dict = <span class="macro">vec!</span>[(<span class="string">&quot;reverse&quot;</span>, <span class="bool-val">true</span>)].into_py_dict(py);
+            list.call_method(py, <span class="string">&quot;sort&quot;</span>, (), <span class="prelude-val">Some</span>(dict)).unwrap();
+            <span class="macro">assert_eq!</span>(list.extract::&lt;Vec&lt;i32&gt;&gt;(py).unwrap(), <span class="macro">vec!</span>[<span class="number">7</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>]);
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_call_method0</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="macro">test_module!</span>(
-                <span class="ident">py</span>,
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_call_method0() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span>module = PyModule::from_code(
+                py,
                 <span class="string">r#&quot;
-                class SimpleClass:
-                    def foo(self):
-                        return 42
-            &quot;#</span>
-            );
+class SimpleClass:
+    def foo(self):
+        return 42
+&quot;#</span>,
+                <span class="macro">file!</span>(),
+                <span class="string">&quot;test_module&quot;</span>,
+            )
+            .expect(<span class="string">&quot;module creation failed&quot;</span>);
 
-            <span class="kw">let</span> <span class="ident">simple_class</span> <span class="op">=</span> <span class="ident">module</span>.<span class="ident">getattr</span>(<span class="string">&quot;SimpleClass&quot;</span>).<span class="ident">unwrap</span>().<span class="ident">call0</span>().<span class="ident">unwrap</span>();
+            <span class="kw">let </span>simple_class = module.getattr(<span class="string">&quot;SimpleClass&quot;</span>).unwrap().call0().unwrap();
             <span class="macro">assert_eq!</span>(
-                <span class="ident">simple_class</span>
-                    .<span class="ident">call_method0</span>(<span class="string">&quot;foo&quot;</span>)
-                    .<span class="ident">unwrap</span>()
-                    .<span class="ident">extract</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>()
-                    .<span class="ident">unwrap</span>(),
-                <span class="number">42</span>
-            );
+                simple_class
+                    .call_method0(<span class="string">&quot;foo&quot;</span>)
+                    .unwrap()
+                    .extract::&lt;u32&gt;()
+                    .unwrap(),
+                <span class="number">42
+            </span>);
         })
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_type</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">obj</span> <span class="op">=</span> <span class="ident">py</span>.<span class="ident">eval</span>(<span class="string">&quot;42&quot;</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>).<span class="ident">unwrap</span>();
-            <span class="macro">assert_eq!</span>(<span class="ident">obj</span>.<span class="ident">get_type</span>().<span class="ident">as_type_ptr</span>(), <span class="ident">obj</span>.<span class="ident">get_type_ptr</span>());
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_type() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span>obj = py.eval(<span class="string">&quot;42&quot;</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>).unwrap();
+            <span class="macro">assert_eq!</span>(obj.get_type().as_type_ptr(), obj.get_type_ptr());
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_dir</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">obj</span> <span class="op">=</span> <span class="ident">py</span>.<span class="ident">eval</span>(<span class="string">&quot;42&quot;</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>).<span class="ident">unwrap</span>();
-            <span class="kw">let</span> <span class="ident">dir</span> <span class="op">=</span> <span class="ident">py</span>
-                .<span class="ident">eval</span>(<span class="string">&quot;dir(42)&quot;</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>)
-                .<span class="ident">unwrap</span>()
-                .<span class="ident">downcast</span>::<span class="op">&lt;</span><span class="ident">PyList</span><span class="op">&gt;</span>()
-                .<span class="ident">unwrap</span>();
-            <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">obj</span>
-                .<span class="ident">dir</span>()
-                .<span class="ident">into_iter</span>()
-                .<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">extract</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>());
-            <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">dir</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">extract</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>());
-            <span class="macro">assert!</span>(<span class="ident">a</span>.<span class="ident">eq</span>(<span class="ident">b</span>));
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_dir() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span>obj = py.eval(<span class="string">&quot;42&quot;</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>).unwrap();
+            <span class="kw">let </span>dir = py
+                .eval(<span class="string">&quot;dir(42)&quot;</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>)
+                .unwrap()
+                .downcast::&lt;PyList&gt;()
+                .unwrap();
+            <span class="kw">let </span>a = obj
+                .dir()
+                .into_iter()
+                .map(|x| x.extract::&lt;String&gt;().unwrap());
+            <span class="kw">let </span>b = dir.into_iter().map(|x| x.extract::&lt;String&gt;().unwrap());
+            <span class="macro">assert!</span>(a.eq(b));
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_nan_eq</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">nan</span> <span class="op">=</span> <span class="ident">py</span>.<span class="ident">eval</span>(<span class="string">&quot;float(&#39;nan&#39;)&quot;</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>).<span class="ident">unwrap</span>();
-            <span class="macro">assert!</span>(<span class="ident">nan</span>.<span class="ident">compare</span>(<span class="ident">nan</span>).<span class="ident">is_err</span>());
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_nan_eq() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span>nan = py.eval(<span class="string">&quot;float(&#39;nan&#39;)&quot;</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>).unwrap();
+            <span class="macro">assert!</span>(nan.compare(nan).is_err());
         });
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_any_isinstance</span>() {
-        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="number">5</span>.<span class="ident">to_object</span>(<span class="ident">py</span>).<span class="ident">into_ref</span>(<span class="ident">py</span>);
-            <span class="macro">assert!</span>(<span class="ident">x</span>.<span class="ident">is_instance</span>::<span class="op">&lt;</span><span class="ident">PyLong</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>());
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_any_isinstance() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span>x = <span class="number">5</span>.to_object(py).into_ref(py);
+            <span class="macro">assert!</span>(x.is_instance_of::&lt;PyLong&gt;().unwrap());
 
-            <span class="kw">let</span> <span class="ident">l</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="ident">x</span>, <span class="ident">x</span>].<span class="ident">to_object</span>(<span class="ident">py</span>).<span class="ident">into_ref</span>(<span class="ident">py</span>);
-            <span class="macro">assert!</span>(<span class="ident">l</span>.<span class="ident">is_instance</span>::<span class="op">&lt;</span><span class="ident">PyList</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>());
+            <span class="kw">let </span>l = <span class="macro">vec!</span>[x, x].to_object(py).into_ref(py);
+            <span class="macro">assert!</span>(l.is_instance_of::&lt;PyList&gt;().unwrap());
         });
+    }
+
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_any_isinstance_of() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span>l = <span class="macro">vec!</span>[<span class="number">1u8</span>, <span class="number">2</span>].to_object(py).into_ref(py);
+            <span class="macro">assert!</span>(l.is_instance(PyList::type_object(py)).unwrap());
+        });
+    }
+
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_any_contains() {
+        Python::with_gil(|py| {
+            <span class="kw">let </span>v: Vec&lt;i32&gt; = <span class="macro">vec!</span>[<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">8</span>];
+            <span class="kw">let </span>ob = v.to_object(py).into_ref(py);
+
+            <span class="kw">let </span>bad_needle = <span class="number">7i32</span>.to_object(py);
+            <span class="macro">assert!</span>(!ob.contains(<span class="kw-2">&amp;</span>bad_needle).unwrap());
+
+            <span class="kw">let </span>good_needle = <span class="number">8i32</span>.to_object(py);
+            <span class="macro">assert!</span>(ob.contains(<span class="kw-2">&amp;</span>good_needle).unwrap());
+
+            <span class="kw">let </span>type_coerced_needle = <span class="number">8f32</span>.to_object(py);
+            <span class="macro">assert!</span>(ob.contains(<span class="kw-2">&amp;</span>type_coerced_needle).unwrap());
+
+            <span class="kw">let </span>n: u32 = <span class="number">42</span>;
+            <span class="kw">let </span>bad_haystack = n.to_object(py).into_ref(py);
+            <span class="kw">let </span>irrelevant_needle = <span class="number">0i32</span>.to_object(py);
+            <span class="macro">assert!</span>(bad_haystack.contains(<span class="kw-2">&amp;</span>irrelevant_needle).is_err());
+        });
+    }
+
+    <span class="comment">// This is intentionally not a test, it&#39;s a generic function used by the tests below.
+    </span><span class="kw">fn </span>test_eq_methods_generic&lt;T&gt;(list: <span class="kw-2">&amp;</span>[T])
+    <span class="kw">where
+        </span>T: PartialEq + PartialOrd + ToPyObject,
+    {
+        Python::with_gil(|py| {
+            <span class="kw">for </span>a <span class="kw">in </span>list {
+                <span class="kw">for </span>b <span class="kw">in </span>list {
+                    <span class="kw">let </span>a_py = a.to_object(py).into_ref(py);
+                    <span class="kw">let </span>b_py = b.to_object(py).into_ref(py);
+
+                    <span class="macro">assert_eq!</span>(
+                        a.lt(b),
+                        a_py.lt(b_py).unwrap(),
+                        <span class="string">&quot;{} &lt; {} should be {}.&quot;</span>,
+                        a_py,
+                        b_py,
+                        a.lt(b)
+                    );
+                    <span class="macro">assert_eq!</span>(
+                        a.le(b),
+                        a_py.le(b_py).unwrap(),
+                        <span class="string">&quot;{} &lt;= {} should be {}.&quot;</span>,
+                        a_py,
+                        b_py,
+                        a.le(b)
+                    );
+                    <span class="macro">assert_eq!</span>(
+                        a.eq(b),
+                        a_py.eq(b_py).unwrap(),
+                        <span class="string">&quot;{} == {} should be {}.&quot;</span>,
+                        a_py,
+                        b_py,
+                        a.eq(b)
+                    );
+                    <span class="macro">assert_eq!</span>(
+                        a.ne(b),
+                        a_py.ne(b_py).unwrap(),
+                        <span class="string">&quot;{} != {} should be {}.&quot;</span>,
+                        a_py,
+                        b_py,
+                        a.ne(b)
+                    );
+                    <span class="macro">assert_eq!</span>(
+                        a.gt(b),
+                        a_py.gt(b_py).unwrap(),
+                        <span class="string">&quot;{} &gt; {} should be {}.&quot;</span>,
+                        a_py,
+                        b_py,
+                        a.gt(b)
+                    );
+                    <span class="macro">assert_eq!</span>(
+                        a.ge(b),
+                        a_py.ge(b_py).unwrap(),
+                        <span class="string">&quot;{} &gt;= {} should be {}.&quot;</span>,
+                        a_py,
+                        b_py,
+                        a.ge(b)
+                    );
+                }
+            }
+        });
+    }
+
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_eq_methods_integers() {
+        <span class="kw">let </span>ints = [-<span class="number">4</span>, -<span class="number">4</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">0</span>, -<span class="number">100</span>, <span class="number">1_000_000</span>];
+        test_eq_methods_generic(<span class="kw-2">&amp;</span>ints);
+    }
+
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_eq_methods_strings() {
+        <span class="kw">let </span>strings = [<span class="string">&quot;Let&#39;s&quot;</span>, <span class="string">&quot;test&quot;</span>, <span class="string">&quot;some&quot;</span>, <span class="string">&quot;eq&quot;</span>, <span class="string">&quot;methods&quot;</span>];
+        test_eq_methods_generic(<span class="kw-2">&amp;</span>strings);
+    }
+
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_eq_methods_floats() {
+        <span class="kw">let </span>floats = [
+            -<span class="number">1.0</span>,
+            <span class="number">2.5</span>,
+            <span class="number">0.0</span>,
+            <span class="number">3.0</span>,
+            std::f64::consts::PI,
+            <span class="number">10.0</span>,
+            <span class="number">10.0 </span>/ <span class="number">3.0</span>,
+            -<span class="number">1_000_000.0</span>,
+        ];
+        test_eq_methods_generic(<span class="kw-2">&amp;</span>floats);
+    }
+
+    <span class="attribute">#[test]</span>
+    <span class="kw">fn </span>test_eq_methods_bools() {
+        <span class="kw">let </span>bools = [<span class="bool-val">true</span>, <span class="bool-val">false</span>];
+        test_eq_methods_generic(<span class="kw-2">&amp;</span>bools);
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="pyo3" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
-    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="pyo3" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0-nightly (40336865f 2022-08-15)" ></div></body></html>
